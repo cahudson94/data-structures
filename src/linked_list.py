@@ -18,9 +18,7 @@ class Linked_List(object):
         """Return a node for a given value."""
         current_node = self.head
         while current_node:
-            print('val', val)
-            print(current_node.val)
-            if val == current_node.get_val:
+            if val == current_node.get_val():
                 return current_node
             current_node = current_node.get_next()
         return None

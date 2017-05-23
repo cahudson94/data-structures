@@ -1,5 +1,5 @@
 """Tests for linked list implementation."""
-from linked_list import LinkedList, Node
+from linked_list import LinkedList
 
 EMPTY_LIST = LinkedList()
 POP_LIST = LinkedList()
@@ -43,7 +43,7 @@ def test_linked_list_size():
 
 def test_linked_list_search():
     """Test linked list search method."""
-    assert LIST_OF_THREE.search('two').get_val() == 'two'
+    assert LIST_OF_THREE.search('two').val == 'two'
 
 
 def test_linked_list_remove():

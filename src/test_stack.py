@@ -1,5 +1,5 @@
-"""Tests for linked list implementation."""
-from stack import Stack, Node
+"""Tests for stack class implementation."""
+from stack import Stack
 import pytest
 
 EMPTY_LIST = Stack()
@@ -19,33 +19,35 @@ MULT_LIST = Stack([1, 2, 3])
 
 
 def test_stack_pop_empty():
-    """."""
+    """Test IndexError when pop method called on empty stack."""
     with pytest.raises(IndexError):
         EMPTY_LIST.pop()
 
 
-def test_stack_push_empty():
-    """."""
+def test_stack_push_none():
+    """Test ValueError when push method called with arg of None."""
     with pytest.raises(ValueError):
         EMPTY_LIST.push(None)
 
 
 def test_stack_push():
-    """Test linked list push method."""
+    """Test Stack push method with valid arg."""
     EMPTY_LIST.push(5)
     assert EMPTY_LIST.top.val == 5
 
 
-def test_stack_push_not_val():
-    """."""
+def test_stack_stack_not_iter():
+    """Test IndexError when Stack instantiated with non-iterable."""
     with pytest.raises(TypeError):
         Stack(3)
 
 
 def test_stack_push_mult():
-    """."""
+    """Test confirm length of Stack when instantiated with an iterable arg."""
     assert len(MULT_LIST) == 3
     assert MULT_LIST.top.val == 3
+    assert len(Stack((1, 2, 3))) == 3
+    assert len(Stack('cake')) == 4
 
 
 def test_stack_pop():

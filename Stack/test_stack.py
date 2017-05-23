@@ -46,6 +46,8 @@ def test_stack_push_mult():
     """Test confirm length of Stack when instantiated with an iterable arg."""
     assert len(MULT_LIST) == 3
     assert MULT_LIST.top.val == 3
+    assert len(Stack((1, 2, 3))) == 3
+    assert len(Stack('cake')) == 4
 
 
 def test_stack_pop():

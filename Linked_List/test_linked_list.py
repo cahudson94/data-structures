@@ -1,16 +1,16 @@
 """Tests for linked list implementation."""
-from linked_list import Linked_List, Node
+from linked_list import LinkedList, Node
 
-EMPTY_LIST = Linked_List()
-POP_LIST = Linked_List()
+EMPTY_LIST = LinkedList()
+POP_LIST = LinkedList()
 POP_LIST.push('one')
 POP_LIST.push('two')
 POP_LIST.push('three')
-LIST_OF_THREE = Linked_List()
+LIST_OF_THREE = LinkedList()
 LIST_OF_THREE.push('one')
 LIST_OF_THREE.push('two')
 LIST_OF_THREE.push('three')
-REMOVE_LIST = Linked_List()
+REMOVE_LIST = LinkedList()
 REMOVE_LIST.push('orange')
 REMOVE_LIST.push('apple')
 REMOVE_LIST.push('grape')
@@ -51,6 +51,7 @@ def test_linked_list_remove():
     REMOVE_LIST.__repr__()
     REMOVE_LIST.remove(REMOVE_LIST.search('apple'))
     assert len(REMOVE_LIST) == 2
+
 
 def test_linked_list_display():
     """Test linked list display method."""

@@ -14,10 +14,16 @@ class Linked_List(object):
         new_node.set_next(self.head)
         self.head = new_node
 
-
-    def remove(self):
+    def remove(self, node):  # infinite loop!
         """Remove a node from the linked list."""
-
+        # next_node = node.get_next()
+        # previous_node = node.get_next()
+        # while previous_node != node:
+        #     print(previous_node)
+        #     if previous_node == node:
+        #         break
+        #     previous_node = node.get_next()
+        # previous_node.set_next(next_node)
 
     def search(self, val):
         """Return a node for a given value."""
@@ -37,9 +43,8 @@ class Linked_List(object):
             current_node = current_node.get_next()
         return count
 
-
     def __len__(self):
-        """Return the size of a linked list."""
+        """Return the size of a linked list, overwriting len method."""
         count = 0
         current_node = self.head
         while current_node:

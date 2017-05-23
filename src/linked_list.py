@@ -16,6 +16,23 @@ class Linked_List(object):
 
     def search(self, val):
         """Return a node for a given value."""
+        current_node = self.head
+        while current_node:
+            print('val', val)
+            print(current_node.val)
+            if val == current_node.get_val:
+                return current_node
+            current_node = current_node.get_next()
+        return None
+
+    def __len__(self):
+        """Return a node for a given value."""
+        count = 0
+        current_node = self.head
+        while current_node:
+            count += 1
+            current_node = current_node.get_next()
+        return count
 
 
 class Node(object):

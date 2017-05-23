@@ -12,8 +12,8 @@ setup(
     author='Chris Hudson, Morgan Nomura',
     author_email='c.ahudson84@yahoo.com, morganelle@gmail.com',
     license='MIT',
-    py_modules=['linked_list'],
-    package_dir={'': 'src'},
+    py_modules=['stack'],
+    package_dir={'': 'Stack'},
     install_requires=[],
     extras_require=extra_packages,
     entry_points={

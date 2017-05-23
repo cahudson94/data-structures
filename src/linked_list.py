@@ -1,4 +1,4 @@
-"""."""
+"""Implementation of a linked list data structure."""
 
 
 class Linked_List(object):
@@ -9,10 +9,13 @@ class Linked_List(object):
         self.head = head
 
     def push(self, val):
-        """Creat a new node."""
+        """Create a new node."""
         new_node = Node(val)
         new_node.set_next(self.head)
         self.head = new_node
+
+    def search(self, val):
+        """Return a node for a given value."""
 
 
 class Node(object):

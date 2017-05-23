@@ -19,6 +19,11 @@ def test_linked_list_len():
     assert len(LIST_OF_THREE) == 3
 
 
+def test_linked_list_size():
+    """Test for len method."""
+    assert LIST_OF_THREE.size() == 3
+
+
 def test_linked_list_search():
     """Test linked list search method."""
     assert LIST_OF_THREE.search('two').get_val() == 'two'

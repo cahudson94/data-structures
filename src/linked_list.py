@@ -14,6 +14,11 @@ class Linked_List(object):
         new_node.set_next(self.head)
         self.head = new_node
 
+
+    def remove(self):
+        """Remove a node from the linked list."""
+
+
     def search(self, val):
         """Return a node for a given value."""
         current_node = self.head
@@ -23,8 +28,18 @@ class Linked_List(object):
             current_node = current_node.get_next()
         return None
 
+    def size(self):
+        """Return the size of a linked list."""
+        count = 0
+        current_node = self.head
+        while current_node:
+            count += 1
+            current_node = current_node.get_next()
+        return count
+
+
     def __len__(self):
-        """Return a node for a given value."""
+        """Return the size of a linked list."""
         count = 0
         current_node = self.head
         while current_node:

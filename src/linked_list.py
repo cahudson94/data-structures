@@ -58,18 +58,21 @@ class Linked_List(object):
         else:
             previous_node.set_next(current_node.get_next())
         current_node.set_next(None)
+        self._length -= 1
 
     def display(self):
         """Return unicde string.
 
         Represent the list like it is a python tuple.
         """
-        linked_list = []
+        display_string = u''
         current_node = self.head
         while current_node:
-            linked_list.append(current_node.val)
-            current_node = current_node.get_next()
-        return linked_list
+                display_string = current_node.val + ' ' + display_string
+                current_node = current_node.get_next()
+        display_string = display_string.strip().replace(' ', ', ')
+        display_string = '(' + display_string + ')'
+        return display_string
 
     def __len__(self):
         """Return the size of a linked list, overwriting len method."""

@@ -45,15 +45,16 @@ def test_linked_list_search():
     """Test linked list search method."""
     assert LIST_OF_THREE.search('two').get_val() == 'two'
 
-'''
+
 def test_linked_list_remove():
     """Test linked list remove method."""
-    REMOVE_LIST.__print__()
-    REMOVE_LIST.remove('apple')
-    assert REMOVE_LIST.size() == 2
-'''
+    REMOVE_LIST.__repr__()
+    REMOVE_LIST.remove(REMOVE_LIST.search('apple'))
+    assert len(REMOVE_LIST) == 2
+
 def test_linked_list_display():
     """Test linked list display method."""
+    assert LIST_OF_THREE.display() == '(one, two, three)'
 
 
 def test_linked_list_len():

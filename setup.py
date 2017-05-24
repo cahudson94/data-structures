@@ -16,9 +16,5 @@ setup(
     package_dir={'': 'src'},
     install_requires=[],
     extras_require=extra_packages,
-    entry_points={
-        'console_scripts': [
-            'linked_list = linked_list:main'
-        ]
-    }
+    entry_points={}
 )

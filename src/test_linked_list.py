@@ -3,6 +3,7 @@ from linked_list import LinkedList
 import pytest
 
 EMPTY_LIST = LinkedList()
+EMPTY_LIST_POP = LinkedList()
 
 POP_LIST = LinkedList()
 POP_LIST.push('one')
@@ -37,18 +38,31 @@ def test_linked_list_not_iter():
         LinkedList(3)
 
 
+def test_linked_list_iter():
+    """Test IndexError when Stack instantiated with non-iterable."""
+    assert LinkedList([3, 4, 5, 6]).head.val == 6
+    assert LinkedList((3, 4, 5, 6)).head.val == 6
+    assert LinkedList('cake').head.val == 'e'
+    assert len(LinkedList([3, 4, 5, 6])) == 4
+    assert LinkedList([3, 4, 5, 6]).search(4).val == 4
+
+
 def test_linked_list_push_not_val():
-    """."""
-
-
-def test_linked_list_push_mult():
-    """."""
+    """Test push when no value added as arg."""
+    with pytest.raises(ValueError):
+        EMPTY_LIST.push()
 
 
 def test_linked_list_pop():
     """Test linked list pop method."""
     POP_LIST.pop()
     assert POP_LIST.head.val == 'two'
+
+
+def test_linked_list_pop_empty():
+    """Test linked list pop method."""
+    with pytest.raises(IndexError):
+        EMPTY_LIST_POP.pop()
 
 
 def test_linked_list_size():

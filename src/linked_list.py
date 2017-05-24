@@ -14,9 +14,9 @@ class LinkedList(object):
         elif inbound_data is not None:
             raise TypeError('Try again with a list, tuple, or string.')
 
-    def push(self, val):
+    def push(self, val=None):
         """Create a new node."""
-        if not val:
+        if val is None:
             raise ValueError('You must give a value.')
         new_node = Node(val, self.head)
         self.head = new_node

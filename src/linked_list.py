@@ -12,11 +12,11 @@ class LinkedList(object):
             for item in inbound_data:
                 self.push(item)
         elif inbound_data is not None:
-            raise TypeError('Give us an interable please.')
+            raise TypeError('Try again with a list, tuple, or string.')
 
-    def push(self, val):
+    def push(self, val=None):
         """Create a new node."""
-        if not val:
+        if val is None:
             raise ValueError('You must give a value.')
         new_node = Node(val, self.head)
         self.head = new_node
@@ -65,15 +65,20 @@ class LinkedList(object):
         display_string = u''
         current_node = self.head
         while current_node:
-                display_string = current_node.val + ' ' + display_string
+                display_string = '{} {}'.format(current_node.val, display_string)
                 current_node = current_node.next_node
         display_string = display_string.strip().replace(' ', ', ')
-        display_string = '(' + display_string + ')'
+        display_string = '({})'.format(display_string)
         return display_string
 
     def __len__(self):
         """Return the size of a linked list, overwriting len method."""
         return self._length
+
+    # def __print__(self):
+    #     """Print the what is returned by display."""
+    #     print('print method')
+    #     return self.display()
 
     def __repr__(self):
         """Print the what is returned by display."""

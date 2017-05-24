@@ -1,4 +1,4 @@
-"""Setup for mail.py."""
+"""Setup for linked_list.py."""
 from setuptools import setup
 
 extra_packages = {

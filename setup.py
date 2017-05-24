@@ -1,20 +1,21 @@
-"""Setup for linked_list.py."""
+"""Setup for http server."""
 from setuptools import setup
 
+dependencies = []
 extra_packages = {
-    'testing': ['ipython', 'pytest', 'pytest-watch', 'pytest-cov', 'tox']
+    'testing': ['ipython', 'pytest', 'pytest-cov', 'tox']
 }
 
 setup(
-    name='Data structures',
-    desctription='Implements various data structures.',
+    name='http-server',
+    description='Client sends message and server sends OK back.',
     version='0.1',
-    author='Chris Hudson, Morgan Nomura',
-    author_email='c.ahudson84@yahoo.com, morganelle@gmail.com',
+    author='Carlos Cadena, Chris Hudson',
+    author_email='cs.cadena@gmail.com, c.ahudson84@yahoo.com',
     license='MIT',
-    py_modules=['linked_list'],
+    py_modules='client, server',
     package_dir={'': 'src'},
-    install_requires=[],
+    install_requires=dependencies,
     extras_require=extra_packages,
     entry_points={}
 )

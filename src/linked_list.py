@@ -65,7 +65,8 @@ class LinkedList(object):
         display_string = u''
         current_node = self.head
         while current_node:
-                display_string = '{} {}'.format(current_node.val, display_string)
+                display_string = '{} {}'.format(current_node.val,
+                                                display_string)
                 current_node = current_node.next_node
         display_string = display_string.strip().replace(' ', ', ')
         display_string = '({})'.format(display_string)
@@ -74,11 +75,6 @@ class LinkedList(object):
     def __len__(self):
         """Return the size of a linked list, overwriting len method."""
         return self._length
-
-    # def __print__(self):
-    #     """Print the what is returned by display."""
-    #     print('print method')
-    #     return self.display()
 
     def __repr__(self):
         """Print the what is returned by display."""

@@ -108,11 +108,6 @@ def test_linked_list_display():
     assert LIST_OF_THREE.display() == '(one, two, three)'
 
 
-# def test_linked_list_print():
-#     """Test linked list print method."""
-#     assert print(LIST_OF_THREE) == '(one, two, three)'
-
-
 def test_linked_list_repr():
     """Test linked list print method."""
     assert repr(LIST_OF_THREE) == '(one, two, three)'

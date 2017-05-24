@@ -1,4 +1,4 @@
-"""Setup for mail.py."""
+"""Setup for stack.py."""
 from setuptools import setup
 
 extra_packages = {
@@ -18,7 +18,7 @@ setup(
     extras_require=extra_packages,
     entry_points={
         'console_scripts': [
-            'linked_list = linked_list:main'
+            'stack = stack:main'
         ]
     }
 )

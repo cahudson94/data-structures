@@ -1,4 +1,4 @@
-"""Implementation of a linked list data structure."""
+"""Implementation of a stack data structure."""
 from linked_list import LinkedList
 
 

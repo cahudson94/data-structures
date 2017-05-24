@@ -1,39 +1,26 @@
 """Implementation of a linked list data structure."""
+from linked_list import LinkedList
 
 
 class Stack(object):
     """Set properties and methods of Stack class."""
 
     def __init__(self, inbound_data=None):
-        """Create new Stack."""
-        self.top = None
-        self._length = 0
-        if type(inbound_data) in [list, tuple, str]:
-            for item in inbound_data:
-                self.push(item)
-        elif inbound_data is not None:
-            raise TypeError('Give us an interable please.')
+        """Create new Stack composing from LinkedList."""
+        self.inbound_data = None
+        self._linked_list = LinkedList(inbound_data)
 
     def push(self, val):
-        """Create a new node."""
-        if not val:
-            raise ValueError('You must give a value.')
-        new_node = Node(val, self.top)
-        self.top = new_node
-        self._length += 1
+        """Return a new node on the Stack using LinkedList.push."""
+        self._linked_list.push(val)
 
     def pop(self):
-        """Pop method for Stack."""
-        current_node = self.top
-        if current_node is None:
-            raise IndexError('Linked list is empty, no node to pop.')
-        print(current_node)
-        self._length -= 1
-        self.top = current_node.next_node
+        """Return pop method for LinkedList on Stack."""
+        return self._linked_list.pop()
 
     def __len__(self):
-        """Return the size of a linked list, overwriting len method."""
-        return self._length
+        """Return the size of the Stack, overwriting len method."""
+        return len(self._linked_list)
 
 
 class Node(object):
@@ -41,5 +28,4 @@ class Node(object):
 
     def __init__(self, val, next_node=None):
         """Create new Node."""
-        self.val = val
-        self.next_node = next_node
+        self._node = Node(val, next_node)

@@ -16,7 +16,7 @@ class DoublyLinkedList(object):
         elif inbound_data is not None:
             raise TypeError('Try again with a list, tuple, or string.')
 
-    def push(self, val):
+    def push(self, val=None):
         """Instantiate and push new node."""
         if val is None:
             raise ValueError('You must give a value.')
@@ -26,7 +26,7 @@ class DoublyLinkedList(object):
         self.head = new_node
         self._length += 1
 
-    def append(self, val):
+    def append(self, val=None):
         """Instantiate and append new node."""
         if val is None:
             raise ValueError('You must give a value.')
@@ -51,8 +51,8 @@ class DoublyLinkedList(object):
         current_node = self.tail
         if current_node is None:
             raise IndexError('Nothing to shift.')
-        self.tail = current_node.prev_node
         current_node.prev_node.next_node = None
+        self.tail = current_node.prev_node
         self._length -= 1
         return current_node
 
@@ -88,5 +88,6 @@ class Node(object):
 
     def __init__(self, val, next_node=None, prev_node=None):
         """Create new Node."""
-        self._node = Node(val, next_node)
+        self.val = val
+        self.next_node = next_node
         self.prev_node = prev_node

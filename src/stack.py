@@ -23,7 +23,7 @@ class Stack(object):
         return len(self._linked_list)
 
 
-class Node(object):
+class Node(object):  # pragma: no cover
     """Set properties and methods of Node class."""
 
     def __init__(self, val, next_node=None):

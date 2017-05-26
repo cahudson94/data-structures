@@ -4,25 +4,23 @@
 class DoublyLinkedList(object):
     """Sets properties and methods of a doubly-linked list."""
 
-    def __init__(self, inbound_data=None):
+    def __init__(self):
         """Create new instance of DoublyLinkedList."""
-        self.inbound_data = inbound_data
         self.tail = None
         self.head = None
         self._length = 0
-        if type(inbound_data) in [list, tuple, str]:
-            for item in inbound_data:
-                self.push(item)
-        elif inbound_data is not None:
-            raise TypeError('Try again with a list, tuple, or string.')
 
     def push(self, val=None):
         """Instantiate and push new node."""
         if val is None:
             raise ValueError('You must give a value.')
         new_node = Node(val, self.head)
-        if self.tail is None:
+        if self.head is None:
+            self.head = new_node
             self.tail = new_node
+            self._length += 1
+            return
+        self.head.prev_node = new_node
         self.head = new_node
         self._length += 1
 
@@ -33,6 +31,9 @@ class DoublyLinkedList(object):
         new_node = Node(val, None, self.tail)
         if self.head is None:
             self.head = new_node
+            self.tail = new_node
+            return
+        self.tail.next_node = new_node
         self.tail = new_node
         self._length += 1
 
@@ -51,8 +52,8 @@ class DoublyLinkedList(object):
         current_node = self.tail
         if current_node is None:
             raise IndexError('Nothing to shift.')
-        current_node.prev_node.next_node = None
         self.tail = current_node.prev_node
+        current_node.prev_node.next_node = None
         self._length -= 1
         return current_node
 

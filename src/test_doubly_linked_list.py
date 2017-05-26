@@ -23,11 +23,38 @@ REMOVE_LIST.push('two')
 REMOVE_LIST.push('three')
 
 
-def test_dll_push():
-    """Test doubly linked list push method."""
+def test_dll_init():
+    """Test doubly linked list instantiated."""
+    assert EMPTY_LIST.head is None
+    assert EMPTY_LIST.tail is None
+
+
+def test_dll_push_to_empty_sets_head():
+    """Test doubly linked list push method sets head."""
     EMPTY_LIST_PUSH.push(5)
     assert EMPTY_LIST_PUSH.head.val == 5
+    assert EMPTY_LIST_PUSH.head.prev_node is None
+
+
+def test_dll_push_to_empty_sets_tail():
+    """Test doubly linked list push method sets tail when empty."""
     assert EMPTY_LIST_PUSH.tail.val == 5
+    assert EMPTY_LIST_PUSH.tail.next_node is None
+
+
+def test_dll_push_to_non_empty_sets_head():
+    """Test doubly linked list push method sets head."""
+    EMPTY_LIST_PUSH.push(3)
+    assert EMPTY_LIST_PUSH.head.val == 3
+    assert EMPTY_LIST_PUSH.head.next_node.val == 5
+    assert EMPTY_LIST_PUSH.head.prev_node is None
+
+
+def test_dll_push_to_non_empty_sets_tail():
+    """Test doubly linked list push method sets tail when empty."""
+    assert EMPTY_LIST_PUSH.tail.val == 5
+    assert EMPTY_LIST_PUSH.tail.prev_node.val == 3
+    assert EMPTY_LIST_PUSH.tail.next_node is None
 
 
 def test_dll_push_none():
@@ -36,17 +63,32 @@ def test_dll_push_none():
         EMPTY_LIST_PUSH.push()
 
 
-def test_dll_init_non_itr():
-    """Test IndexError when Stack instantiated with non-iterable."""
-    with pytest.raises(TypeError):
-        DoublyLinkedList(3)
-
-
-def test_dll_append():
+def test_dll_append_to_empty_sets_head():
     """Test doubly linked list append method."""
     EMPTY_LIST_APPEND.append(5)
     assert EMPTY_LIST_APPEND.head.val == 5
+    assert EMPTY_LIST_APPEND.head.prev_node is None
+
+
+def test_dll_append_to_empty_sets_tail():
+    """Test doubly linked list append method."""
     assert EMPTY_LIST_APPEND.tail.val == 5
+    assert EMPTY_LIST_APPEND.tail.next_node is None
+
+
+def test_dll_append_to_non_empty_sets_head():
+    """Test doubly linked list append method."""
+    EMPTY_LIST_APPEND.append('cake')
+    assert EMPTY_LIST_APPEND.head.val == 5
+    assert EMPTY_LIST_APPEND.head.next_node.val == 'cake'
+    assert EMPTY_LIST_APPEND.head.prev_node is None
+
+
+def test_dll_append_to_non_empty_sets_tail():
+    """Test doubly linked list append method."""
+    assert EMPTY_LIST_APPEND.tail.val == 'cake'
+    assert EMPTY_LIST_APPEND.tail.prev_node.val == 5
+    assert EMPTY_LIST_APPEND.tail.next_node is None
 
 
 def test_dll_append_none():
@@ -62,21 +104,39 @@ def test_dll_pop():
     assert POP_LIST.head.val == 'two'
 
 
+def test_dll_pop_head_reassign():
+    """."""
+    assert POP_LIST.head.prev_node is None
+    assert POP_LIST.head.next_node.val == 'one'
+
+
+def test_dll_pop_len():
+    """."""
+    assert len(POP_LIST) == 2
+
+
 def test_dll_pop_empty():
     """Test doubly linked list empty pop method."""
     with pytest.raises(IndexError):
         EMPTY_LIST.pop()
 
 
-# def test_dll_shift():
-#     """Test doubly linked list shift method."""
-#     shifted = SHIFT_LIST.shift()
-#     assert shifted.val == 'one'
-#     assert SHIFT_LIST.tail.val == 'two'
-#     # import
-#     # new_tail = dll.tail.previous
-#     # assert dll.shift() == (old tail)
-#     # assert dll.tail = new_tail
+def test_dll_shift():
+    """Test doubly linked list shift method."""
+    shifted = SHIFT_LIST.shift()
+    assert shifted.val == 'one'
+    assert SHIFT_LIST.tail.val == 'two'
+
+
+def test_dll_shift_tail_reassign():
+    """."""
+    assert SHIFT_LIST.tail.next_node is None
+    assert SHIFT_LIST.tail.prev_node.val == 'three'
+
+
+def test_dll_shift_len():
+    """."""
+    assert len(SHIFT_LIST) == 2
 
 
 def test_dll_shift_empty():

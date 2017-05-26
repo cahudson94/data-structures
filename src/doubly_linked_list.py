@@ -60,23 +60,19 @@ class DoublyLinkedList(object):
     def remove(self, val):
         """Find and removes the first Node with a given value."""
         current_item = self.head
-        previous_item = None
         while current_item.val != val:
-            previous_item = current_item
             current_item = current_item.next_node
             if current_item is None:
                 raise ValueError('Node not in doubly linked list.')
-        if previous_item is None:
+        if current_item.prev_node is None:
             self.head = current_item.next_node
-            current_item.next_node.prev_node = None
+            self.head.prev_node = None
         elif current_item.next_node is None:
             self.tail = current_item.prev_node
-            current_item.prev_node.next_node = None
+            self.tail.next_node = None
         else:
-            previous_item.next_node = current_item.next_node
-            current_item.next_node.prev_node = previous_item
-        current_item.next_node = None
-        current_item.prev_node = None
+            current_item.prev_node.next_node = current_item.next_node
+            current_item.next_node.prev_node = current_item.prev_node
         self._length -= 1
 
     def __len__(self):

@@ -22,6 +22,14 @@ REMOVE_LIST.push('one')
 REMOVE_LIST.push('two')
 REMOVE_LIST.push('three')
 
+REMOVE_HEAD = DoublyLinkedList()
+REMOVE_HEAD.push('one')
+REMOVE_HEAD.push('two')
+
+REMOVE_TAIL = DoublyLinkedList()
+REMOVE_TAIL.push('one')
+REMOVE_TAIL.push('two')
+
 
 def test_dll_init():
     """Test doubly linked list instantiated."""
@@ -145,12 +153,35 @@ def test_dll_shift_empty():
         EMPTY_LIST.shift()
 
 
-# def test_dll_remove():
-#     """."""
-#     old = len(REMOVE_LIST)
-#     REMOVE_LIST.remove('two')
-#     assert len(REMOVE_LIST) == old - 1
-#     assert REMOVE_LIST.tail.prev_node == REMOVE_LIST.head.next_node
+def test_dll_remove():
+    """."""
+    old = len(REMOVE_LIST)
+    REMOVE_LIST.remove('two')
+    assert len(REMOVE_LIST) == old - 1
+    assert REMOVE_LIST.tail.prev_node == REMOVE_LIST.head
+    assert REMOVE_LIST.head.next_node == REMOVE_LIST.tail
+
+
+def test_dll_remove_not_found():
+    """."""
+    with pytest.raises(ValueError):
+        REMOVE_TAIL.remove('cake')
+
+
+def test_dll_remove_from_head():
+    """."""
+    REMOVE_HEAD.remove('two')
+    assert len(REMOVE_HEAD) == 1
+    assert REMOVE_HEAD.tail.prev_node is None
+    assert REMOVE_HEAD.head.next_node is None
+
+
+def test_dll_remove_from_tail():
+    """."""
+    REMOVE_TAIL.remove('one')
+    assert len(REMOVE_TAIL) == 1
+    assert REMOVE_TAIL.tail.prev_node is None
+    assert REMOVE_TAIL.head.next_node is None
 
 
 def test_dll_remove_invalid():

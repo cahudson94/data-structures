@@ -26,7 +26,7 @@ class LinkedList(object):
         """Remove node from LinkedList."""
         current_node = self.head
         if current_node is None:
-            raise IndexError('Linked list is empty, no node to pop.')
+            raise IndexError('Nothing to pop.')
         print(current_node)
         self._length -= 1
         self.head = current_node.next_node

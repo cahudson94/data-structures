@@ -7,7 +7,6 @@ class Stack(object):
 
     def __init__(self, inbound_data=None):
         """Create new Stack composing from LinkedList."""
-        self.inbound_data = None
         self._linked_list = LinkedList(inbound_data)
 
     def push(self, val):
@@ -21,11 +20,3 @@ class Stack(object):
     def __len__(self):
         """Return the size of the Stack, overwriting len method."""
         return len(self._linked_list)
-
-
-class Node(object):
-    """Set properties and methods of Node class."""
-
-    def __init__(self, val, next_node=None):
-        """Create new Node."""
-        self._node = Node(val, next_node)

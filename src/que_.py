@@ -31,15 +31,3 @@ class QueueStructure(object):
     def __len__(self):
         """Return the size of Queue, overwriting len method."""
         return self._doubly_linked_list._length
-
-    def display(self):
-        """Display queue."""
-        display_string = u''
-        current_node = self._doubly_linked_list.head
-        while current_node:
-                display_string = '{} {}'.format(current_node.val,
-                                                display_string)
-                current_node = current_node.next_node
-        display_string = display_string.strip().replace(' ', ', ')
-        display_string = '({})'.format(display_string)
-        return display_string

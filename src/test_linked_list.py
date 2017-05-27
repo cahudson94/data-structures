@@ -25,49 +25,88 @@ REMOVE_HEAD.push('tail')
 REMOVE_HEAD.push('middle')
 REMOVE_HEAD.push('head')
 
-
-def test_linked_list_push():
-    """Test linked list push method."""
-    EMPTY_LIST.push(5)
-    assert EMPTY_LIST.head.val == 5
+LONG_LEN_LIST = LinkedList()
+LONG_LEN_LIST.push('a')
+LONG_LEN_LIST.push('b')
+LONG_LEN_LIST.push('c')
+LONG_LEN_LIST.push('d')
+LONG_LEN_LIST.push('e')
+LONG_LEN_LIST.push('f')
+LONG_LEN_LIST.push('g')
+LONG_LEN_LIST.push('h')
+LONG_LEN_LIST.push('i')
+LONG_LEN_LIST.push('j')
+LONG_LEN_LIST.push('k')
 
 
 def test_linked_list_not_iter():
-    """Test IndexError when Stack instantiated with non-iterable."""
+    """Test IndexError when linked list instantiated with non-iterable."""
     with pytest.raises(TypeError):
         LinkedList(3)
 
 
-def test_linked_list_iter():
-    """Test IndexError when Stack instantiated with non-iterable."""
-    assert LinkedList([3, 4, 5, 6]).head.val == 6
-    assert LinkedList((3, 4, 5, 6)).head.val == 6
-    assert LinkedList('cake').head.val == 'e'
-    assert len(LinkedList([3, 4, 5, 6])) == 4
-    assert LinkedList([3, 4, 5, 6]).search(4).val == 4
+def test_linked_list_init_list():
+    """Test linked list head and len when instantiated with list."""
+    linklist = LinkedList([3, 4, 5])
+    assert linklist.head.val == 5
+    assert len(linklist) == 3
+
+
+def test_linked_list_init_str():
+    """Test linked list head and len when instantiated with string."""
+    linkstr = LinkedList('cake')
+    assert linkstr.head.val == 'e'
+    assert len(linkstr) == 4
+
+
+def test_linked_list_init_tup():
+    """Test linked list head and len when instantiated with tuple."""
+    linktup = LinkedList((3, 6, 9, 12, 15))
+    assert linktup.head.val == 15
+    assert len(linktup) == 5
+
+
+def test_linked_list_push_to_empty():
+    """Test linked list push method to empty list."""
+    EMPTY_LIST.push(5)
+    assert EMPTY_LIST.head.val == 5
+
+
+def test_linked_list_push_to_non_empty():
+    """Test linked list push method to non empty list."""
+    EMPTY_LIST.push(10)
+    assert EMPTY_LIST.head.val == 10
+    assert EMPTY_LIST.head.next_node.val == 5
 
 
 def test_linked_list_push_not_val():
-    """Test push when no value added as arg."""
+    """Test push with non iterable."""
     with pytest.raises(ValueError):
-        EMPTY_LIST.push()
+        EMPTY_LIST.push(None)
 
 
-def test_linked_list_pop():
-    """Test linked list pop method."""
+def test_linked_list_pop_one():
+    """Test linked list pop method once."""
     POP_LIST.pop()
     assert POP_LIST.head.val == 'two'
 
 
+def test_linked_list_pop_two():
+    """Test linked list pop method a second time."""
+    POP_LIST.pop()
+    assert POP_LIST.head.val == 'one'
+
+
 def test_linked_list_pop_empty():
-    """Test linked list pop method."""
+    """Test linked list pop method on empty list for error."""
     with pytest.raises(IndexError):
         EMPTY_LIST_POP.pop()
 
 
 def test_linked_list_size():
-    """Test for len method."""
+    """Test len of linked list."""
     assert LIST_OF_THREE.size() == 3
+    assert LONG_LEN_LIST.size() == 11
 
 
 def test_linked_list_search():
@@ -76,30 +115,31 @@ def test_linked_list_search():
 
 
 def test_linked_list_search_none():
-    """Test linked list search method."""
+    """Test linked list search method if not in list."""
     assert LIST_OF_THREE.search(1) is None
+    assert REMOVE_LIST.search('cake') is None
 
 
 def test_linked_list_remove():
-    """Test linked list remove method."""
+    """Test linked list remove method and changed length."""
     REMOVE_LIST.remove(REMOVE_LIST.search('apple'))
     assert len(REMOVE_LIST) == 2
 
 
 def test_linked_list_remove_not_found():
-    """Test linked list remove method."""
+    """Test linked list remove method for not in list."""
     with pytest.raises(ValueError):
         REMOVE_LIST.remove(REMOVE_LIST.search('cake'))
 
 
 def test_linked_list_remove_head():
-    """Test linked list remove method."""
+    """Test linked list remove method for head reassignment."""
     REMOVE_HEAD.remove(REMOVE_HEAD.search('head'))
     assert REMOVE_HEAD.head.val == 'middle'
 
 
 def test_linked_list_len():
-    """Test for len method."""
+    """Test for len method of linked list."""
     assert len(LIST_OF_THREE) == 3
 
 

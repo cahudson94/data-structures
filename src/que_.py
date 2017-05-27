@@ -1,5 +1,5 @@
 """Implementation of a queue data structure."""
-from doubly_linked_list import DoublyLinkedList, Node
+from doubly_linked_list import DoublyLinkedList
 
 
 class Queue(object):
@@ -40,11 +40,3 @@ class Queue(object):
         display_string = display_string.strip().replace(' ', ', ')
         display_string = '({})'.format(display_string)
         return display_string
-
-
-# class QueueNode(object):
-#     """Set properties and methods of Node class."""
-
-#     def __init__(self, val):
-#         """Create new Node."""
-#         self._node = Node(val)

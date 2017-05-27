@@ -32,6 +32,7 @@ class DoublyLinkedList(object):
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            self._length += 1
             return
         self.tail.next_node = new_node
         self.tail = new_node

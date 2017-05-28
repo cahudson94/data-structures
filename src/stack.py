@@ -21,11 +21,3 @@ class Stack(object):
     def __len__(self):
         """Return the size of the Stack, overwriting len method."""
         return len(self._linked_list)
-
-
-class Node(object):
-    """Set properties and methods of Node class."""
-
-    def __init__(self, val, next_node=None):
-        """Create new Node."""
-        self._node = Node(val, next_node)

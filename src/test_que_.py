@@ -6,7 +6,8 @@ import pytest
 @pytest.fixture
 def build_empty_queue():
     """Build empty queue."""
-    return QueueStructure()
+    q = QueueStructure()
+    return q
 
 
 @pytest.fixture
@@ -36,6 +37,12 @@ def build_queue_three_nodes():
     return q
 
 
+REMOVE_LIST = QueueStructure()
+REMOVE_LIST.enqueue('one')
+REMOVE_LIST.enqueue('two')
+REMOVE_LIST.enqueue('three')
+
+
 def test_qs_init(build_empty_queue):
     """Test instatiated queue."""
     assert build_empty_queue.head is None
@@ -43,8 +50,8 @@ def test_qs_init(build_empty_queue):
 
 def test_enqueue_empty_queue(build_empty_queue):
     """Test head after enqueue on empty."""
-    build_empty_queue.enqueue('hi!')
-    assert build_empty_queue.head.val == 'hi!'
+    build_empty_queue.enqueue('hi')
+    assert build_empty_queue.head.val == 'hi'
 
 
 def test_enqueue_empty_queue_next(build_empty_queue):
@@ -98,12 +105,10 @@ def test_dequeue_empty_queue(build_empty_queue):
         build_empty_queue.dequeue()
 
 
-def test_dequeue_once_three_nodes(build_queue_three_nodes):
+def test_dequeue_once_three_nodes():
     """Test head movement on dequeue method for one node using peek."""
-    head_before_dequeue = build_queue_three_nodes.peek()
-    next_before_dequeue = head_before_dequeue.next_node
-    build_queue_three_nodes.dequeue()
-    assert next_before_dequeue == build_queue_three_nodes.head
+    assert REMOVE_LIST.dequeue().val == 'one'
+    assert REMOVE_LIST.head.val == 'two'
 
 
 def test_dequeue_twice_three_nodes(build_queue_three_nodes):

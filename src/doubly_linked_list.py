@@ -14,10 +14,16 @@ class DoublyLinkedList(object):
         """Instantiate and push new node."""
         if val is None:
             raise ValueError('You must give a value.')
-        new_node = Node(val, self.head)
+        new_node = Node(val, self.head, None)
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            self.head.next_node = None
+            self._length += 1
+            return
+        elif self.head and self.head.next_node is None:
+            self.head.prev_node = new_node
+            self.head = new_node
             self._length += 1
             return
         self.head.prev_node = new_node
@@ -29,14 +35,24 @@ class DoublyLinkedList(object):
         if val is None:
             raise ValueError('You must give a value.')
         new_node = Node(val, None, self.tail)
+        print(new_node.val)
+        print(new_node.next_node)
+        print(new_node.prev_node)
         if self.head is None:
             self.head = new_node
+        #     new_node.prev_node = self.tail
             self.tail = new_node
+        #     new_node.next_node = self.head
             self._length += 1
             return
-        self.tail.next_node = new_node
-        self.tail = new_node
-        self._length += 1
+        # if self.head is not None and self.head.next_node is None:
+        #     new_node.prev_node.next_node = new_node
+        #     self.tail = new_node
+        #     self._length += 1
+        #     return
+        # self.tail.next_node = new_node
+        # self.tail = new_node
+        # self._length += 1
 
     def pop(self):
         """Remove and return node from head of doubly linked list."""
@@ -44,7 +60,7 @@ class DoublyLinkedList(object):
         if current_node is None:
             raise IndexError('Nothing to pop.')
         self.head = current_node.next_node
-        current_node.next_node.prev_node = None
+        self.head.prev_node = None
         self._length -= 1
         return current_node
 
@@ -54,7 +70,7 @@ class DoublyLinkedList(object):
         if current_node is None:
             raise IndexError('Nothing to shift.')
         self.tail = current_node.prev_node
-        current_node.prev_node.next_node = None
+        self.tail.next_node = None
         self._length -= 1
         return current_node
 

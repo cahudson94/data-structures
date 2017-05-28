@@ -197,8 +197,7 @@ def test_dll_append_none(initialize_empty_dll):
 
 def test_dll_pop(initialize_three_dll):
     """Test doubly linked list pop method removes and returns head."""
-    popped = initialize_three_dll.pop()
-    assert popped.val == 'three'
+    assert initialize_three_dll.pop().val == 'three'
     assert initialize_three_dll.head.val == 'two'
 
 
@@ -221,8 +220,7 @@ def test_dll_pop_empty(initialize_empty_dll):
 
 def test_dll_shift(initialize_three_dll):
     """Test doubly linked list shift method removes and returns tail."""
-    shifted = initialize_three_dll.shift()
-    assert shifted.val == 'one'
+    assert initialize_three_dll.shift().val == 'one'
     assert initialize_three_dll.tail.val == 'two'
 
 

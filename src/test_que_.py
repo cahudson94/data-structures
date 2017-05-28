@@ -37,12 +37,6 @@ def build_queue_three_nodes():
     return q
 
 
-REMOVE_LIST = QueueStructure()
-REMOVE_LIST.enqueue('one')
-REMOVE_LIST.enqueue('two')
-REMOVE_LIST.enqueue('three')
-
-
 def test_qs_init(build_empty_queue):
     """Test instatiated queue."""
     assert build_empty_queue.head is None
@@ -50,8 +44,9 @@ def test_qs_init(build_empty_queue):
 
 def test_enqueue_empty_queue(build_empty_queue):
     """Test head after enqueue on empty."""
-    build_empty_queue.enqueue('hi')
-    assert build_empty_queue.head.val == 'hi'
+    q = build_empty_queue
+    q.enqueue('hi')
+    assert q.head.val == 'hi'
 
 
 def test_enqueue_empty_queue_next(build_empty_queue):
@@ -105,10 +100,10 @@ def test_dequeue_empty_queue(build_empty_queue):
         build_empty_queue.dequeue()
 
 
-def test_dequeue_once_three_nodes():
+def test_dequeue_once_three_nodes(build_queue_three_nodes):
     """Test head movement on dequeue method for one node using peek."""
-    assert REMOVE_LIST.dequeue().val == 'one'
-    assert REMOVE_LIST.head.val == 'two'
+    assert build_queue_three_nodes.dequeue() == 'apple'
+    assert build_queue_three_nodes.head.val == 'peaches'
 
 
 def test_dequeue_twice_three_nodes(build_queue_three_nodes):
@@ -116,7 +111,7 @@ def test_dequeue_twice_three_nodes(build_queue_three_nodes):
     last_before_dequeue = build_queue_three_nodes.head.next_node.next_node
     build_queue_three_nodes.dequeue()
     build_queue_three_nodes.dequeue()
-    assert last_before_dequeue == build_queue_three_nodes.head
+    assert last_before_dequeue.val == build_queue_three_nodes.head.val
     assert last_before_dequeue.next_node is None
 
 

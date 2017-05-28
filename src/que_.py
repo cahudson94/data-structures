@@ -8,14 +8,18 @@ class QueueStructure(object):
     def __init__(self):
         """Initialize Queue using LinkedList."""
         self._doubly_linked_list = DoublyLinkedList()
+        self.head = self._doubly_linked_list.head
 
     def enqueue(self, val):
         """Add value to a queue."""
-        return self._doubly_linked_list.append(val)
+        self._doubly_linked_list.append(val)
+        self.head = self._doubly_linked_list.head
 
     def dequeue(self):
         """Remove the head from the queue."""
-        return self._doubly_linked_list.pop()
+        popped_node = self._doubly_linked_list.pop()
+        self.head = self._doubly_linked_list.head
+        return popped_node.val
 
     def peek(self):
         """Return the queue head."""

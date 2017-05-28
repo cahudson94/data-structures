@@ -87,13 +87,13 @@ def test_linked_list_push_not_val():
 
 def test_linked_list_pop_one():
     """Test linked list pop method once."""
-    POP_LIST.pop()
+    assert POP_LIST.pop().val == 'three'
     assert POP_LIST.head.val == 'two'
 
 
 def test_linked_list_pop_two():
     """Test linked list pop method a second time."""
-    POP_LIST.pop()
+    assert POP_LIST.pop().val == 'two'
     assert POP_LIST.head.val == 'one'
 
 

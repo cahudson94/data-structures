@@ -12,7 +12,7 @@ setup(
     author='Chris Hudson, Morgan Nomura',
     author_email='c.ahudson84@yahoo.com, morganelle@gmail.com',
     license='MIT',
-    py_modules=['que_', 'doubly_linked_list'],
+    py_modules=['que_'],
     package_dir={'': 'src'},
     install_requires=[],
     extras_require=extra_packages,

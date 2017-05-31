@@ -1,4 +1,4 @@
-"""Setup for deque.py."""
+"""Setup for data structures."""
 from setuptools import setup
 
 extra_packages = {

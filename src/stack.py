@@ -14,6 +14,7 @@ class Stack(object):
         """Return a new node on the Stack using LinkedList.push."""
         self.head = self._linked_list.head
         self._linked_list.push(val)
+        self.head = self._linked_list.head
 
     def pop(self):
         """Return pop method for LinkedList on Stack."""

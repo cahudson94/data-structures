@@ -1,4 +1,4 @@
-"""Setup for que_.py."""
+"""Setup for deque.py."""
 from setuptools import setup
 
 extra_packages = {
@@ -12,7 +12,7 @@ setup(
     author='Chris Hudson, Morgan Nomura',
     author_email='c.ahudson84@yahoo.com, morganelle@gmail.com',
     license='MIT',
-    py_modules=['que_'],
+    py_modules=['deque'],
     package_dir={'': 'src'},
     install_requires=[],
     extras_require=extra_packages,

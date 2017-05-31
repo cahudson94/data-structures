@@ -59,7 +59,7 @@ class DoublyLinkedList(object):
         return current_node
 
     def remove(self, val):
-        """Find and removes the first Node with a given value."""
+        """Find and remove the first Node with a given value."""
         current_item = self.head
         while current_item.val != val:
             current_item = current_item.next_node

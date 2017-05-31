@@ -1,4 +1,4 @@
-"""Setup for que_.py."""
+"""Setup for data structures."""
 from setuptools import setup
 
 extra_packages = {

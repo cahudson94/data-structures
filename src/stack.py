@@ -12,6 +12,7 @@ class Stack(object):
 
     def push(self, val):
         """Return a new node on the Stack using LinkedList.push."""
+        self.head = self._linked_list.head
         self._linked_list.push(val)
         self.head = self._linked_list.head
 

@@ -21,9 +21,9 @@ TUPLE_LIST = Stack((2, 4, 9))
 
 STRING_LIST = Stack('cake')
 
-LEN_OF_THREE = Stack('cake')
-LEN_OF_THREE.push('pie')
-LEN_OF_THREE.push(42)
+LEN_OF_SIX = Stack('cake')
+LEN_OF_SIX.push('pie')
+LEN_OF_SIX.push(42)
 
 
 def test_stack_init_list():
@@ -100,5 +100,5 @@ def test_stack_pop_empty():
 
 def test_stack_len():
     """Test for len method."""
-    assert len(LEN_OF_THREE) == 6
+    assert len(LEN_OF_SIX) == 6
     assert len(STRING_LIST) == 4

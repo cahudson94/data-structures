@@ -19,6 +19,6 @@ All modules and tests located in src directory.
 - module: que_.py
 - test: test_que_.py
 
-## Deque
+## Dequeue
 - module: deque.py
 - test: test_deque.py

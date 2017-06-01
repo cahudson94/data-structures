@@ -43,25 +43,6 @@ class BinaryHeap(object):
                     else:
                         bubble = False
 
-    # def pop(self):
-    #     """Remove top of heap and bubbles last down."""
-    #     if len(self._list) < 1:
-    #         raise IndexError('Nothing to pop on this heap.')
-    #     popped = self._list[0]
-    #     self._list.pop(0)
-    #     self._list[0] = None
-    #     bubble = True
-    #     curr_index = 0
-    #     while bubble:
-    #         right = False
-    #         left = False
-    #         if (len(self._list) - 1) >= (curr_index * 2) + 2:
-    #             right = (curr_index * 2) + 2
-    #         if (len(self._list) - 1) >= (curr_index * 2) + 1:
-    #             left = (curr_index * 2) + 1
-    #         if right and left:
-    #             new_parent = min(self._list[left], self._list[right])
-
     def pop(self):
         """Remove top of heap and bubbles last down."""
         if len(self._list) < 1:

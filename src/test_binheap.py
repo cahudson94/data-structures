@@ -95,12 +95,6 @@ def test_bheap_init_list_one_bad_val():
         BinaryHeap([6, 8, 'cake', 25])
 
 
-# def test_bheap_init_list_one_bad_val_len():
-#     """Init with longer list and one bad val."""
-#     b = BinaryHeap([6, 8, 'cake', 25])
-#     assert b._list == [6, 8]
-
-
 def test_bheap_push_string(build_empty_heap):
     """Test error on pushing string."""
     with pytest.raises(ValueError):
@@ -123,6 +117,12 @@ def test_bheap_push_bool(build_empty_heap):
     """Test error on pushing bool."""
     with pytest.raises(ValueError):
         build_empty_heap.push(True)
+
+
+def test_bheap_push_dupe(build_heap_of_ten):
+    """Test error on pushing bool."""
+    with pytest.raises(ValueError):
+        build_heap_of_ten.push(2)
 
 
 def test_bheap_push_one_to_empty(build_empty_heap):
@@ -199,33 +199,74 @@ def test_bheap_pop_once_right(build_heap_of_five):
     assert build_heap_of_five._list == [6.5, 7, 15, 27]
 
 
-# def test_bheap_pop_mult():
-#     """Test pop on multiple values."""
-#     build_heap_of_five.pop()
-#     build_heap_of_five.pop()
-#     build_heap_of_five.pop()
-#     assert build_heap_of_five._list == []
+def test_bheap_pop_mult(build_heap_of_five):
+    """Test pop on multiple values."""
+    build_heap_of_five.pop()
+    build_heap_of_five.pop()
+    build_heap_of_five.pop()
+    assert build_heap_of_five._list == [15, 27]
 
 
-# def test_bheap_pop_all():
-#     """Test pop on all list items."""
+def test_bheap_pop_all(build_heap_of_two):
+    """Test pop on all list items."""
+    build_heap_of_two.pop()
+    popped = build_heap_of_two.pop()
+    assert popped == 6
+    assert build_heap_of_two._list == []
 
 
-# def test_bheap_push_pop():
-#     """Test pushing and then popping."""
+def test_bheap_push_pop(build_heap_of_two):
+    """Test pushing and then popping."""
+    build_heap_of_two.push(3)
+    popped = build_heap_of_two.pop()
+    assert popped == 2.254
+    assert build_heap_of_two._list == [3, 6]
 
 
-# def test_bheap_pop_push():
-#     """Test popping and pushing."""
+def test_bheap_pop_push(build_heap_of_five):
+    """Test popping and pushing."""
+    popped = build_heap_of_five.pop()
+    build_heap_of_five.push(6.6)
+    assert popped == 2
+    assert build_heap_of_five._list == [6.5, 6.6, 15, 27, 7]
 
 
-# def test_bheap_push_pop():
-#     """Test pushing twice and then popping."""
+def test_bheap_push_twice_pop(build_heap_of_ten):
+    """Test pushing twice and then popping."""
+    build_heap_of_ten.push(0.8)
+    build_heap_of_ten.push(30)
+    popped = build_heap_of_ten.pop()
+    assert popped == 0.8
+    assert build_heap_of_ten._list == [1.5, 3, 2, 6, 9, 16, 15, 7, 8, 27, 30]
 
 
-# def test_bheap_pop_push():
-#     """Test popping twice and pushing."""
+def test_bheap_pop_twice_push(build_heap_of_ten):
+    """Test popping twice and pushing."""
+    popped1 = build_heap_of_ten.pop()
+    popped2 = build_heap_of_ten.pop()
+    build_heap_of_ten.push(10)
+    assert popped1 == 1.5
+    assert popped2 == 2
+    assert build_heap_of_ten._list == [3, 6, 15, 7, 9, 16, 27, 8, 10]
 
 
-# def test_bheap_pop_push_equal():
-#     """Test popping twice and pushing twice."""
+def test_bheap_pop_push_equal_two(build_empty_heap):
+    """Test popping twice and pushing twice."""
+    build_empty_heap.push(1)
+    build_empty_heap.push(-5)
+    popped1 = build_empty_heap.pop()
+    popped2 = build_empty_heap.pop()
+    assert popped1 == -5
+    assert popped2 == 1
+    assert build_empty_heap._list == []
+
+
+def test_bheap_pop_push_equal_five(build_heap_of_five):
+    """Test popping twice and pushing twice."""
+    popped1 = build_heap_of_five.pop()
+    popped2 = build_heap_of_five.pop()
+    build_heap_of_five.push(2)
+    build_heap_of_five.push(3)
+    assert popped1 == 2
+    assert popped2 == 6.5
+    assert build_heap_of_five._list == [2, 3, 15, 27, 7]

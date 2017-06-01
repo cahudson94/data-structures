@@ -7,7 +7,7 @@ class BinaryHeap(object):
     def __init__(self, iterable=None):
         """Init binheap."""
         self._list = []
-        if type(iterable) == [list, tuple]:
+        if type(iterable) in [list, tuple]:
             for i in iterable:
                 self.push(i)
 

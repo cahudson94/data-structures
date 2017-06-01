@@ -9,7 +9,7 @@ class BinaryHeap(object):
         self.list = []
 
     def push(self, val):
-        """Add value to next open spot on bin heap and bubbles up as appropriate."""
+        """Add value to the bottom of heap and bubbles up as appropriate."""
         if val is None:
             raise ValueError('Please enter a value')
         if val in self.list:
@@ -22,7 +22,7 @@ class BinaryHeap(object):
             bubble = True
             while bubble and curr_index > 0:
                 if curr_index % 2 == 0:
-                    par_index = (curr_index - 2) / 2
+                    par_index = int((curr_index - 2) / 2)
                     print('right, cur/par:', curr_index, par_index)
                     if self.list[curr_index] < self.list[par_index]:
                         curr_val = self.list[curr_index]
@@ -33,7 +33,7 @@ class BinaryHeap(object):
                     else:
                         bubble = False
                 elif curr_index % 2 != 0:
-                    par_index = (curr_index - 1) / 2
+                    par_index = int((curr_index - 1) / 2)
                     print('left, cur/par:', curr_index, par_index)
                     if self.list[curr_index] < self.list[par_index]:
                         curr_val = self.list[curr_index]
@@ -55,34 +55,41 @@ class BinaryHeap(object):
         bubble = True
         curr_index = 0
         while bubble:
-            # DANGER - this produces values out of range
-            right = (curr_index * 2) + 2
-            left = (curr_index * 2) + 1
-            if self.list[curr_index] > self.list[left] and self.list[curr_index] > self.list[right]:
-                if self.list[right] > self.list[left]:
+            right = False
+            left = False
+            if (len(self.list) - 1) >= (curr_index * 2) + 2:
+                right = (curr_index * 2) + 2
+            if (len(self.list) - 1) >= (curr_index * 2) + 1:
+                left = (curr_index * 2) + 1
+            if right and left:
+                if self.list[curr_index] > self.list[left]:
+                    if self.list[curr_index] > self.list[right]:
+                        if self.list[right] < self.list[left]:
+                            right_child = self.list[right]
+                            curr_val = self.list[curr_index]
+                            self.list[curr_index] = right_child
+                            self.list[right] = curr_val
+                            curr_index = right
+                        else:
+                            left_child = self.list[left]
+                            curr_val = self.list[curr_index]
+                            self.list[curr_index] = left_child
+                            self.list[left] = curr_val
+                            curr_index = left
+            elif right:
+                if self.list[curr_index] > self.list[right]:
                     right_child = self.list[right]
                     curr_val = self.list[curr_index]
                     self.list[curr_index] = right_child
                     self.list[right] = curr_val
                     curr_index = right
-                else:
+            elif left:
+                if self.list[curr_index] > self.list[left]:
                     left_child = self.list[left]
                     curr_val = self.list[curr_index]
                     self.list[curr_index] = left_child
                     self.list[left] = curr_val
                     curr_index = left
-            elif self.list[curr_index] > self.list[right]:
-                right_child = self.list[right]
-                curr_val = self.list[curr_index]
-                self.list[curr_index] = right_child
-                self.list[right] = curr_val
-                curr_index = right
-            elif self.list[curr_index] > self.list[left]:
-                left_child = self.list[left]
-                curr_val = self.list[curr_index]
-                self.list[curr_index] = left_child
-                self.list[left] = curr_val
-                curr_index = left
             else:
                 bubble = False
         return popped

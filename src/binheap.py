@@ -7,19 +7,18 @@ class BinaryHeap(object):
     def __init__(self, iterable=None):
         """Init binheap."""
         self._list = []
-        if iterable:
+        if type(iterable) == [list, tuple]:
             for i in iterable:
                 self.push(i)
 
     def push(self, val):
         """Add value to the bottom of heap and bubbles up as appropriate."""
-        if val is None:
-            raise ValueError('Please enter a value')
+        if type(val) not in [int, float]:
+            raise ValueError('Please enter a number.')
         if val in self._list:
             raise ValueError('{} is already in this heap.'.format(val))
         else:
-            # print(self._list)
-            self._list.append(float(val))
+            self._list.append(val)
             curr_index = len(self._list) - 1
             bubble = True
             while bubble and curr_index > 0:
@@ -43,6 +42,25 @@ class BinaryHeap(object):
                         curr_index = par_index
                     else:
                         bubble = False
+
+    # def pop(self):
+    #     """Remove top of heap and bubbles last down."""
+    #     if len(self._list) < 1:
+    #         raise IndexError('Nothing to pop on this heap.')
+    #     popped = self._list[0]
+    #     self._list.pop(0)
+    #     self._list[0] = None
+    #     bubble = True
+    #     curr_index = 0
+    #     while bubble:
+    #         right = False
+    #         left = False
+    #         if (len(self._list) - 1) >= (curr_index * 2) + 2:
+    #             right = (curr_index * 2) + 2
+    #         if (len(self._list) - 1) >= (curr_index * 2) + 1:
+    #             left = (curr_index * 2) + 1
+    #         if right and left:
+    #             new_parent = min(self._list[left], self._list[right])
 
     def pop(self):
         """Remove top of heap and bubbles last down."""
@@ -74,12 +92,6 @@ class BinaryHeap(object):
                     self._list[curr_index] = left_child
                     self._list[left] = curr_val
                     curr_index = left
-            elif right and self._list[curr_index] > self._list[right]:
-                right_child = self._list[right]
-                curr_val = self._list[curr_index]
-                self._list[curr_index] = right_child
-                self._list[right] = curr_val
-                curr_index = right
             elif left and self._list[curr_index] > self._list[left]:
                 left_child = self._list[left]
                 curr_val = self._list[curr_index]

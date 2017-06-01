@@ -4,9 +4,12 @@
 class BinaryHeap(object):
     """Attributes and methods of the min Binary Heap data structure."""
 
-    def __init__(self):
+    def __init__(self, iterable=None):
         """Init binheap."""
         self._list = []
+        if iterable:
+            for i in iterable:
+                self.push(i)
 
     def push(self, val):
         """Add value to the bottom of heap and bubbles up as appropriate."""
@@ -16,7 +19,7 @@ class BinaryHeap(object):
             raise ValueError('{} is already in this heap.'.format(val))
         else:
             # print(self._list)
-            self._list.append(val)
+            self._list.append(float(val))
             curr_index = len(self._list) - 1
             bubble = True
             while bubble and curr_index > 0:
@@ -58,21 +61,19 @@ class BinaryHeap(object):
                 right = (curr_index * 2) + 2
             if (len(self._list) - 1) >= (curr_index * 2) + 1:
                 left = (curr_index * 2) + 1
-            if right and left:
-                if self._list[curr_index] > self._list[left]:
-                    if self._list[curr_index] > self._list[right]:
-                        if self._list[right] < self._list[left]:
-                            right_child = self._list[right]
-                            curr_val = self._list[curr_index]
-                            self._list[curr_index] = right_child
-                            self._list[right] = curr_val
-                            curr_index = right
-                        else:
-                            left_child = self._list[left]
-                            curr_val = self._list[curr_index]
-                            self._list[curr_index] = left_child
-                            self._list[left] = curr_val
-                            curr_index = left
+            if right and left and self._list[curr_index] > self._list[left] and self._list[curr_index] > self._list[right]:
+                if self._list[right] < self._list[left]:
+                    right_child = self._list[right]
+                    curr_val = self._list[curr_index]
+                    self._list[curr_index] = right_child
+                    self._list[right] = curr_val
+                    curr_index = right
+                else:
+                    left_child = self._list[left]
+                    curr_val = self._list[curr_index]
+                    self._list[curr_index] = left_child
+                    self._list[left] = curr_val
+                    curr_index = left
             elif right and self._list[curr_index] > self._list[right]:
                 right_child = self._list[right]
                 curr_val = self._list[curr_index]

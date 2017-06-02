@@ -11,14 +11,6 @@ def build_empty_heap():
 
 
 @pytest.fixture
-def build_heap_of_one():
-    """Init an empty bin heap."""
-    bh = BinaryHeap()
-    bh.push(1)
-    return bh
-
-
-@pytest.fixture
 def build_heap_of_two():
     """Init an empty bin heap."""
     bh = BinaryHeap()

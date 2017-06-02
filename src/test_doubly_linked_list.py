@@ -301,3 +301,8 @@ def test_dll_remove_invalid(initialize_three_dll):
 def test_dll_len(initialize_three_dll):
     """Test len method."""
     assert len(initialize_three_dll) == 3
+
+
+def test_dll_display(initialize_three_dll):
+    """Test display method."""
+    assert initialize_three_dll.display() == "(one, two, three)"

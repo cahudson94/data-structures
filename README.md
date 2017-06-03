@@ -22,3 +22,7 @@ All modules and tests located in src directory.
 ## Dequeue
 - module: deque.py
 - test: test_deque.py
+
+## Priority Queue
+- module: priorityque.py
+- test: test_priorityque.py

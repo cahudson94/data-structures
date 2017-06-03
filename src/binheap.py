@@ -13,13 +13,12 @@ class BinaryHeap(object):
 
     def push(self, val):
         """Add value to the bottom of heap and bubbles up as appropriate."""
-        if val is None:
-            raise ValueError('Please enter a value')
+        if type(val) not in [int, float]:
+            raise ValueError('Please enter a number.')
         if val in self._list:
             raise ValueError('{} is already in this heap.'.format(val))
         else:
-            # print(self._list)
-            self._list.append(float(val))
+            self._list.append(val)
             curr_index = len(self._list) - 1
             bubble = True
             while bubble and curr_index > 0:
@@ -74,12 +73,6 @@ class BinaryHeap(object):
                     self._list[curr_index] = left_child
                     self._list[left] = curr_val
                     curr_index = left
-            elif right and self._list[curr_index] > self._list[right]:
-                right_child = self._list[right]
-                curr_val = self._list[curr_index]
-                self._list[curr_index] = right_child
-                self._list[right] = curr_val
-                curr_index = right
             elif left and self._list[curr_index] > self._list[left]:
                 left_child = self._list[left]
                 curr_val = self._list[curr_index]

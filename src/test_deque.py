@@ -150,6 +150,26 @@ def test_peekleft_against_head_two_nodes(build_dequeue_two_nodes):
     assert build_dequeue_two_nodes.peekleft() == build_dequeue_two_nodes.head
 
 
+def test_popleft_all(build_dequeue_three_nodes):
+    """Test popleft on empty queue raises error."""
+    build_dequeue_three_nodes.popleft()
+    build_dequeue_three_nodes.popleft()
+    build_dequeue_three_nodes.popleft()
+    assert len(build_dequeue_three_nodes) == 0
+    assert build_dequeue_three_nodes.head is None
+    assert build_dequeue_three_nodes.tail is None
+
+
+def test_pop_all(build_dequeue_three_nodes):
+    """Test popleft on empty queue raises error."""
+    build_dequeue_three_nodes.pop()
+    build_dequeue_three_nodes.pop()
+    build_dequeue_three_nodes.pop()
+    assert len(build_dequeue_three_nodes) == 0
+    assert build_dequeue_three_nodes.head is None
+    assert build_dequeue_three_nodes.tail is None
+
+
 def test_popleft_empty_dequeue(build_empty_dequeue):
     """Test popleft on empty queue raises error."""
     with pytest.raises(IndexError):

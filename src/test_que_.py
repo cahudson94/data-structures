@@ -103,7 +103,7 @@ def test_dequeue_empty_queue(build_empty_queue):
 def test_dequeue_once_three_nodes(build_queue_three_nodes):
     """Test head movement on dequeue method for one node using peek."""
     assert build_queue_three_nodes.dequeue() == 'apple'
-    assert build_queue_three_nodes.head.val == 'peaches'
+    assert build_queue_three_nodes.peek().val == 'peaches'
 
 
 def test_dequeue_twice_three_nodes(build_queue_three_nodes):
@@ -113,6 +113,15 @@ def test_dequeue_twice_three_nodes(build_queue_three_nodes):
     build_queue_three_nodes.dequeue()
     assert last_before_dequeue.val == build_queue_three_nodes.head.val
     assert last_before_dequeue.next_node is None
+
+
+def test_dequeue_all(build_queue_three_nodes):
+    """Test dequeue all nodes."""
+    build_queue_three_nodes.dequeue()
+    build_queue_three_nodes.dequeue()
+    build_queue_three_nodes.dequeue()
+    assert build_queue_three_nodes.peek() is None
+    assert len(build_queue_three_nodes) == 0
 
 
 def test_len_empty_queue(build_empty_queue):

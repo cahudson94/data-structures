@@ -18,6 +18,7 @@ class DoublyLinkedList(object):
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            new_node.next_node = None
             self._length += 1
             return
         self.head.prev_node = new_node
@@ -32,6 +33,7 @@ class DoublyLinkedList(object):
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            new_node.prev_node = None
             self._length += 1
             return
         self.tail.next_node = new_node
@@ -43,8 +45,12 @@ class DoublyLinkedList(object):
         current_node = self.head
         if current_node is None:
             raise IndexError('Nothing to pop.')
-        self.head = current_node.next_node
-        current_node.next_node.prev_node = None
+        if current_node.next_node is not None:
+            self.head = current_node.next_node
+            self.head.prev_node = None
+        else:
+            self.head = None
+            self.tail = None
         self._length -= 1
         return current_node
 
@@ -53,8 +59,12 @@ class DoublyLinkedList(object):
         current_node = self.tail
         if current_node is None:
             raise IndexError('Nothing to shift.')
-        self.tail = current_node.prev_node
-        current_node.prev_node.next_node = None
+        if current_node.prev_node is not None:
+            self.tail = current_node.prev_node
+            self.tail.next_node = None
+        else:
+            self.head = None
+            self.tail = None
         self._length -= 1
         return current_node
 
@@ -75,6 +85,18 @@ class DoublyLinkedList(object):
             current_item.prev_node.next_node = current_item.next_node
             current_item.next_node.prev_node = current_item.prev_node
         self._length -= 1
+
+    def display(self):
+        """Return string representing LinkedList as Python tuple."""
+        display_string = u''
+        current_node = self.head
+        while current_node:
+                display_string = '{} {}'.format(current_node.val,
+                                                display_string)
+                current_node = current_node.next_node
+        display_string = display_string.strip().replace(' ', ', ')
+        display_string = '({})'.format(display_string)
+        return display_string
 
     def __len__(self):
         """Return the size of a doubly linked list, overwriting len method."""

@@ -201,6 +201,14 @@ def test_dll_pop(initialize_three_dll):
     assert initialize_three_dll.head.val == 'two'
 
 
+def test_dll_pop_all(dll_push_two):
+    """Test that popping all nodes works."""
+    dll_push_two.pop()
+    dll_push_two.pop()
+    assert dll_push_two.head is None
+    assert dll_push_two.tail is None
+
+
 def test_dll_pop_head_reassign(initialize_three_and_pop_dll):
     """Test doubly linked list pop method sets new head."""
     assert initialize_three_and_pop_dll.head.prev_node is None
@@ -239,6 +247,14 @@ def test_dll_shift_empty(initialize_empty_dll):
     """Test shift method on empty list."""
     with pytest.raises(IndexError):
         initialize_empty_dll.shift()
+
+
+def test_dll_shift_all(dll_push_two):
+    """Test that shifting all nodes works."""
+    dll_push_two.shift()
+    dll_push_two.shift()
+    assert dll_push_two.head is None
+    assert dll_push_two.tail is None
 
 
 def test_dll_remove(initialize_three_dll):
@@ -285,3 +301,8 @@ def test_dll_remove_invalid(initialize_three_dll):
 def test_dll_len(initialize_three_dll):
     """Test len method."""
     assert len(initialize_three_dll) == 3
+
+
+def test_dll_display(initialize_three_dll):
+    """Test display method."""
+    assert initialize_three_dll.display() == "(one, two, three)"

@@ -1,4 +1,4 @@
-"""Python implementation of a priority queue."""
+"""Python implementation of a priority queue sorted by min numbers."""
 
 
 class PriorityQ(object):
@@ -28,8 +28,12 @@ class PriorityQ(object):
 
     def peek(self):
         """Return the highest priority item in PQ."""
-        return self._list[0]
+        if len(self._list):
+            return self._list[0]
+        return "No items in priority queue."
 
     def pop(self):
         """Remove and return highest priority item in PQ."""
-        return self._list.pop(0)
+        if len(self._list):
+            return self._list.pop(0)
+        return "No items to pop in priority queue."

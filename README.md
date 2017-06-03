@@ -30,3 +30,7 @@ All modules and tests located in src directory.
 ## Priority Queue
 - module: priorityque.py
 - test: test_priorityque.py
+
+## Graph One
+- module: graph_1.py
+- test: test_graph_1.py

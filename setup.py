@@ -13,7 +13,7 @@ setup(
     author_email='c.ahudson84@yahoo.com, morganelle@gmail.com',
     license='MIT',
     py_modules=['linked_list', 'doubly_linked_list',
-                'stack', 'que_', 'deque', 'priorityque'],
+                'stack', 'que_', 'deque', 'binheap', 'priorityque'],
     package_dir={'': 'src'},
     install_requires=[],
     extras_require=extra_packages,

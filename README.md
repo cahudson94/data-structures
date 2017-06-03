@@ -23,6 +23,10 @@ All modules and tests located in src directory.
 - module: deque.py
 - test: test_deque.py
 
+## Binary Heap
+- module: binheap.py
+- test: test_binheap.py
+
 ## Priority Queue
 - module: priorityque.py
 - test: test_priorityque.py

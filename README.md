@@ -26,3 +26,7 @@ All modules and tests located in src directory.
 ## Binary Heap
 - module: binheap.py
 - test: test_binheap.py
+
+## Priority Queue
+- module: priorityque.py
+- test: test_priorityque.py

@@ -19,8 +19,10 @@ class Graph(object):
 
     def add_node(self, val):
         """."""
-        if val is None and type(val) is not bool:
+        if val is None or type(val) is bool:
             raise ValueError('Please use a valid value.')
+        if self.has_node(val):
+            raise ValueError('{} is already in this graph.'.format(val))
         self.nodes_list.append(val)
 
     def has_node(self, val):
@@ -43,7 +45,7 @@ class Graph(object):
         if not self.has_node(val):
             raise ValueError('This node does not exist.')
         self.nodes_list.remove(val)
-        self.edges_list = filter(lambda x: val not in x, self.edges_list)
+        self.edges_list = list(filter(lambda x: val not in x, self.edges_list))
 
     def del_edge(self, val1, val2):
         """."""
@@ -54,7 +56,7 @@ class Graph(object):
     def neighbors(self, val):
         """."""
         neighbors = filter(lambda x: x[0] == val, self.edges_list)
-        neighbors = map(lambda x: x[1], neighbors)
+        neighbors = list(map(lambda x: x[1], neighbors))
         return neighbors
 
     def adjacent(self, val1, val2):

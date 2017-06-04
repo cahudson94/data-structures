@@ -1,0 +1,65 @@
+"""Python implementation of a graph that is unweighted and directed."""
+
+
+class Graph(object):
+    """."""
+
+    def __init__(self):
+        """."""
+        self.nodes_list = []
+        self.edges_list = []
+
+    def nodes(self):
+        """."""
+        return self.nodes_list
+
+    def edges(self):
+        """."""
+        return self.edges_list
+
+    def add_node(self, val):
+        """."""
+        if val is None and type(val) is not bool:
+            raise ValueError('Please use a valid value.')
+        self.nodes_list.append(val)
+
+    def has_node(self, val):
+        """."""
+        if val not in self.nodes_list:
+            return False
+        return True
+
+    def add_edge(self, val1, val2):
+        """."""
+        if not self.has_node(val1):
+            self.add_node(val1)
+        if not self.has_node(val2):
+            self.add_node(val2)
+        if (val1, val2) not in self.edges_list:
+            self.edges_list.append((val1, val2))
+
+    def del_node(self, val):
+        """."""
+        if not self.has_node(val):
+            raise ValueError('This node does not exist.')
+        self.nodes_list.remove(val)
+        self.edges_list = filter(lambda x: val not in x, self.edges_list)
+
+    def del_edge(self, val1, val2):
+        """."""
+        if (val1, val2) not in self.edges_list:
+            raise ValueError('This edge does not exist.')
+        self.edges_list.remove((val1, val2))
+
+    def neighbors(self, val):
+        """."""
+        neighbors = filter(lambda x: x[0] == val, self.edges_list)
+        neighbors = map(lambda x: x[1], neighbors)
+        return neighbors
+
+    def adjacent(self, val1, val2):
+        """."""
+        for edge in self.edges_list:
+            if val1 in edge and val2 in edge:
+                return True
+        return False

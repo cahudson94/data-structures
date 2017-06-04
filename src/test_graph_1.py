@@ -5,13 +5,13 @@ from graph_1 import Graph
 
 @pytest.fixture
 def empty_graph():
-    """."""
+    """Create an empty graph."""
     return Graph()
 
 
 @pytest.fixture
 def one_node_graph():
-    """."""
+    """Create a graph with one floating node."""
     g = Graph()
     g.add_node('corn')
     return g
@@ -19,7 +19,7 @@ def one_node_graph():
 
 @pytest.fixture
 def two_node_no_edge_graph():
-    """."""
+    """Create a graph with two floating nodes."""
     g = Graph()
     g.add_node('corn')
     g.add_node('beans')
@@ -28,7 +28,7 @@ def two_node_no_edge_graph():
 
 @pytest.fixture
 def two_node_with_edge_graph():
-    """."""
+    """Create a graph with two nodes and one edge."""
     g = Graph()
     g.add_node('corn')
     g.add_node('beans')
@@ -38,7 +38,7 @@ def two_node_with_edge_graph():
 
 @pytest.fixture
 def three_node_with_two_edges_graph():
-    """."""
+    """Create a graph with three nodes and two edges."""
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
@@ -50,7 +50,7 @@ def three_node_with_two_edges_graph():
 
 @pytest.fixture
 def five_node_with_five_edges_graph():
-    """."""
+    """Create a graph with five nodes and edges."""
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
@@ -67,7 +67,7 @@ def five_node_with_five_edges_graph():
 
 @pytest.fixture
 def five_node_simple_nodes_five_edges_graph():
-    """."""
+    """Simple five node five edge graph."""
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
@@ -82,31 +82,31 @@ def five_node_simple_nodes_five_edges_graph():
 
 
 def test_nodes_in_empty_graph(empty_graph):
-    """."""
+    """Test an empty graph returns an empty list of nodes."""
     assert empty_graph.nodes() == []
 
 
 def test_nodes_in_one_node_graph(one_node_graph):
-    """."""
+    """Test a graph with one node returns that node in it's list."""
     assert one_node_graph.nodes() == ['corn']
 
 
 def test_nodes_in_two_node_graph(two_node_no_edge_graph):
-    """."""
+    """Test a graph with two nodes returns both in it's list."""
     assert two_node_no_edge_graph.nodes() == ['corn', 'beans']
 
 
 def test_nodes_in_three_node_graph(three_node_with_two_edges_graph):
-    """."""
-    assert three_node_with_two_edges_graph.nodes() == ['corn', 2, ['squash', 11]]
+    """Test a graph with three nodes returns them in it's list."""
+    b = three_node_with_two_edges_graph
+    assert b.nodes() == ['corn', 2, ['squash', 11]]
 
 
 def test_nodes_in_five_node_graph(five_node_with_five_edges_graph):
-    """."""
-    assert five_node_with_five_edges_graph.nodes() == ['corn', 2, ['squash',
-                                                       11.1], {'pie': 'cherry',
-                                                       'cake': 'chocolate'},
-                                                       (4, 'mustard', 'ketchup')]
+    """Test a graph with five nodes returns them in it's list."""
+    b = five_node_with_five_edges_graph
+    assert b.nodes() == ['corn', 2, ['squash', 11.1], {'pie': 'cherry',
+                         'cake': 'chocolate'}, (4, 'mustard', 'ketchup')]
 
 
 def test_has_node_one_node(one_node_graph):
@@ -123,11 +123,12 @@ def test_has_node_two_nodes(two_node_no_edge_graph):
 
 def test_has_node_five_nodes(five_node_with_five_edges_graph):
     """Test five-node graph has_node method."""
-    assert five_node_with_five_edges_graph.has_node('picante') is False
-    assert five_node_with_five_edges_graph.has_node(11.1) is False
-    assert five_node_with_five_edges_graph.has_node(2) is True
-    assert five_node_with_five_edges_graph.has_node({'pie': 'cherry', 'cake': 'chocolate'}) is True
-    assert five_node_with_five_edges_graph.has_node(['squash', 11.1]) is True
+    b = five_node_with_five_edges_graph
+    assert b.has_node('picante') is False
+    assert b.has_node(11.1) is False
+    assert b.has_node(2) is True
+    assert b.has_node({'pie': 'cherry', 'cake': 'chocolate'}) is True
+    assert b.has_node(['squash', 11.1]) is True
 
 
 def test_edges_empty_graph(empty_graph):
@@ -152,12 +153,17 @@ def test_edges_two_node_edge(two_node_with_edge_graph):
 
 def test_edges_three_node_edge(three_node_with_two_edges_graph):
     """Test an empty graph for edges."""
-    assert three_node_with_two_edges_graph.edges() == [('corn', 2),(['squash', 11], 'corn')]
+    b = three_node_with_two_edges_graph
+    assert b.edges() == [('corn', 2), (['squash', 11], 'corn')]
 
 
 def test_edges_five_node_edge(five_node_with_five_edges_graph):
     """Test an empty graph for edges."""
-    assert five_node_with_five_edges_graph.edges() == [(2, ['squash', 11.1]), ((4, 'mustard', 'ketchup'), 'corn'), (2, 'corn'), ('corn', 2), (['squash', 11.1], 'corn')]
+    b = five_node_with_five_edges_graph
+    assert b.edges() == [(2, ['squash', 11.1]),
+                         ((4, 'mustard', 'ketchup'), 'corn'),
+                         (2, 'corn'), ('corn', 2),
+                         (['squash', 11.1], 'corn')]
 
 
 def test_add_node_no_val(one_node_graph):
@@ -184,7 +190,8 @@ def test_add_node_two_times(two_node_no_edge_graph):
     two_node_no_edge_graph.add_node('welcome back')
     assert two_node_no_edge_graph.has_node('greetings')
     assert two_node_no_edge_graph.has_node('welcome back')
-    assert two_node_no_edge_graph.nodes() == ['corn', 'beans', 'greetings', 'welcome back']
+    assert two_node_no_edge_graph.nodes() == ['corn', 'beans', 'greetings',
+                                              'welcome back']
 
 
 def test_add_node_once(two_node_no_edge_graph):
@@ -196,20 +203,25 @@ def test_add_node_once(two_node_no_edge_graph):
 
 def test_add_edge_new_nodes(three_node_with_two_edges_graph):
     """Test adding edge with two new nodes."""
-    three_node_with_two_edges_graph.add_edge('beans', 'tomato')
-    assert three_node_with_two_edges_graph.edges() == [('corn', 2), (['squash', 11], 'corn'), ('beans', 'tomato')]
+    b = three_node_with_two_edges_graph
+    b.add_edge('beans', 'tomato')
+    assert b.edges() == [('corn', 2), (['squash', 11], 'corn'),
+                         ('beans', 'tomato')]
 
 
 def test_add_edge_one_new_node(five_node_simple_nodes_five_edges_graph):
     """Test adding edge to one new node, one existing node."""
-    five_node_simple_nodes_five_edges_graph.add_edge('hi', 3)
-    assert five_node_simple_nodes_five_edges_graph.edges() == [(2, 3), (3, 2), (2, 'corn'), ('meep', 10), ('hi', 3)]
+    b = five_node_simple_nodes_five_edges_graph
+    b.add_edge('hi', 3)
+    assert b.edges() == [(2, 3), (3, 2), (2, 'corn'), ('meep', 10), ('hi', 3)]
 
 
 def test_add_edge_existing_nodes(five_node_simple_nodes_five_edges_graph):
     """Test adding edge to two existing nodes."""
-    five_node_simple_nodes_five_edges_graph.add_edge(3, 'meep')
-    assert five_node_simple_nodes_five_edges_graph.edges() == [(2, 3), (3, 2), (2, 'corn'), ('meep', 10), (3, 'meep')]
+    b = five_node_simple_nodes_five_edges_graph
+    b.add_edge(3, 'meep')
+    assert b.edges() == [(2, 3), (3, 2), (2, 'corn'), ('meep', 10),
+                         (3, 'meep')]
 
 
 def test_delete_node_empty_graph_error(empty_graph):
@@ -226,9 +238,11 @@ def test_delete_node_graph_error(five_node_with_five_edges_graph):
 
 def test_delete_node_graph(five_node_with_five_edges_graph):
     """Delete node on populated graph."""
-    five_node_with_five_edges_graph.del_node(2)
-    assert 2 not in five_node_with_five_edges_graph.nodes()
-    assert five_node_with_five_edges_graph.edges() == [((4, 'mustard', 'ketchup'), 'corn'), (['squash', 11.1], 'corn')]
+    b = five_node_with_five_edges_graph
+    b.del_node(2)
+    assert 2 not in b.nodes()
+    assert b.edges() == [((4, 'mustard', 'ketchup'), 'corn'),
+                         (['squash', 11.1], 'corn')]
 
 
 def test_delete_edge_empty_graph_error(empty_graph):
@@ -248,3 +262,37 @@ def test_delete_edge_graph(five_node_simple_nodes_five_edges_graph):
     assert (2, 'corn') in five_node_simple_nodes_five_edges_graph.edges()
     five_node_simple_nodes_five_edges_graph.del_edge(2, 'corn')
     assert (2, 'corn') not in five_node_simple_nodes_five_edges_graph.edges()
+
+
+def test_neighbors_none_graph(two_node_no_edge_graph):
+    """Test for no neighbors of the queried value within the graph."""
+    assert two_node_no_edge_graph.neighbors('corn') == []
+
+
+def test_one_neighbors_graph(two_node_with_edge_graph):
+    """Test for one neighbor of the queried value within the graph."""
+    assert two_node_with_edge_graph.neighbors('corn') == ['beans']
+
+
+def test_mult_neighbors_graph(five_node_with_five_edges_graph):
+    """Test for multiple neighbors of the queried value within the graph."""
+    b = five_node_with_five_edges_graph
+    assert b.neighbors(2) == [['squash', 11.1], 'corn']
+
+
+def test_non_node_neighbors_graph(five_node_with_five_edges_graph):
+    """Test if the value give for neighbors is not a node."""
+    with pytest.raises(ValueError):
+        five_node_with_five_edges_graph.neighbors(9000)
+
+
+def test_adjacent_true_graph(five_node_simple_nodes_five_edges_graph):
+    """Test if the nodes are adjacent in the graph."""
+    b = five_node_simple_nodes_five_edges_graph
+    assert b.adjacent(10, 'meep') is True
+
+
+def test_adjacent_false_graph(five_node_simple_nodes_five_edges_graph):
+    """Test if the nodes are not adjacent in the graph."""
+    b = five_node_simple_nodes_five_edges_graph
+    assert b.adjacent('meep', 'corn') is False

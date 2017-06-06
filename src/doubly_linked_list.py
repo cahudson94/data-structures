@@ -46,7 +46,7 @@ class DoublyLinkedList(object):
         self.head = current_node.next_node
         current_node.next_node.prev_node = None
         self._length -= 1
-        return current_node
+        return current_node.val
 
     def shift(self):
         """Remove and return node from tail of doubly linked list."""

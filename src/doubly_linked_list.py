@@ -52,7 +52,7 @@ class DoublyLinkedList(object):
             self.head = None
             self.tail = None
         self._length -= 1
-        return current_node
+        return current_node.val
 
     def shift(self):
         """Remove and return node from tail of doubly linked list."""
@@ -66,7 +66,7 @@ class DoublyLinkedList(object):
             self.head = None
             self.tail = None
         self._length -= 1
-        return current_node
+        return current_node.val
 
     def remove(self, val):
         """Find and remove the first Node with a given value."""
@@ -85,18 +85,6 @@ class DoublyLinkedList(object):
             current_item.prev_node.next_node = current_item.next_node
             current_item.next_node.prev_node = current_item.prev_node
         self._length -= 1
-
-    def display(self):
-        """Return string representing LinkedList as Python tuple."""
-        display_string = u''
-        current_node = self.head
-        while current_node:
-                display_string = '{} {}'.format(current_node.val,
-                                                display_string)
-                current_node = current_node.next_node
-        display_string = display_string.strip().replace(' ', ', ')
-        display_string = '({})'.format(display_string)
-        return display_string
 
     def __len__(self):
         """Return the size of a doubly linked list, overwriting len method."""

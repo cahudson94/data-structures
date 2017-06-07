@@ -1,4 +1,3 @@
-
 """Python implementation of a graph that is unweighted and directed."""
 
 
@@ -6,63 +5,69 @@ class Graph(object):
     """."""
 
     def __init__(self):
-        """."""
-        self._graphdict = {}
+        """Instantiate a graph with no nodes or edges."""
+        self.nodes_list = []
+        self.edges_list = []
 
     def nodes(self):
-        """."""
-        return list(self._graphdict.keys())
+        """Return the nodes on the graph."""
+        return self.nodes_list
 
     def edges(self):
-        """."""
-        edges = []
-        for key in self.nodes():
-            for item in self._graphdict[key]:
-                edges.append((key, item))
-        return edges
+        """Return the edges of the graph."""
+        return self.edges_list
 
     def add_node(self, val):
-        """."""
-        if type(val) not in [str, int, float]:
+        """Add a node to the graph with a value."""
+        if val is None or type(val) is bool:
             raise ValueError('Please use a valid value.')
         if self.has_node(val):
             raise ValueError('{} is already in this graph.'.format(val))
-        self._graphdict[val] = []
+        self.nodes_list.append(val)
 
     def has_node(self, val):
-        """."""
-        return val in self._graphdict
+        """Check if a node is in the graph."""
+        if val not in self.nodes_list:
+            return False
+        return True
 
     def add_edge(self, val1, val2):
-        """."""
+        """
+        Add an edge between two nodes in the graph.
+
+        If the nodes are not in the graph add them and the edge.
+        """
         if not self.has_node(val1):
             self.add_node(val1)
         if not self.has_node(val2):
             self.add_node(val2)
-        if (val1, val2) not in self.edges():
-            self._graphdict[val1].append(val2)
+        if (val1, val2) not in self.edges_list:
+            self.edges_list.append((val1, val2))
 
     def del_node(self, val):
-        """."""
+        """Remove a node and any edges it is part of."""
         if not self.has_node(val):
-            raise ValueError('This node is not in the graph.')
-        del self._graphdict[val]
-        for key in self.nodes():
-            if val in self._graphdict[key]:
-                self._graphdict[key].remove(val)
+            raise ValueError('This node does not exist.')
+        self.nodes_list.remove(val)
+        self.edges_list = list(filter(lambda x: val not in x, self.edges_list))
 
     def del_edge(self, val1, val2):
-        """."""
-        if (val1, val2) not in self.edges():
+        """Remove an edge between two nodes."""
+        if (val1, val2) not in self.edges_list:
             raise ValueError('This edge does not exist.')
-        self._graphdict[val1].remove(val2)
+        self.edges_list.remove((val1, val2))
 
     def neighbors(self, val):
-        """."""
-        if val not in self.nodes():
-            raise ValueError('This node is not in the graph.')
-        return self._graphdict[val]
+        """Check for the edges from a node."""
+        if val in self.nodes_list:
+            neighbors = filter(lambda x: x[0] == val, self.edges_list)
+            neighbors = list(map(lambda x: x[1], neighbors))
+            return neighbors
+        raise ValueError('That node is not part of this graph.')
 
     def adjacent(self, val1, val2):
-        """."""
-        return val2 in self._graphdict[val1] or val1 in self._graphdict[val2]
+        """Check if two nodes are connected via an edge."""
+        for edge in self.edges_list:
+            if val1 in edge and val2 in edge:
+                return True
+        return False

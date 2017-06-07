@@ -3,18 +3,18 @@
 
 
 class Graph(object):
-    """."""
+    """Define attributes and methods of graph class."""
 
     def __init__(self):
-        """."""
+        """Instantiate graph object."""
         self._graphdict = {}
 
     def nodes(self):
-        """."""
+        """Return list of graph nodes."""
         return list(self._graphdict.keys())
 
     def edges(self):
-        """."""
+        """Return list of graph edges."""
         edges = []
         for key in self.nodes():
             for item in self._graphdict[key]:
@@ -22,7 +22,7 @@ class Graph(object):
         return edges
 
     def add_node(self, val):
-        """."""
+        """Add a node to graph."""
         if type(val) not in [str, int, float]:
             raise ValueError('Please use a valid value.')
         if self.has_node(val):
@@ -30,11 +30,11 @@ class Graph(object):
         self._graphdict[val] = []
 
     def has_node(self, val):
-        """."""
+        """Return boolean for node in graph membership."""
         return val in self._graphdict
 
     def add_edge(self, val1, val2):
-        """."""
+        """Add an edge between to vals, add vals if not currently node."""
         if not self.has_node(val1):
             self.add_node(val1)
         if not self.has_node(val2):
@@ -43,7 +43,7 @@ class Graph(object):
             self._graphdict[val1].append(val2)
 
     def del_node(self, val):
-        """."""
+        """Remove a node and edges that refer to it."""
         if not self.has_node(val):
             raise ValueError('This node is not in the graph.')
         del self._graphdict[val]
@@ -52,17 +52,17 @@ class Graph(object):
                 self._graphdict[key].remove(val)
 
     def del_edge(self, val1, val2):
-        """."""
+        """Remove an edge between two nodes."""
         if (val1, val2) not in self.edges():
             raise ValueError('This edge does not exist.')
         self._graphdict[val1].remove(val2)
 
     def neighbors(self, val):
-        """."""
+        """Return list of neighbors for a given node."""
         if val not in self.nodes():
             raise ValueError('This node is not in the graph.')
         return self._graphdict[val]
 
     def adjacent(self, val1, val2):
-        """."""
+        """Return bool of whether val1 is val2's neighbor or vice versa."""
         return val2 in self._graphdict[val1] or val1 in self._graphdict[val2]

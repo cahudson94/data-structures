@@ -5,13 +5,13 @@ from graph_1 import Graph
 
 @pytest.fixture
 def empty_graph():
-    """."""
+    """Return an empty graph."""
     return Graph()
 
 
 @pytest.fixture
 def one_node_graph():
-    """."""
+    """Return a graph with one node."""
     g = Graph()
     g.add_node('corn')
     return g
@@ -19,7 +19,7 @@ def one_node_graph():
 
 @pytest.fixture
 def two_node_no_edge_graph():
-    """."""
+    """Return a graph with two nodes and no edges."""
     g = Graph()
     g.add_node('corn')
     g.add_node('beans')
@@ -28,7 +28,7 @@ def two_node_no_edge_graph():
 
 @pytest.fixture
 def two_node_with_edge_graph():
-    """."""
+    """Return a graph with two nodes and one edge."""
     g = Graph()
     g.add_node('corn')
     g.add_node('beans')
@@ -38,7 +38,7 @@ def two_node_with_edge_graph():
 
 @pytest.fixture
 def three_node_with_two_edges_graph():
-    """."""
+    """Return a graph with two nodes and two edges."""
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
@@ -50,7 +50,7 @@ def three_node_with_two_edges_graph():
 
 @pytest.fixture
 def five_node_with_five_edges_graph():
-    """."""
+    """Return a graph with five nodes and five edges."""
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
@@ -67,7 +67,7 @@ def five_node_with_five_edges_graph():
 
 @pytest.fixture
 def five_node_simple_nodes_five_edges_graph():
-    """."""
+    """Return a graph with five nodes and four edges."""
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
@@ -82,23 +82,23 @@ def five_node_simple_nodes_five_edges_graph():
 
 
 def test_nodes_in_empty_graph(empty_graph):
-    """."""
+    """Test empty graph has no nodes."""
     assert empty_graph.nodes() == []
 
 
 def test_nodes_in_one_node_graph(one_node_graph):
-    """."""
+    """Test one-node graph has correct node."""
     assert one_node_graph.nodes() == ['corn']
 
 
 def test_nodes_in_two_node_graph(two_node_no_edge_graph):
-    """."""
+    """Test two-node graph has two nodes."""
     assert 'corn' in two_node_no_edge_graph.nodes()
     assert 'beans' in two_node_no_edge_graph.nodes()
 
 
 def test_nodes_in_three_node_graph(three_node_with_two_edges_graph):
-    """."""
+    """Test three-node graph has three correct nodes."""
     assert 'corn' in three_node_with_two_edges_graph.nodes()
     assert 2 in three_node_with_two_edges_graph.nodes()
     assert 11 in three_node_with_two_edges_graph.nodes()
@@ -106,7 +106,7 @@ def test_nodes_in_three_node_graph(three_node_with_two_edges_graph):
 
 
 def test_nodes_in_five_node_graph(five_node_with_five_edges_graph):
-    """."""
+    """Test five-node graph has five correct nodes."""
     assert 'corn' in five_node_with_five_edges_graph.nodes()
     assert 2 in five_node_with_five_edges_graph.nodes()
     assert 11.1 in five_node_with_five_edges_graph.nodes()

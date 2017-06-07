@@ -42,9 +42,9 @@ def three_node_with_two_edges_graph():
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
-    g.add_node(['squash', 11])
+    g.add_node(11)
     g.add_edge('corn', 2)
-    g.add_edge(['squash', 11], 'corn')
+    g.add_edge(11, 'corn')
     return g
 
 
@@ -54,14 +54,14 @@ def five_node_with_five_edges_graph():
     g = Graph()
     g.add_node('corn')
     g.add_node(2)
-    g.add_node(['squash', 11.1])
-    g.add_node({'pie': 'cherry', 'cake': 'chocolate'})
-    g.add_node((4, 'mustard', 'ketchup'))
-    g.add_edge(2, ['squash', 11.1])
-    g.add_edge((4, 'mustard', 'ketchup'), 'corn')
+    g.add_node(11.1)
+    g.add_node('chocolate')
+    g.add_node('mustard')
+    g.add_edge(2, 11.1)
+    g.add_edge('mustard', 'corn')
     g.add_edge(2, 'corn')
     g.add_edge('corn', 2)
-    g.add_edge(['squash', 11.1], 'corn')
+    g.add_edge(11.1, 'corn')
     return g
 
 
@@ -93,26 +93,32 @@ def test_nodes_in_one_node_graph(one_node_graph):
 
 def test_nodes_in_two_node_graph(two_node_no_edge_graph):
     """."""
-    assert two_node_no_edge_graph.nodes() == ['corn', 'beans']
+    assert 'corn' in two_node_no_edge_graph.nodes()
+    assert 'beans' in two_node_no_edge_graph.nodes()
 
 
 def test_nodes_in_three_node_graph(three_node_with_two_edges_graph):
     """."""
-    assert three_node_with_two_edges_graph.nodes() == ['corn', 2, ['squash', 11]]
+    assert 'corn' in three_node_with_two_edges_graph.nodes()
+    assert 2 in three_node_with_two_edges_graph.nodes()
+    assert 11 in three_node_with_two_edges_graph.nodes()
+    assert len(three_node_with_two_edges_graph.nodes()) == 3
 
 
 def test_nodes_in_five_node_graph(five_node_with_five_edges_graph):
     """."""
-    assert five_node_with_five_edges_graph.nodes() == ['corn', 2, ['squash',
-                                                       11.1], {'pie': 'cherry',
-                                                       'cake': 'chocolate'},
-                                                       (4, 'mustard', 'ketchup')]
+    assert 'corn' in five_node_with_five_edges_graph.nodes()
+    assert 2 in five_node_with_five_edges_graph.nodes()
+    assert 11.1 in five_node_with_five_edges_graph.nodes()
+    assert 'chocolate' in five_node_with_five_edges_graph.nodes()
+    assert 'mustard' in five_node_with_five_edges_graph.nodes()
+    assert len(five_node_with_five_edges_graph.nodes()) == 5
 
 
 def test_has_node_one_node(one_node_graph):
     """Test one-node graph has_node method."""
     assert one_node_graph.has_node('corn') is True
-    assert one_node_graph.has_node([1, 2, 3]) is False
+    assert one_node_graph.has_node(1) is False
 
 
 def test_has_node_two_nodes(two_node_no_edge_graph):
@@ -124,10 +130,10 @@ def test_has_node_two_nodes(two_node_no_edge_graph):
 def test_has_node_five_nodes(five_node_with_five_edges_graph):
     """Test five-node graph has_node method."""
     assert five_node_with_five_edges_graph.has_node('picante') is False
-    assert five_node_with_five_edges_graph.has_node(11.1) is False
+    assert five_node_with_five_edges_graph.has_node(11.1) is True
     assert five_node_with_five_edges_graph.has_node(2) is True
-    assert five_node_with_five_edges_graph.has_node({'pie': 'cherry', 'cake': 'chocolate'}) is True
-    assert five_node_with_five_edges_graph.has_node(['squash', 11.1]) is True
+    assert five_node_with_five_edges_graph.has_node('chocolate') is True
+    assert five_node_with_five_edges_graph.has_node('11.1') is False
 
 
 def test_edges_empty_graph(empty_graph):
@@ -152,12 +158,17 @@ def test_edges_two_node_edge(two_node_with_edge_graph):
 
 def test_edges_three_node_edge(three_node_with_two_edges_graph):
     """Test an empty graph for edges."""
-    assert three_node_with_two_edges_graph.edges() == [('corn', 2),(['squash', 11], 'corn')]
+    assert ('corn', 2) in three_node_with_two_edges_graph.edges()
+    assert (11,'corn') in three_node_with_two_edges_graph.edges()
 
 
 def test_edges_five_node_edge(five_node_with_five_edges_graph):
     """Test an empty graph for edges."""
-    assert five_node_with_five_edges_graph.edges() == [(2, ['squash', 11.1]), ((4, 'mustard', 'ketchup'), 'corn'), (2, 'corn'), ('corn', 2), (['squash', 11.1], 'corn')]
+    assert ('corn', 2) in five_node_with_five_edges_graph.edges()
+    assert (2, 11.1) in five_node_with_five_edges_graph.edges()
+    assert (2, 'corn') in five_node_with_five_edges_graph.edges()
+    assert (11.1, 'corn') in five_node_with_five_edges_graph.edges()
+    assert ('mustard', 'corn') in five_node_with_five_edges_graph.edges()
 
 
 def test_add_node_no_val(one_node_graph):
@@ -184,32 +195,47 @@ def test_add_node_two_times(two_node_no_edge_graph):
     two_node_no_edge_graph.add_node('welcome back')
     assert two_node_no_edge_graph.has_node('greetings')
     assert two_node_no_edge_graph.has_node('welcome back')
-    assert two_node_no_edge_graph.nodes() == ['corn', 'beans', 'greetings', 'welcome back']
+    assert 'corn' in two_node_no_edge_graph.nodes()
+    assert 'beans' in two_node_no_edge_graph.nodes()
+    assert 'greetings' in two_node_no_edge_graph.nodes()
+    assert 'welcome back' in two_node_no_edge_graph.nodes()
 
 
 def test_add_node_once(two_node_no_edge_graph):
     """Add one node to graph."""
     two_node_no_edge_graph.add_node('why')
     assert two_node_no_edge_graph.has_node('why')
-    assert two_node_no_edge_graph.nodes() == ['corn', 'beans', 'why']
+    assert 'corn' in two_node_no_edge_graph.nodes()
+    assert 'beans' in two_node_no_edge_graph.nodes()
+    assert 'why' in two_node_no_edge_graph.nodes()
 
 
 def test_add_edge_new_nodes(three_node_with_two_edges_graph):
     """Test adding edge with two new nodes."""
     three_node_with_two_edges_graph.add_edge('beans', 'tomato')
-    assert three_node_with_two_edges_graph.edges() == [('corn', 2), (['squash', 11], 'corn'), ('beans', 'tomato')]
+    assert ('corn', 2) in three_node_with_two_edges_graph.edges()
+    assert (11, 'corn') in three_node_with_two_edges_graph.edges()
+    assert ('beans', 'tomato') in three_node_with_two_edges_graph.edges()
 
 
 def test_add_edge_one_new_node(five_node_simple_nodes_five_edges_graph):
     """Test adding edge to one new node, one existing node."""
     five_node_simple_nodes_five_edges_graph.add_edge('hi', 3)
-    assert five_node_simple_nodes_five_edges_graph.edges() == [(2, 3), (3, 2), (2, 'corn'), ('meep', 10), ('hi', 3)]
+    assert (2, 3) in five_node_simple_nodes_five_edges_graph.edges()
+    assert (2, 'corn') in five_node_simple_nodes_five_edges_graph.edges()
+    assert (3, 2) in five_node_simple_nodes_five_edges_graph.edges()
+    assert ('meep', 10) in five_node_simple_nodes_five_edges_graph.edges()
+    assert ('hi', 3) in five_node_simple_nodes_five_edges_graph.edges()
 
 
 def test_add_edge_existing_nodes(five_node_simple_nodes_five_edges_graph):
     """Test adding edge to two existing nodes."""
     five_node_simple_nodes_five_edges_graph.add_edge(3, 'meep')
-    assert five_node_simple_nodes_five_edges_graph.edges() == [(2, 3), (3, 2), (2, 'corn'), ('meep', 10), (3, 'meep')]
+    assert (2, 3) in five_node_simple_nodes_five_edges_graph.edges()
+    assert (2, 'corn') in five_node_simple_nodes_five_edges_graph.edges()
+    assert (3, 2) in five_node_simple_nodes_five_edges_graph.edges()
+    assert (3, 'meep') in five_node_simple_nodes_five_edges_graph.edges()
+    assert ('meep', 10) in five_node_simple_nodes_five_edges_graph.edges()
 
 
 def test_delete_node_empty_graph_error(empty_graph):
@@ -228,7 +254,8 @@ def test_delete_node_graph(five_node_with_five_edges_graph):
     """Delete node on populated graph."""
     five_node_with_five_edges_graph.del_node(2)
     assert 2 not in five_node_with_five_edges_graph.nodes()
-    assert five_node_with_five_edges_graph.edges() == [((4, 'mustard', 'ketchup'), 'corn'), (['squash', 11.1], 'corn')]
+    assert (11.1, 'corn') in five_node_with_five_edges_graph.edges()
+    assert ('mustard', 'corn') in five_node_with_five_edges_graph.edges()
 
 
 def test_delete_edge_empty_graph_error(empty_graph):

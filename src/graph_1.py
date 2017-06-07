@@ -1,4 +1,3 @@
-
 """Python implementation of a graph that is unweighted and directed."""
 
 

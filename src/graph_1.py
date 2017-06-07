@@ -43,7 +43,7 @@ class Graph(object):
     def del_node(self, val):
         """."""
         if not self.has_node(val):
-            raise ValueError('This node does not exist.')
+            raise ValueError('This node is not in the graph.')
         self.nodes_list.remove(val)
         self.edges_list = list(filter(lambda x: val not in x, self.edges_list))
 
@@ -55,6 +55,8 @@ class Graph(object):
 
     def neighbors(self, val):
         """."""
+        if val not in self.nodes_list:
+            raise ValueError('This node is not in the graph.')
         neighbors = filter(lambda x: x[0] == val, self.edges_list)
         neighbors = list(map(lambda x: x[1], neighbors))
         return neighbors
@@ -62,6 +64,4 @@ class Graph(object):
     def adjacent(self, val1, val2):
         """."""
         for edge in self.edges_list:
-            if val1 in edge and val2 in edge:
-                return True
-        return False
+            return val1 in edge and val2 in edge

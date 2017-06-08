@@ -37,6 +37,17 @@ def two_node_with_edge_graph():
 
 
 @pytest.fixture
+def two_node_two_edge_graph():
+    """Return a graph with two nodes and two edges."""
+    g = Graph()
+    g.add_node(1)
+    g.add_node(2)
+    g.add_edge(1, 2)
+    g.add_edge(2, 1)
+    return g
+
+
+@pytest.fixture
 def three_node_with_two_edges_graph():
     """Return a graph with two nodes and two edges."""
     g = Graph()
@@ -45,6 +56,37 @@ def three_node_with_two_edges_graph():
     g.add_node(11)
     g.add_edge('corn', 2)
     g.add_edge(11, 'corn')
+    return g
+
+
+@pytest.fixture
+def three_node_bidirectional_cyclical_graph():
+    """Return a bi-direcctional cyclical graph.."""
+    g = Graph()
+    g.add_node(1)
+    g.add_node(2)
+    g.add_node(3)
+    g.add_edge(1, 2)
+    g.add_edge(2, 1)
+    g.add_edge(2, 3)
+    g.add_edge(3, 2)
+    g.add_edge(1, 3)
+    g.add_edge(3, 1)
+    return g
+
+
+@pytest.fixture
+def four_node_cyclical_graph():
+    """Return a graph with four nodes that is cyclical."""
+    g = Graph()
+    g.add_node(1)
+    g.add_node(2)
+    g.add_node(3)
+    g.add_node(4)
+    g.add_edge(1, 2)
+    g.add_edge(2, 3)
+    g.add_edge(3, 4)
+    g.add_edge(4, 1)
     return g
 
 
@@ -78,6 +120,28 @@ def five_node_simple_nodes_five_edges_graph():
     g.add_edge(3, 2)
     g.add_edge(2, 'corn')
     g.add_edge('meep', 10)
+    return g
+
+
+@pytest.fixture
+def seven_node_heapish_graph():
+    """Return a graph with seven nodes that is heap like."""
+    g = Graph()
+    g.add_node(1)
+    g.add_node(2)
+    g.add_node(3)
+    g.add_node(4)
+    g.add_node(5)
+    g.add_node(6)
+    g.add_node(7)
+    g.add_edge(1, 2)
+    g.add_edge(1, 5)
+    g.add_edge(2, 3)
+    g.add_edge(2, 4)
+    g.add_edge(3, 1)
+    g.add_edge(5, 6)
+    g.add_edge(5, 7)
+    g.add_edge(7, 5)
     return g
 
 
@@ -159,7 +223,7 @@ def test_edges_two_node_edge(two_node_with_edge_graph):
 def test_edges_three_node_edge(three_node_with_two_edges_graph):
     """Test an empty graph for edges."""
     assert ('corn', 2) in three_node_with_two_edges_graph.edges()
-    assert (11,'corn') in three_node_with_two_edges_graph.edges()
+    assert (11, 'corn') in three_node_with_two_edges_graph.edges()
 
 
 def test_edges_five_node_edge(five_node_with_five_edges_graph):
@@ -275,3 +339,155 @@ def test_delete_edge_graph(five_node_simple_nodes_five_edges_graph):
     assert (2, 'corn') in five_node_simple_nodes_five_edges_graph.edges()
     five_node_simple_nodes_five_edges_graph.del_edge(2, 'corn')
     assert (2, 'corn') not in five_node_simple_nodes_five_edges_graph.edges()
+
+
+def test_neighbors_not_in_graph(five_node_with_five_edges_graph):
+    """."""
+    g = five_node_with_five_edges_graph
+    with pytest.raises(ValueError):
+        g.neighbors('cake')
+
+
+def test_neighbors_two_nodes_in_graph(two_node_two_edge_graph):
+    """."""
+    g = two_node_two_edge_graph
+    assert g.neighbors(1) == [2]
+
+
+def test_neighbors_five_nodes_in_graph(five_node_with_five_edges_graph):
+    """."""
+    g = five_node_with_five_edges_graph
+    assert g.neighbors(2) == [11.1, 'corn']
+
+
+def test_adjacent_first_val_not_in_graph(five_node_with_five_edges_graph):
+    """."""
+    g = five_node_with_five_edges_graph
+    with pytest.raises(ValueError):
+        g.adjacent('cake', 11.1)
+
+
+def test_adjacent_second_val_not_in_graph(five_node_with_five_edges_graph):
+    """."""
+    g = five_node_with_five_edges_graph
+    with pytest.raises(ValueError):
+        g.adjacent('corn', 'pie')
+
+
+def test_adjacent_both_vals_not_in_graph(five_node_with_five_edges_graph):
+    """."""
+    g = five_node_with_five_edges_graph
+    with pytest.raises(ValueError):
+        g.adjacent('cake', 'pie')
+
+
+def test_adjacent_two_nodes_in_graph(two_node_two_edge_graph):
+    """."""
+    g = two_node_two_edge_graph
+    assert g.adjacent(1, 2) is True
+
+
+def test_adjacent_five_nodes_in_graph(five_node_with_five_edges_graph):
+    """."""
+    g = five_node_with_five_edges_graph
+    assert g.adjacent(2, 11.1) is True
+    assert g.adjacent(2, 'corn') is True
+
+
+def test_depth_on_empty_graph(empty_graph):
+    """."""
+    with pytest.raises(ValueError):
+        empty_graph.depth_first_traversal(3)
+
+
+def test_breadth_on_empty_graph(empty_graph):
+    """."""
+    with pytest.raises(ValueError):
+        empty_graph.breadth_first_traversal(3)
+
+
+def test_depth_non_node_non_empty_graph(two_node_no_edge_graph):
+    """."""
+    with pytest.raises(ValueError):
+        two_node_no_edge_graph.depth_first_traversal(6)
+
+
+def test_breadth_non_node_non_empty_graph(two_node_no_edge_graph):
+    """."""
+    with pytest.raises(ValueError):
+        two_node_no_edge_graph.breadth_first_traversal(6)
+
+
+def test_depth_two_node_one_edge_graph(two_node_with_edge_graph):
+    """."""
+    g = two_node_with_edge_graph
+    assert g.depth_first_traversal('corn') == ['corn', 'beans']
+    assert g.depth_first_traversal('beans') == ['beans']
+
+
+def test_breadth_two_node_one_edge_graph(two_node_with_edge_graph):
+    """."""
+    g = two_node_with_edge_graph
+    assert g.breadth_first_traversal('corn') == ['corn', 'beans']
+    assert g.breadth_first_traversal('beans') == ['beans']
+
+
+def test_depth_two_node_two_edge_graph(two_node_two_edge_graph):
+    """."""
+    g = two_node_two_edge_graph
+    assert g.depth_first_traversal(1) == [1, 2]
+    assert g.depth_first_traversal(2) == [2, 1]
+
+
+def test_breadth_two_node_two_edge_graph(two_node_two_edge_graph):
+    """."""
+    g = two_node_two_edge_graph
+    assert g.breadth_first_traversal(1) == [1, 2]
+    assert g.breadth_first_traversal(2) == [2, 1]
+
+
+def test_depth_four_node_cyclical_graph(four_node_cyclical_graph):
+    """."""
+    g = four_node_cyclical_graph
+    assert g.depth_first_traversal(1) == [1, 2, 3, 4]
+    assert g.depth_first_traversal(4) == [4, 1, 2, 3]
+
+
+def test_breadth_four_node_cyclical_graph(four_node_cyclical_graph):
+    """."""
+    g = four_node_cyclical_graph
+    assert g.breadth_first_traversal(1) == [1, 2, 3, 4]
+    assert g.breadth_first_traversal(3) == [3, 4, 1, 2]
+
+
+def test_depth_three_node_cyclical_graph(three_node_bidirectional_cyclical_graph):
+    """."""
+    g = three_node_bidirectional_cyclical_graph
+    assert g.depth_first_traversal(1) == [1, 2, 3]
+    assert g.depth_first_traversal(3) == [3, 2, 1]
+
+
+def test_breadth_three_node_cyclical_graph(three_node_bidirectional_cyclical_graph):
+    """."""
+    g = three_node_bidirectional_cyclical_graph
+    assert g.breadth_first_traversal(1) == [1, 2, 3]
+    assert g.breadth_first_traversal(2) == [2, 1, 3]
+
+
+def test_depth_seven_node_heapish_graph(seven_node_heapish_graph):
+    """."""
+    g = seven_node_heapish_graph
+    assert g.depth_first_traversal(3) == [3, 1, 2, 4, 5, 6, 7]
+    assert g.depth_first_traversal(5) == [5, 6, 7]
+    assert g.depth_first_traversal(1) == [1, 2, 3, 4, 5, 6, 7]
+    assert g.depth_first_traversal(7) == [7, 5, 6]
+    assert g.depth_first_traversal(2) == [2, 3, 1, 5, 6, 7, 4]
+
+
+def test_breadth_seven_node_heapish_graph(seven_node_heapish_graph):
+    """."""
+    g = seven_node_heapish_graph
+    assert g.breadth_first_traversal(1) == [1, 2, 5, 3, 4, 6, 7]
+    assert g.breadth_first_traversal(5) == [5, 6, 7]
+    assert g.breadth_first_traversal(2) == [2, 3, 4, 1, 5, 6, 7]
+    assert g.breadth_first_traversal(7) == [7, 5, 6]

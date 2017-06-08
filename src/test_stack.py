@@ -21,27 +21,15 @@ TUPLE_LIST = Stack((2, 4, 9))
 
 STRING_LIST = Stack('cake')
 
-LEN_OF_THREE = Stack('cake')
-LEN_OF_THREE.push('pie')
-LEN_OF_THREE.push(42)
+LEN_OF_SIX = Stack('cake')
+LEN_OF_SIX.push('pie')
+LEN_OF_SIX.push(42)
 
 
-def test_stack_init_list():
-    """Test length and head of Stack when instantiated with a list."""
-    assert len(LIST_LIST) == 3
-    assert LIST_LIST._linked_list.head.val == 1
-
-
-def test_stack_init_tuple():
-    """Test length and head of Stack when instantiated with a tuple."""
-    assert len(TUPLE_LIST) == 3
-    assert TUPLE_LIST._linked_list.head.val == 9
-
-
-def test_stack_init_string():
-    """Test length and head of Stack when instantiated with a string."""
-    assert len(STRING_LIST) == 4
-    assert STRING_LIST._linked_list.head.val == 'e'
+@pytest.fixture
+def build_empty_stack():
+    """Build empty stack."""
+    return Stack()
 
 
 def test_stack_init_not_iter():
@@ -50,10 +38,10 @@ def test_stack_init_not_iter():
         Stack(3)
 
 
-def test_stack_push_none():
+def test_stack_push_none(build_empty_stack):
     """Test ValueError when push method called with arg of None."""
     with pytest.raises(ValueError):
-        EMPTY_STACK_FOR_PUSH.push(None)
+        build_empty_stack.push(None)
 
 
 def test_stack_push_one():
@@ -98,7 +86,14 @@ def test_stack_pop_empty():
         EMPTY_STACK_FOR_POP.pop()
 
 
+def test_stack_push_pop(build_empty_stack):
+    """Test last value pushed is popped."""
+    build_empty_stack.push('hello')
+    popped = build_empty_stack.pop()
+    assert popped.val == 'hello'
+
+
 def test_stack_len():
     """Test for len method."""
-    assert len(LEN_OF_THREE) == 6
+    assert len(LEN_OF_SIX) == 6
     assert len(STRING_LIST) == 4

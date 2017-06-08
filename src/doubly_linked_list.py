@@ -2,10 +2,10 @@
 
 
 class DoublyLinkedList(object):
-    """Sets properties and methods of a doubly linked list."""
+    """Sets properties and methods of a doubly-linked list."""
 
     def __init__(self):
-        """Create new instance of DoublyLinkedList object."""
+        """Create new instance of DoublyLinkedList."""
         self.tail = None
         self.head = None
         self._length = 0
@@ -18,6 +18,7 @@ class DoublyLinkedList(object):
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            new_node.next_node = None
             self._length += 1
             return
         self.head.prev_node = new_node
@@ -32,6 +33,7 @@ class DoublyLinkedList(object):
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            new_node.prev_node = None
             self._length += 1
             return
         self.tail.next_node = new_node
@@ -43,8 +45,12 @@ class DoublyLinkedList(object):
         current_node = self.head
         if current_node is None:
             raise IndexError('Nothing to pop.')
-        self.head = current_node.next_node
-        current_node.next_node.prev_node = None
+        if current_node.next_node is not None:
+            self.head = current_node.next_node
+            self.head.prev_node = None
+        else:
+            self.head = None
+            self.tail = None
         self._length -= 1
         return current_node.val
 
@@ -53,8 +59,12 @@ class DoublyLinkedList(object):
         current_node = self.tail
         if current_node is None:
             raise IndexError('Nothing to shift.')
-        self.tail = current_node.prev_node
-        current_node.prev_node.next_node = None
+        if current_node.prev_node is not None:
+            self.tail = current_node.prev_node
+            self.tail.next_node = None
+        else:
+            self.head = None
+            self.tail = None
         self._length -= 1
         return current_node.val
 

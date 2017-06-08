@@ -2,7 +2,6 @@
 from stack import Stack
 import pytest
 
-
 EMPTY_STACK_FOR_PUSH = Stack()
 EMPTY_STACK_FOR_POP = Stack()
 

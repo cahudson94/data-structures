@@ -84,20 +84,20 @@ class Graph(object):
             current_val = to_visit.pop().val
         return path
 
-    # def breadth_first_traversal(self, val):
-    #     """Return a path starting from val, traversing depth-first."""
-    #     from que_ import QueueStructure
-    #     if not self.has_node(val):
-    #         raise ValueError('This node is not in the graph.')
-    #     path = []
-    #     current_val = val
-    #     to_visit = QueueStructure()
-    #     while True:
-    #         if current_val not in path:
-    #             path.append(current_val)
-    #             for neighb in self._graphdict[current_val][::-1]:
-    #                 to_visit.enqueue(neighb)
-    #         if len(to_visit) == 0:
-    #             break
-    #         current_val = to_visit.dequeue()
-    #     return path
+    def breadth_first_traversal(self, val):
+        """Return a path starting from val, traversing depth-first."""
+        from que_ import QueueStructure
+        if not self.has_node(val):
+            raise ValueError('This node is not in the graph.')
+        path = []
+        current_val = val
+        to_visit = QueueStructure()
+        while True:
+            if current_val not in path:
+                path.append(current_val)
+                for neighb in self._graphdict[current_val][::-1]:
+                    to_visit.enqueue(neighb)
+            if len(to_visit) == 0:
+                break
+            current_val = to_visit.dequeue()
+        return path

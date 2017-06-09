@@ -64,4 +64,42 @@ class Graph(object):
 
     def adjacent(self, val1, val2):
         """Return bool of whether val1 is val2's neighbor or vice versa."""
+        if val1 not in self._graphdict or val2 not in self._graphdict:
+            raise ValueError('One or both values are not in the graph.')
         return val2 in self._graphdict[val1] or val1 in self._graphdict[val2]
+
+    def depth_first_traversal(self, val):
+        """Return a path starting from val, traversing depth-first."""
+        from stack import Stack
+        if not self.has_node(val):
+            raise ValueError('This node is not in the graph.')
+        path = []
+        to_visit = Stack()
+        current_val = val
+        while True:
+            if current_val not in path:
+                path.append(current_val)
+                for neighb in self._graphdict[current_val][::-1]:
+                    to_visit.push(neighb)
+            if len(to_visit) == 0:
+                break
+            current_val = to_visit.pop().val
+        return path
+
+    def breadth_first_traversal(self, val):
+        """Return a path starting from val, traversing depth-first."""
+        from que_ import QueueStructure
+        if not self.has_node(val):
+            raise ValueError('This node is not in the graph.')
+        path = []
+        current_val = val
+        to_visit = QueueStructure()
+        while True:
+            if current_val not in path:
+                path.append(current_val)
+                for neighb in self._graphdict[current_val]:
+                    to_visit.enqueue(neighb)
+            if len(to_visit) == 0:
+                break
+            current_val = to_visit.dequeue()
+        return path

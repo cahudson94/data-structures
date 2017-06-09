@@ -35,5 +35,6 @@ class PriorityQ(object):
     def pop(self):
         """Remove and return highest priority item in PQ."""
         if len(self._list):
-            return self._list.pop(0)
+            popped = self._list.pop(0)
+            return popped[1]
         return "No items to pop in priority queue."

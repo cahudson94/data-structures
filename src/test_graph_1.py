@@ -60,7 +60,7 @@ def three_node_with_two_edges_graph():
 
 
 @pytest.fixture
-def three_node_bidirectional_cyclical_graph():
+def three_node_cyclical_graph():
     """Return a bi-direcctional cyclical graph.."""
     g = Graph()
     g.add_node(1)
@@ -342,140 +342,140 @@ def test_delete_edge_graph(five_node_simple_nodes_five_edges_graph):
 
 
 def test_neighbors_not_in_graph(five_node_with_five_edges_graph):
-    """."""
+    """Test if the node asked for is in the graph to have neighbors."""
     g = five_node_with_five_edges_graph
     with pytest.raises(ValueError):
         g.neighbors('cake')
 
 
 def test_neighbors_two_nodes_in_graph(two_node_two_edge_graph):
-    """."""
+    """Test that the queried node has one neighbor."""
     g = two_node_two_edge_graph
     assert g.neighbors(1) == [2]
 
 
 def test_neighbors_five_nodes_in_graph(five_node_with_five_edges_graph):
-    """."""
+    """Test that the queried node has two neighbors."""
     g = five_node_with_five_edges_graph
     assert g.neighbors(2) == [11.1, 'corn']
 
 
 def test_adjacent_first_val_not_in_graph(five_node_with_five_edges_graph):
-    """."""
+    """Test that the first val is not a node to be adjacent."""
     g = five_node_with_five_edges_graph
     with pytest.raises(ValueError):
         g.adjacent('cake', 11.1)
 
 
 def test_adjacent_second_val_not_in_graph(five_node_with_five_edges_graph):
-    """."""
+    """Test that the second val is not a node to be adjacent."""
     g = five_node_with_five_edges_graph
     with pytest.raises(ValueError):
         g.adjacent('corn', 'pie')
 
 
 def test_adjacent_both_vals_not_in_graph(five_node_with_five_edges_graph):
-    """."""
+    """Test that neither val is a node in the graph to be adjacent."""
     g = five_node_with_five_edges_graph
     with pytest.raises(ValueError):
         g.adjacent('cake', 'pie')
 
 
 def test_adjacent_two_nodes_in_graph(two_node_two_edge_graph):
-    """."""
+    """Test two nodes are adjacent returns True."""
     g = two_node_two_edge_graph
     assert g.adjacent(1, 2) is True
 
 
 def test_adjacent_five_nodes_in_graph(five_node_with_five_edges_graph):
-    """."""
+    """Test two nodes are adjacent returns True twice."""
     g = five_node_with_five_edges_graph
     assert g.adjacent(2, 11.1) is True
     assert g.adjacent(2, 'corn') is True
 
 
 def test_depth_on_empty_graph(empty_graph):
-    """."""
+    """Test a depth traersal on an empty graph."""
     with pytest.raises(ValueError):
         empty_graph.depth_first_traversal(3)
 
 
 def test_breadth_on_empty_graph(empty_graph):
-    """."""
+    """Test a breadth traersal on an empty graph."""
     with pytest.raises(ValueError):
         empty_graph.breadth_first_traversal(3)
 
 
 def test_depth_non_node_non_empty_graph(two_node_no_edge_graph):
-    """."""
+    """Test depth traversal with bad val on non empty graph."""
     with pytest.raises(ValueError):
         two_node_no_edge_graph.depth_first_traversal(6)
 
 
 def test_breadth_non_node_non_empty_graph(two_node_no_edge_graph):
-    """."""
+    """Test breadth traversal with bad val on non empty graph."""
     with pytest.raises(ValueError):
         two_node_no_edge_graph.breadth_first_traversal(6)
 
 
 def test_depth_two_node_one_edge_graph(two_node_with_edge_graph):
-    """."""
+    """Test depth traversal on two node graph with one edge."""
     g = two_node_with_edge_graph
     assert g.depth_first_traversal('corn') == ['corn', 'beans']
     assert g.depth_first_traversal('beans') == ['beans']
 
 
 def test_breadth_two_node_one_edge_graph(two_node_with_edge_graph):
-    """."""
+    """Test breadth traversal on two node graph with one edge."""
     g = two_node_with_edge_graph
     assert g.breadth_first_traversal('corn') == ['corn', 'beans']
     assert g.breadth_first_traversal('beans') == ['beans']
 
 
 def test_depth_two_node_two_edge_graph(two_node_two_edge_graph):
-    """."""
+    """Test depth traversal on two node graph with two edges."""
     g = two_node_two_edge_graph
     assert g.depth_first_traversal(1) == [1, 2]
     assert g.depth_first_traversal(2) == [2, 1]
 
 
 def test_breadth_two_node_two_edge_graph(two_node_two_edge_graph):
-    """."""
+    """Test breadth traversal on two node graph with two edges."""
     g = two_node_two_edge_graph
     assert g.breadth_first_traversal(1) == [1, 2]
     assert g.breadth_first_traversal(2) == [2, 1]
 
 
 def test_depth_four_node_cyclical_graph(four_node_cyclical_graph):
-    """."""
+    """Test depth traversal on four node cyclical graph."""
     g = four_node_cyclical_graph
     assert g.depth_first_traversal(1) == [1, 2, 3, 4]
     assert g.depth_first_traversal(4) == [4, 1, 2, 3]
 
 
 def test_breadth_four_node_cyclical_graph(four_node_cyclical_graph):
-    """."""
+    """Test breadth traversal on four node cyclical graph."""
     g = four_node_cyclical_graph
     assert g.breadth_first_traversal(1) == [1, 2, 3, 4]
     assert g.breadth_first_traversal(3) == [3, 4, 1, 2]
 
 
-def test_depth_three_node_cyclical_graph(three_node_bidirectional_cyclical_graph):
-    """."""
-    g = three_node_bidirectional_cyclical_graph
+def test_depth_three_node_cyclical_graph(three_node_cyclical_graph):
+    """Test depth traversal on three node cyclical graph."""
+    g = three_node_cyclical_graph
     assert g.depth_first_traversal(1) == [1, 2, 3]
     assert g.depth_first_traversal(3) == [3, 2, 1]
 
 
-def test_breadth_three_node_cyclical_graph(three_node_bidirectional_cyclical_graph):
-    """."""
-    g = three_node_bidirectional_cyclical_graph
+def test_breadth_three_node_cyclical_graph(three_node_cyclical_graph):
+    """Test breadth traversal on three node cyclical graph."""
+    g = three_node_cyclical_graph
     assert g.breadth_first_traversal(1) == [1, 2, 3]
     assert g.breadth_first_traversal(2) == [2, 1, 3]
 
 
 def test_depth_seven_node_heapish_graph(seven_node_heapish_graph):
-    """."""
+    """Test depth traversal on seven node heap like, semi cyclical graph."""
     g = seven_node_heapish_graph
     assert g.depth_first_traversal(3) == [3, 1, 2, 4, 5, 6, 7]
     assert g.depth_first_traversal(5) == [5, 6, 7]
@@ -485,7 +485,7 @@ def test_depth_seven_node_heapish_graph(seven_node_heapish_graph):
 
 
 def test_breadth_seven_node_heapish_graph(seven_node_heapish_graph):
-    """."""
+    """Test breadth traversal on seven node heap like, semi cyclical graph."""
     g = seven_node_heapish_graph
     assert g.breadth_first_traversal(1) == [1, 2, 5, 3, 4, 6, 7]
     assert g.breadth_first_traversal(5) == [5, 6, 7]

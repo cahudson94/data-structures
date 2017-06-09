@@ -7,7 +7,7 @@ All modules and tests located in src directory.
 - module: linked_list.py
 - test: test_linked_list.py
 - public methods:
-* push
+** push
 * pop
 * size
 * search

@@ -4,9 +4,9 @@ Authors: Morgan Nomura and Chris Hudson
 All modules and tests located in src directory.
 
 ## Linked List
-module: linked_list.py
-test: test_linked_list.py
-public methods:
+###module: linked_list.py
+###test: test_linked_list.py
+###public methods:
 * push
 * pop
 * size
@@ -15,32 +15,35 @@ public methods:
 * display
 
 ## Stack
-module: stack.py
-test: test_stack.py
-public methods:
+###module: stack.py
+###test: test_stack.py
+###public methods:
 * push
 * pop
 
 ## Doubly Linked List
-module: doubly_linked_list.py
-test: test_doubly_linked_list.py
-public methods:
+###module: doubly_linked_list.py
+###test: test_doubly_linked_list.py
+###public methods:
 * push
 * append
 * pop
 * shift
 * remove
 
-## Queumodule: que_.ptest: test_que_.ppublic methods:
+## Queue
+###module: que_.py
+###test: test_que_.py
+###public methods:
 * enqueue
 * dequeue
 * peek
 * size
 
 ## Dequeue
-module: deque.py
-test: test_deque.py
-public methods:
+###module: deque.py
+###test: test_deque.py
+###public methods:
 * append
 * appendleft
 * pop
@@ -50,24 +53,24 @@ public methods:
 * size
 
 ## Binary Heap
-module: binheap.py
-test: test_binheap.py
-public methods:
+###module: binheap.py
+###test: test_binheap.py
+###public methods:
 * push
 * pop
 
 ## Priority Queue
-module: priorityque.py
-test: test_priorityque.py
-public methods:
+###module: priorityque.py
+###test: test_priorityque.py
+###public methods:
 * insert
 * peek
 * pop
 
 ## Graph One
-module: graph_1.py
-test: test_graph_1.py
-public methods:
+###module: graph_1.py
+###test: test_graph_1.py
+###public methods:
 * nodes
 * edges
 * add_node

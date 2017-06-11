@@ -32,7 +32,7 @@ class Graph(object):
         """Return boolean for node in graph membership."""
         return val in self._graphdict
 
-    def add_edge(self, val1, val2, weight=0):
+    def add_edge(self, val1, val2, weight):
         """Add an edge between to vals, add vals if not currently node."""
         if type(weight) not in [int, float]:
             raise ValueError('Weight must be int or float.')

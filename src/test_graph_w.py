@@ -32,16 +32,6 @@ def two_node_with_edge_graph():
     g = Graph()
     g.add_node('corn')
     g.add_node('beans')
-    g.add_edge('corn', 'beans')
-    return g
-
-
-@pytest.fixture
-def two_node_with_edge_graph_weighted():
-    """Return a graph with two nodes and one edge."""
-    g = Graph()
-    g.add_node('corn')
-    g.add_node('beans')
     g.add_edge('corn', 'beans', 1)
     return g
 
@@ -52,8 +42,8 @@ def two_node_two_edge_graph():
     g = Graph()
     g.add_node(1)
     g.add_node(2)
-    g.add_edge(1, 2)
-    g.add_edge(2, 1)
+    g.add_edge(1, 2, 1.5)
+    g.add_edge(2, 1, 2.5)
     return g
 
 
@@ -64,7 +54,7 @@ def three_node_with_two_edges_graph():
     g.add_node('corn')
     g.add_node(2)
     g.add_node(11)
-    g.add_edge('corn', 2)
+    g.add_edge('corn', 2, 11)
     g.add_edge(11, 'corn', 3)
     return g
 
@@ -76,12 +66,12 @@ def three_node_cyclical_graph():
     g.add_node(1)
     g.add_node(2)
     g.add_node(3)
-    g.add_edge(1, 2)
-    g.add_edge(2, 1)
-    g.add_edge(2, 3)
-    g.add_edge(3, 2)
-    g.add_edge(1, 3)
-    g.add_edge(3, 1)
+    g.add_edge(1, 2, 1)
+    g.add_edge(2, 1, 2)
+    g.add_edge(2, 3, 3)
+    g.add_edge(3, 2, 4)
+    g.add_edge(1, 3, 5)
+    g.add_edge(3, 1, 6)
     return g
 
 
@@ -93,10 +83,10 @@ def four_node_cyclical_graph():
     g.add_node(2)
     g.add_node(3)
     g.add_node(4)
-    g.add_edge(1, 2)
-    g.add_edge(2, 3)
-    g.add_edge(3, 4)
-    g.add_edge(4, 1)
+    g.add_edge(1, 2, 7)
+    g.add_edge(2, 3, 8)
+    g.add_edge(3, 4, 9)
+    g.add_edge(4, 1, 10)
     return g
 
 
@@ -110,7 +100,7 @@ def five_node_with_five_edges_graph():
     g.add_node('chocolate')
     g.add_node('mustard')
     g.add_edge(2, 11.1, 2)
-    g.add_edge('mustard', 'corn')
+    g.add_edge('mustard', 'corn', -1)
     g.add_edge(2, 'corn', 3)
     g.add_edge('corn', 2, 1)
     g.add_edge(11.1, 'corn', 4)
@@ -127,7 +117,7 @@ def five_node_simple_nodes_five_edges_graph():
     g.add_node('meep')
     g.add_node(10)
     g.add_edge(2, 3, 6.6)
-    g.add_edge(3, 2)
+    g.add_edge(3, 2, -2)
     g.add_edge(2, 'corn', 4.5)
     g.add_edge('meep', 10, 11)
     return g
@@ -144,14 +134,14 @@ def seven_node_heapish_graph():
     g.add_node(5)
     g.add_node(6)
     g.add_node(7)
-    g.add_edge(1, 2)
-    g.add_edge(1, 5)
-    g.add_edge(2, 3)
-    g.add_edge(2, 4)
-    g.add_edge(3, 1)
-    g.add_edge(5, 6)
-    g.add_edge(5, 7)
-    g.add_edge(7, 5)
+    g.add_edge(1, 2, -3)
+    g.add_edge(1, 5, -4)
+    g.add_edge(2, 3, -5)
+    g.add_edge(2, 4, 1)
+    g.add_edge(3, 1, 2)
+    g.add_edge(5, 6, 3)
+    g.add_edge(5, 7, 4)
+    g.add_edge(7, 5, 5)
     return g
 
 
@@ -227,17 +217,12 @@ def test_edges_two_node_no_edge_graph(two_node_no_edge_graph):
 
 def test_edges_two_node_graph_default_weight(two_node_with_edge_graph):
     """Test an empty graph for edges with default weight."""
-    assert two_node_with_edge_graph.edges() == [('corn', 'beans', 0)]
-
-
-def test_edges_non_default_weight(two_node_with_edge_graph_weighted):
-    """Test an empty graph for edges with a set weight."""
-    assert two_node_with_edge_graph_weighted.edges() == [('corn', 'beans', 1)]
+    assert two_node_with_edge_graph.edges() == [('corn', 'beans', 1)]
 
 
 def test_edges_three_node_graph(three_node_with_two_edges_graph):
     """Test three node graph for one weighted and one unweighted edge."""
-    assert ('corn', 2, 0) in three_node_with_two_edges_graph.edges()
+    assert ('corn', 2, 11) in three_node_with_two_edges_graph.edges()
     assert (11, 'corn', 3) in three_node_with_two_edges_graph.edges()
 
 
@@ -247,7 +232,7 @@ def test_edges_five_node_graph(five_node_with_five_edges_graph):
     assert (2, 11.1, 2) in five_node_with_five_edges_graph.edges()
     assert (2, 'corn', 3) in five_node_with_five_edges_graph.edges()
     assert (11.1, 'corn', 4) in five_node_with_five_edges_graph.edges()
-    assert ('mustard', 'corn', 0) in five_node_with_five_edges_graph.edges()
+    assert ('mustard', 'corn', -1) in five_node_with_five_edges_graph.edges()
 
 
 def test_add_node_no_val(one_node_graph):
@@ -305,7 +290,7 @@ def test_add_edge_new_nodes_on_empty(empty_graph):
 def test_add_edge_new_nodes_on_non_empty(three_node_with_two_edges_graph):
     """Test adding edge with two new nodes and weight."""
     three_node_with_two_edges_graph.add_edge('beans', 'tomato', 5)
-    assert ('corn', 2, 0) in three_node_with_two_edges_graph.edges()
+    assert ('corn', 2, 11) in three_node_with_two_edges_graph.edges()
     assert (11, 'corn', 3) in three_node_with_two_edges_graph.edges()
     assert ('beans', 'tomato', 5) in three_node_with_two_edges_graph.edges()
     assert 'beans' and 'tomato' in three_node_with_two_edges_graph.nodes()
@@ -313,22 +298,22 @@ def test_add_edge_new_nodes_on_non_empty(three_node_with_two_edges_graph):
 
 def test_add_edge_one_new_node(five_node_simple_nodes_five_edges_graph):
     """Test adding edge to one new node, one existing node and no weight."""
-    five_node_simple_nodes_five_edges_graph.add_edge('hi', 3)
+    five_node_simple_nodes_five_edges_graph.add_edge('hi', 3, 5)
     assert (2, 3, 6.6) in five_node_simple_nodes_five_edges_graph.edges()
     assert (2, 'corn', 4.5) in five_node_simple_nodes_five_edges_graph.edges()
-    assert (3, 2, 0) in five_node_simple_nodes_five_edges_graph.edges()
+    assert (3, 2, -2) in five_node_simple_nodes_five_edges_graph.edges()
     assert ('meep', 10, 11) in five_node_simple_nodes_five_edges_graph.edges()
-    assert ('hi', 3, 0) in five_node_simple_nodes_five_edges_graph.edges()
+    assert ('hi', 3, 5) in five_node_simple_nodes_five_edges_graph.edges()
     assert 'hi' and 3 in five_node_simple_nodes_five_edges_graph.nodes()
 
 
 def test_add_edge_existing_nodes(five_node_simple_nodes_five_edges_graph):
     """Test adding edge to two existing nodes."""
-    five_node_simple_nodes_five_edges_graph.add_edge(3, 'meep')
+    five_node_simple_nodes_five_edges_graph.add_edge(3, 'meep', 123)
     assert (2, 3, 6.6) in five_node_simple_nodes_five_edges_graph.edges()
     assert (2, 'corn', 4.5) in five_node_simple_nodes_five_edges_graph.edges()
-    assert (3, 2, 0) in five_node_simple_nodes_five_edges_graph.edges()
-    assert (3, 'meep', 0) in five_node_simple_nodes_five_edges_graph.edges()
+    assert (3, 2, -2) in five_node_simple_nodes_five_edges_graph.edges()
+    assert (3, 'meep', 123) in five_node_simple_nodes_five_edges_graph.edges()
     assert ('meep', 10, 11) in five_node_simple_nodes_five_edges_graph.edges()
     assert 3 and 'meep' in five_node_simple_nodes_five_edges_graph.nodes()
 

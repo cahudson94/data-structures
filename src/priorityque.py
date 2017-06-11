@@ -29,7 +29,7 @@ class PriorityQ(object):
     def peek(self):
         """Return the highest priority item in PQ."""
         if len(self._list):
-            return self._list[0]
+            return self._list[0][1]
         return "No items in priority queue."
 
     def pop(self):

@@ -1,4 +1,5 @@
 """Python implementation of a graph that is unweighted and directed."""
+from math import inf
 
 
 class Graph(object):
@@ -111,6 +112,19 @@ class Graph(object):
 
     def b_f_shortest_path(self, val1, val2):
         """"Find the shortest path using the bellman ford algorithm."""
+        pass
 
     def d_shortest_path(self, val1, val2):
         """Find the shortest path using Dijkstra's algorithm."""
+        current_node = val1
+        unvisited = dict([[node, inf] for node in self.nodes()])
+        unvisited[current_node] = 0
+        visited = {}
+        shortest_path = 0
+        while val2 not in visited or min(unvisited.items(), key=lambda x: x[1]) == inf:
+            neighbs = self._graphdict[current_node]  # list of tuples: neighbors and weights
+            for neighb in neighbs:  # iterates through current node's neighbhors
+                unvisited[neighb[0]] = neighb[1]  # changes weight of current node's neighb in unvisited dict
+            visited.add(current_node)  # adds current node to visited set
+            del unvisited[current_node]  # removes current node from unvisited
+            current_node = min(neighbs.items(), key=lambda x: x[1])[0]  # resets current node to closest neighbs

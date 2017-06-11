@@ -25,17 +25,17 @@ class Deque(object):
 
     def pop(self):
         """Remove the back of the Dequeue."""
-        popped_node = self._doubly_linked_list.shift()
+        popped = self._doubly_linked_list.shift()
         self.tail = self._doubly_linked_list.tail
         self.head = self._doubly_linked_list.head
-        return popped_node.val
+        return popped
 
     def popleft(self):
         """Remove the front of the Dequeue."""
-        popped_node = self._doubly_linked_list.pop()
+        popped = self._doubly_linked_list.pop()
         self.head = self._doubly_linked_list.head
         self.tail = self._doubly_linked_list.tail
-        return popped_node.val
+        return popped
 
     def peek(self):
         """Return the Dequeue tail."""

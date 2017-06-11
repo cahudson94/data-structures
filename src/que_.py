@@ -19,7 +19,7 @@ class QueueStructure(object):
         """Remove the head from the queue."""
         popped_node = self._doubly_linked_list.pop()
         self.head = self._doubly_linked_list.head
-        return popped_node.val
+        return popped_node
 
     def peek(self):
         """Return the queue head."""

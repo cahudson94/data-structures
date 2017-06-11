@@ -197,7 +197,7 @@ def test_dll_append_none(initialize_empty_dll):
 
 def test_dll_pop(initialize_three_dll):
     """Test doubly linked list pop method removes and returns head."""
-    assert initialize_three_dll.pop().val == 'three'
+    assert initialize_three_dll.pop() == 'three'
     assert initialize_three_dll.head.val == 'two'
 
 
@@ -228,7 +228,7 @@ def test_dll_pop_empty(initialize_empty_dll):
 
 def test_dll_shift(initialize_three_dll):
     """Test doubly linked list shift method removes and returns tail."""
-    assert initialize_three_dll.shift().val == 'one'
+    assert initialize_three_dll.shift() == 'one'
     assert initialize_three_dll.tail.val == 'two'
 
 
@@ -301,8 +301,3 @@ def test_dll_remove_invalid(initialize_three_dll):
 def test_dll_len(initialize_three_dll):
     """Test len method."""
     assert len(initialize_three_dll) == 3
-
-
-def test_dll_display(initialize_three_dll):
-    """Test display method."""
-    assert initialize_three_dll.display() == "(one, two, three)"

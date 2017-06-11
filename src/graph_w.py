@@ -17,7 +17,7 @@ class Graph(object):
         edges = []
         for key in self.nodes():
             for item in self._graphdict[key]:
-                edges.append((key, item))
+                edges.append((key, item[0], item[1]))
         return edges
 
     def add_node(self, val):
@@ -25,48 +25,53 @@ class Graph(object):
         if type(val) not in [str, int, float]:
             raise ValueError('Please use a valid value.')
         if self.has_node(val):
-            raise ValueError('{} is already in this graph.'.format(val))
+            raise KeyError('{} is already in this graph.'.format(val))
         self._graphdict[val] = []
 
     def has_node(self, val):
         """Return boolean for node in graph membership."""
         return val in self._graphdict
 
-    def add_edge(self, val1, val2):
+    def add_edge(self, val1, val2, weight=0):
         """Add an edge between to vals, add vals if not currently node."""
+        if type(weight) not in [int, float]:
+            raise ValueError('Weight must be int or float.')
         if not self.has_node(val1):
             self.add_node(val1)
         if not self.has_node(val2):
             self.add_node(val2)
-        if (val1, val2) not in self.edges():
-            self._graphdict[val1].append(val2)
+        if (val1, val2, weight) not in self.edges():
+            self._graphdict[val1].append((val2, weight))
 
     def del_node(self, val):
         """Remove a node and edges that refer to it."""
         if not self.has_node(val):
-            raise ValueError('This node is not in the graph.')
+            raise KeyError('This node is not in the graph.')
         del self._graphdict[val]
         for key in self.nodes():
-            if val in self._graphdict[key]:
-                self._graphdict[key].remove(val)
+            print(key)
+            for item in self._graphdict[key]:
+                print(item)
+                if val == item[0]:
+                    self._graphdict[key].remove(item)
 
-    def del_edge(self, val1, val2):
+    def del_edge(self, val1, val2, weight):
         """Remove an edge between two nodes."""
-        if (val1, val2) not in self.edges():
-            raise ValueError('This edge does not exist.')
-        self._graphdict[val1].remove(val2)
+        if (val1, val2, weight) not in self.edges():
+            raise KeyError('This edge does not exist.')
+        self._graphdict[val1].remove((val2, weight))
 
     def neighbors(self, val):
         """Return list of neighbors for a given node."""
         if val not in self.nodes():
             raise ValueError('This node is not in the graph.')
-        return self._graphdict[val]
+        return [item[0] for item in self._graphdict[val]]
 
     def adjacent(self, val1, val2):
         """Return bool of whether val1 is val2's neighbor or vice versa."""
         if val1 not in self._graphdict or val2 not in self._graphdict:
-            raise ValueError('One or both values are not in the graph.')
-        return val2 in self._graphdict[val1] or val1 in self._graphdict[val2]
+            raise KeyError('One or both values are not in the graph.')
+        return val2 in self.neighbors(val1) or val1 in self.neighbors(val2)
 
     def depth_first_traversal(self, val):
         """Return a path starting from val, traversing depth-first."""
@@ -80,7 +85,7 @@ class Graph(object):
             if current_val not in path:
                 path.append(current_val)
                 for neighb in self._graphdict[current_val][::-1]:
-                    to_visit.push(neighb)
+                    to_visit.push(neighb[0])
             if len(to_visit) == 0:
                 break
             current_val = to_visit.pop().val
@@ -98,7 +103,7 @@ class Graph(object):
             if current_val not in path:
                 path.append(current_val)
                 for neighb in self._graphdict[current_val]:
-                    to_visit.enqueue(neighb)
+                    to_visit.enqueue(neighb[0])
             if len(to_visit) == 0:
                 break
             current_val = to_visit.dequeue()

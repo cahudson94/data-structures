@@ -108,3 +108,9 @@ class Graph(object):
                 break
             current_val = to_visit.dequeue()
         return path
+
+    def b_f_shortest_path(self, val1, val2):
+        """"Find the shortest path using the bellman ford algorithm."""
+
+    def d_shortest_path(self, val1, val2):
+        """Find the shortest path using Dijkstra's algorithm."""

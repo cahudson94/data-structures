@@ -1,4 +1,5 @@
 """Python implementation of a graph that is unweighted and directed."""
+from math import inf
 
 
 class Graph(object):
@@ -13,11 +14,11 @@ class Graph(object):
         return list(self._graphdict.keys())
 
     def edges(self):
-        """Return list of graph edges."""
-        edges = []
+        """Return dict of graph edges."""
+        edges = {}
         for key in self.nodes():
             for item in self._graphdict[key]:
-                edges.append((key, item[0], item[1]))
+                edges[(key, item[0])] = item[1]
         return edges
 
     def add_node(self, val):
@@ -111,6 +112,27 @@ class Graph(object):
 
     def b_f_shortest_path(self, val1, val2):
         """"Find the shortest path using the bellman ford algorithm."""
+        pass
 
-    def d_shortest_path(self, val1, val2):
+    def d_shortest_path(self, start, end):
         """Find the shortest path using Dijkstra's algorithm."""
+        if start not in self.nodes() or end not in self.nodes():
+            raise KeyError('Graph does not contain one or both nodes.')
+        current_node = start  # set current node to start value
+        visited = {}  # create empty set of visited nodes
+        unvisited = dict([[node, inf] for node in self.nodes()])  # populate dictionary of node keys and infinite values for all nodes in graph
+        unvisited[current_node] = 0  # overwrite the path weight for current node to 0
+        edges = self.edges()  # save a list of graph edges
+        while end not in visited or min(unvisited.values()) == inf:  # runs while end val isn't in visited or the min value of unvisited is infinite
+            for node in unvisited:  # for every node that hasn't been visited
+                if (current_node, node) in edges:  # if there's an edge between the current and an unvisited node
+                    tentative_weight = unvisited[current_node] + edges[(current_node, node)]  # calculate the weight of the path to the current node plus the weight of the edge in question
+                    if unvisited[node] > tentative_weight:  # if the stored weight is greater than the calculated weight
+                        unvisited[node] = tentative_weight  # overwrite with the new weight
+            visited[current_node] = min(unvisited.values())  # create a key of current node in visited with the lowest weight in unvisited
+            del unvisited[current_node]  # delete the current node from unvisited
+            if len(unvisited):  # if there are still entries in unvisited
+                current_node = min(unvisited.keys(), key=unvisited.get)[0]  # change the current node to the lowest valued key in unvisited
+            else:
+                break  # break the while loop if unvisited is empty
+        return visited[end]

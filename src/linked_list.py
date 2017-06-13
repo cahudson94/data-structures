@@ -29,7 +29,7 @@ class LinkedList(object):
             raise IndexError('Nothing to pop.')
         self._length -= 1
         self.head = current_node.next_node
-        return current_node
+        return current_node.val
 
     def size(self):
         """Return the size of a linked list."""

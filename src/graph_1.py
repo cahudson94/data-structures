@@ -83,7 +83,7 @@ class Graph(object):
                     to_visit.push(neighb)
             if len(to_visit) == 0:
                 break
-            current_val = to_visit.pop().val
+            current_val = to_visit.pop()
         return path
 
     def breadth_first_traversal(self, val):

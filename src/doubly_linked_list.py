@@ -44,7 +44,7 @@ class DoublyLinkedList(object):
         """Remove and return node from head of doubly linked list."""
         current_node = self.head
         if current_node is None:
-            raise IndexError('Nothing to pop.')
+            raise IndexError('There are no Nodes.')
         if current_node.next_node is not None:
             self.head = current_node.next_node
             self.head.prev_node = None
@@ -58,7 +58,7 @@ class DoublyLinkedList(object):
         """Remove and return node from tail of doubly linked list."""
         current_node = self.tail
         if current_node is None:
-            raise IndexError('Nothing to shift.')
+            raise IndexError('There are no Nodes.')
         if current_node.prev_node is not None:
             self.tail = current_node.prev_node
             self.tail.next_node = None

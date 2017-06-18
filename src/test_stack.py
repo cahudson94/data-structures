@@ -58,25 +58,25 @@ def test_stack_push_two():
 
 def test_stack_pop_one():
     """Test stack pop method for string."""
-    assert POP_LIST.pop().val == 'three'
+    assert POP_LIST.pop() == 'three'
     assert POP_LIST._linked_list.head.val == 2
 
 
 def test_stack_pop_two():
     """Test stack pop method for int."""
-    assert POP_LIST.pop().val == 2
+    assert POP_LIST.pop() == 2
     assert POP_LIST._linked_list.head.val == 'one'
 
 
 def test_stack_pop_tup():
     """Test stack pop method for tup as node val."""
-    assert LIST_OF_THREE.pop().val == (1, 2, 3)
+    assert LIST_OF_THREE.pop() == (1, 2, 3)
     assert LIST_OF_THREE._linked_list.head.val == ['one', 'two', 'three']
 
 
 def test_stack_pop_list():
     """Test stack pop method for list as node val."""
-    assert LIST_OF_THREE.pop().val == ['one', 'two', 'three']
+    assert LIST_OF_THREE.pop() == ['one', 'two', 'three']
     assert LIST_OF_THREE._linked_list.head.val == 3
 
 
@@ -90,7 +90,7 @@ def test_stack_push_pop(build_empty_stack):
     """Test last value pushed is popped."""
     build_empty_stack.push('hello')
     popped = build_empty_stack.pop()
-    assert popped.val == 'hello'
+    assert popped == 'hello'
 
 
 def test_stack_len():

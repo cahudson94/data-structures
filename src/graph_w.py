@@ -110,9 +110,27 @@ class Graph(object):
             current_val = to_visit.dequeue()
         return path
 
-    def b_f_shortest_path(self, val1, val2):
+    def b_f_shortest_path(self, start, end):
         """"Find the shortest path using the bellman ford algorithm."""
-        pass
+        iterations = len(self.edges) - 1
+        iteration = 0
+        unvisited = [node for node in self.nodes()]
+        paths = dict([[node, inf] for node in self.nodes()])
+        prev_paths = {}
+        current_node = start
+        paths[current_node] = 0
+        edges = self.edges()
+        path_total = 0
+        while iteration < iterations or paths == prev_paths:
+            for edge in edges:
+                if edge[0] == current_node:
+                    if path_total + edge[2] < paths[edge[1]]:
+                        paths[edge[1]] = path_total + edge[2]
+            current_index = unvisited[current_node]
+            current_node = unvisited[current_index + 1]
+            if current_node == start:
+                iteration += 1
+        return paths[end]
 
     def d_shortest_path(self, start, end):
         """Find the shortest path using Dijkstra's algorithm."""

@@ -30,11 +30,11 @@ class PriorityQ(object):
         """Return the highest priority item in PQ."""
         if len(self._list):
             return self._list[0][1]
-        return "No items in priority queue."
+        raise IndexError("No items in priority queue.")
 
     def pop(self):
         """Remove and return highest priority item in PQ."""
         if len(self._list):
             popped = self._list.pop(0)
             return popped[1]
-        return "No items to pop in priority queue."
+        raise IndexError("No items to pop in priority queue.")

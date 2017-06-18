@@ -7,9 +7,11 @@ class BinaryHeap(object):
     def __init__(self, iterable=None):
         """Init binheap."""
         self._list = []
-        if type(iterable) in [list, tuple]:
+        if type(iterable) in [list, tuple, str]:
             for i in iterable:
                 self.push(i)
+        elif iterable is not None:
+            raise TypeError('Try again with a list, tuple, or string.')
 
     def push(self, val):
         """Add value to the bottom of heap and bubbles up as appropriate."""

@@ -34,3 +34,7 @@ All modules and tests located in src directory.
 ## Graph One
 - module: graph_1.py
 - test: test_graph_1.py
+
+## Weighted Graph
+- module: graph_w.py
+- test: test_graph_w.py

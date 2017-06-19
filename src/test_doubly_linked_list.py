@@ -276,6 +276,14 @@ def test_dll_remove_not_found(initialize_three_dll):
         initialize_three_dll.remove('cake')
 
 
+def test_dll_remove_from_list_of_one(dll_push_one):
+    """Test doubly linked list remove method on only node."""
+    dll_push_one.remove(5)
+    assert len(dll_push_one) == 0
+    assert dll_push_one.head is None
+    assert dll_push_one.tail is None
+
+
 def test_dll_remove_from_head(initialize_two_dll):
     """Test doubly linked list remove method on the head of a list of two."""
     initialize_two_dll.remove('one')

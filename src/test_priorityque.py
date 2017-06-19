@@ -145,8 +145,8 @@ def test_insert_two_with_same_val_different_priority(build_one_item_pq):
 
 def test_peek_empty_pq(build_empty_pq):
     """Peek with empty PQ."""
-    peeked = build_empty_pq.peek()
-    assert peeked == "No items in priority queue."
+    with pytest.raises(IndexError):
+        build_empty_pq.peek()
 
 
 def test_peek_one_item_pq(build_one_item_pq):
@@ -198,4 +198,5 @@ def test_pop_one(build_one_item_pq):
 
 def test_pop_empty(build_empty_pq):
     """Pop empty list."""
-    assert build_empty_pq.pop() == 'No items to pop in priority queue.'
+    with pytest.raises(IndexError):
+        build_empty_pq.pop()

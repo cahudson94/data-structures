@@ -81,6 +81,24 @@ def test_bheap_init_list_mult_val():
     assert len(b._list) == 4
 
 
+def test_binheap_init_bad_iter_dict():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap({'a': 1})
+
+
+def test_binheap_init_bad_iter_int():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap(2)
+
+
+def test_binheap_init_bad_iter_bool():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap(True)
+
+
 def test_bheap_init_list_one_bad_val():
     """Init with longer list and one bad val."""
     with pytest.raises(ValueError):

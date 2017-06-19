@@ -114,27 +114,26 @@ class Graph(object):
         if start not in self.nodes() or end not in self.nodes():
             raise KeyError('Graph does not contain one or both nodes.')
         iterations = len(self.edges()) - 1
-        iteration = 0
         unvisited = self.nodes()
         unvisited.remove(start)
         unvisited.insert(0, start)
         paths = dict([[node, float("inf")] for node in self.nodes()])
-        prev_paths = {}
+        prev_paths = []
         paths[start] = 0
         if not len(self.edges()):
             raise KeyError('No edges in this graph.')
         edges = self.edges()
-        path_total = 0
-        while iteration < iterations or paths == prev_paths:
+        while iterations >= 0 and paths.keys() not in prev_paths:
             for node in unvisited:
                 if paths[node] != float("inf"):
                     for edge in edges:
-                        if edge[0] == start:
-                            if path_total + edge[2] < paths[edge[1]]:
-                                paths[edge[1]] = path_total + edge[2]
-                if node == unvisited[-1]:
-                    iteration += 1
-                    prev_paths = paths
+                        if edge[0] == node and edge[1] != start:
+                            if paths[node] + edge[2] < paths[edge[1]]:
+                                paths[edge[1]] = paths[node] + edge[2]
+            iterations -= 1
+            prev_paths = []
+            for key in paths:
+                prev_paths.append(paths[key])
         if paths[end] == float("inf"):
             raise IndexError('There is no path between those nodes.')
         return paths[end]
@@ -143,27 +142,26 @@ class Graph(object):
         """Find the shortest path using Dijkstra's algorithm."""
         if start not in self.nodes() or end not in self.nodes():
             raise KeyError('Graph does not contain one or both nodes.')
-        current_node = start  # set current node to start value
-        visited = {}  # create empty set of visited nodes
-        unvisited = dict([[node, float("inf")] for node in self.nodes()])  # populate dictionary of node keys and infinite values for all nodes in graph
-        unvisited[current_node] = 0  # overwrite the path weight for current node to 0
+        current_node = start
+        visited = {}
+        unvisited = dict([[node, float("inf")] for node in self.nodes()])
+        unvisited[current_node] = 0
         if not len(self.edges()):
             raise KeyError('No edges in this graph.')
-        edges = {}
-        for edge in self.edges():
-            edges[edge[0], edge[1]] = edge[2]  # save a list of graph edges
-        while end not in visited or min(unvisited.values()) == float("inf"):  # runs while end val isn't in visited or the min value of unvisited is infinite
-            for node in unvisited:  # for every node that hasn't been visited
-                if (current_node, node) in edges:  # if there's an edge between the current and an unvisited node
-                    tentative_weight = unvisited[current_node] + edges[(current_node, node)]  # calculate the weight of the path to the current node plus the weight of the edge in question
-                    if unvisited[node] > tentative_weight:  # if the stored weight is greater than the calculated weight
-                        unvisited[node] = tentative_weight  # overwrite with the new weight
-            visited[current_node] = min(unvisited.values())  # create a key of current node in visited with the lowest weight in unvisited
-            del unvisited[current_node]  # delete the current node from unvisited
-            if len(unvisited):  # if there are still entries in unvisited
-                current_node = min(unvisited.keys(), key=unvisited.get[0])  # change the current node to the lowest valued key in unvisited
+        edges = dict([[(edge[0], edge[1]), edge[2]]for edge in self.edges()])
+        while end not in visited or min(unvisited.values()) == float("inf"):
+            for node in unvisited:
+                if (current_node, node) in edges:
+                    tentative_weight = (unvisited[current_node] +
+                                        edges[(current_node, node)])
+                    if unvisited[node] > tentative_weight:
+                        unvisited[node] = tentative_weight
+            visited[current_node] = min(unvisited.values())
+            del unvisited[current_node]
+            if len(unvisited):
+                current_node = min(unvisited.keys(), key=unvisited.get)
             else:
-                break  # break the while loop if unvisited is empty
+                break
         if visited[end] == float("inf"):
             raise IndexError('There is no path between those nodes.')
         return visited[end]

@@ -164,6 +164,57 @@ def seven_node_graph_with_floating_nodes():
     return g
 
 
+@pytest.fixture
+def five_node_five_edge_graph_for_path():
+    """Return a graph with five nodes and edges."""
+    g = Graph()
+    g.add_edge('a', 'b', 7)
+    g.add_edge('a', 'c', 2)
+    g.add_edge('c', 'b', 1)
+    g.add_edge('b', 'd', 6)
+    g.add_edge('b', 'a', 1)
+    g.add_edge('c', 'e', 5)
+    g.add_edge('d', 'e', 2)
+    return g
+
+
+@pytest.fixture
+def four_node_five_edge_graph_path():
+    """Return a graph with four nodes and five edges."""
+    g = Graph()
+    g.add_edge('a', 'b', 10)
+    g.add_edge('b', 'c', 1)
+    g.add_edge('b', 'd', 5)
+    g.add_edge('c', 'd', 2)
+    g.add_edge('a', 'd', 14)
+    return g
+
+
+PATH_PARAMS = [
+    (('a', 'b'), 3),
+    (('b', 'c'), 3),
+    (('d', 'e'), 2),
+    (('a', 'd'), 9),
+    (('a', 'e'), 7),
+    (('a', 'c'), 2),
+]
+
+PATH_SHORTER_PARAMS = [
+    (('a', 'd'), 13),
+    (('b', 'd'), 3),
+    (('a', 'b'), 10),
+    (('c', 'd'), 2),
+]
+
+
+PATH_PARAMS_NEG = [
+    ((5, 7), 4),
+    ((7, 5), 5),
+    ((1, 6), -1),
+    ((1, 7), 0),
+]
+
+
 def test_nodes_in_empty_graph(empty_graph):
     """Test empty graph has no nodes."""
     assert empty_graph.nodes() == []
@@ -607,3 +658,45 @@ def test_b_f_no_connection_from_start(seven_node_graph_with_floating_nodes):
     """Test if the end is floating."""
     with pytest.raises(IndexError):
         seven_node_graph_with_floating_nodes.b_f_shortest_path(7, 4)
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS)
+def test_d_shortest_path(nodes, result, five_node_five_edge_graph_for_path):
+    """One test for d shortest path."""
+    g = five_node_five_edge_graph_for_path
+    assert g.d_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS_NEG)
+def test_d_shortest_path_neg(nodes, result, seven_node_heapish_graph):
+    """Second test for d shortest path with negatives."""
+    g = seven_node_heapish_graph
+    assert g.d_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_SHORTER_PARAMS)
+def test_d_shortest_path_short(nodes, result, four_node_five_edge_graph_path):
+    """Third test for d shortest path with shorter paths."""
+    g = four_node_five_edge_graph_path
+    assert g.d_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS)
+def test_b_f_shortest_path(nodes, result, five_node_five_edge_graph_for_path):
+    """One test for b_f shortest path."""
+    g = five_node_five_edge_graph_for_path
+    assert g.b_f_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS_NEG)
+def test_b_f_shortest_path_neg(nodes, result, seven_node_heapish_graph):
+    """Second test for b_f shortest path with negatives."""
+    g = seven_node_heapish_graph
+    assert g.b_f_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_SHORTER_PARAMS)
+def test_b_f_shorter_path(nodes, result, four_node_five_edge_graph_path):
+    """Third test for b_f shortest path with shorter paths."""
+    g = four_node_five_edge_graph_path
+    assert g.b_f_shortest_path(nodes[0], nodes[1]) == result

@@ -211,9 +211,9 @@ def test_bheap_pop_once_right(build_heap_of_five):
 
 def test_bheap_pop_mult(build_heap_of_five):
     """Test pop on multiple values."""
-    build_heap_of_five.pop()
-    build_heap_of_five.pop()
-    build_heap_of_five.pop()
+    assert build_heap_of_five.pop() == 2
+    assert build_heap_of_five.pop() == 6.5
+    assert build_heap_of_five.pop() == 7
     assert build_heap_of_five._list == [15, 27]
 
 

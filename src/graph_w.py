@@ -117,7 +117,7 @@ class Graph(object):
         unvisited = self.nodes()
         unvisited.remove(start)
         unvisited.insert(0, start)
-        paths = dict([[node, float("inf")] for node in self.nodes()])
+        paths = {node: float("inf") for node in self.nodes()}
         prev_paths = []
         paths[start] = 0
         if not len(self.edges()):
@@ -144,11 +144,11 @@ class Graph(object):
             raise KeyError('Graph does not contain one or both nodes.')
         current_node = start
         visited = {}
-        unvisited = dict([[node, float("inf")] for node in self.nodes()])
+        unvisited = {node: float("inf") for node in self.nodes()}
         unvisited[current_node] = 0
         if not len(self.edges()):
             raise KeyError('No edges in this graph.')
-        edges = dict([[(edge[0], edge[1]), edge[2]]for edge in self.edges()])
+        edges = {(edge[0], edge[1]): edge[2] for edge in self.edges()}
         while end not in visited or min(unvisited.values()) == float("inf"):
             for node in unvisited:
                 if (current_node, node) in edges:

@@ -23,7 +23,9 @@ class QueueStructure(object):
 
     def peek(self):
         """Return the queue head."""
-        return self._doubly_linked_list.head
+        if self.size() == 0:
+            raise IndexError('Queue is empty.')
+        return self._doubly_linked_list.head.val
 
     def size(self):
         """Return the size of the queue."""

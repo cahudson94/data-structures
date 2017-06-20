@@ -35,6 +35,6 @@ All modules and tests located in src directory.
 - module: graph_1.py
 - test: test_graph_1.py
 
-## Weighted Graph
+## Weighted Graph and Shortest Path
 - module: graph_w.py
 - test: test_graph_w.py

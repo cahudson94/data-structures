@@ -108,3 +108,60 @@ class Graph(object):
                 break
             current_val = to_visit.dequeue()
         return path
+
+    def b_f_shortest_path(self, start, end):
+        """"Find the shortest path using the bellman ford algorithm."""
+        if start not in self.nodes() or end not in self.nodes():
+            raise KeyError('Graph does not contain one or both nodes.')
+        iterations = len(self.edges()) - 1
+        unvisited = self.nodes()
+        unvisited.remove(start)
+        unvisited.insert(0, start)
+        paths = {node: float("inf") for node in self.nodes()}
+        prev_paths = []
+        paths[start] = 0
+        if not len(self.edges()):
+            raise KeyError('No edges in this graph.')
+        edges = self.edges()
+        while iterations >= 0 and paths.keys() not in prev_paths:
+            for node in unvisited:
+                if paths[node] != float("inf"):
+                    for edge in edges:
+                        if edge[0] == node and edge[1] != start:
+                            if paths[node] + edge[2] < paths[edge[1]]:
+                                paths[edge[1]] = paths[node] + edge[2]
+            iterations -= 1
+            prev_paths = []
+            for key in paths:
+                prev_paths.append(paths[key])
+        if paths[end] == float("inf"):
+            raise IndexError('There is no path between those nodes.')
+        return paths[end]
+
+    def d_shortest_path(self, start, end):
+        """Find the shortest path using Dijkstra's algorithm."""
+        if start not in self.nodes() or end not in self.nodes():
+            raise KeyError('Graph does not contain one or both nodes.')
+        current_node = start
+        visited = {}
+        unvisited = {node: float("inf") for node in self.nodes()}
+        unvisited[current_node] = 0
+        if not len(self.edges()):
+            raise KeyError('No edges in this graph.')
+        edges = {(edge[0], edge[1]): edge[2] for edge in self.edges()}
+        while end not in visited or min(unvisited.values()) == float("inf"):
+            for node in unvisited:
+                if (current_node, node) in edges:
+                    tentative_weight = (unvisited[current_node] +
+                                        edges[(current_node, node)])
+                    if unvisited[node] > tentative_weight:
+                        unvisited[node] = tentative_weight
+            visited[current_node] = min(unvisited.values())
+            del unvisited[current_node]
+            if len(unvisited):
+                current_node = min(unvisited.keys(), key=unvisited.get)
+            else:
+                break
+        if visited[end] == float("inf"):
+            raise IndexError('There is no path between those nodes.')
+        return visited[end]

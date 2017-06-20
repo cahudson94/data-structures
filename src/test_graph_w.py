@@ -145,6 +145,76 @@ def seven_node_heapish_graph():
     return g
 
 
+@pytest.fixture
+def seven_node_graph_with_floating_nodes():
+    """Return a graph with seven nodes that is heap like."""
+    g = Graph()
+    g.add_node(1)
+    g.add_node(2)
+    g.add_node(3)
+    g.add_node(4)
+    g.add_node(5)
+    g.add_node(6)
+    g.add_node(7)
+    g.add_edge(1, 2, -3)
+    g.add_edge(1, 5, -4)
+    g.add_edge(2, 3, -5)
+    g.add_edge(2, 4, 1)
+    g.add_edge(3, 1, 2)
+    return g
+
+
+@pytest.fixture
+def five_node_five_edge_graph_for_path():
+    """Return a graph with five nodes and edges."""
+    g = Graph()
+    g.add_edge('a', 'b', 7)
+    g.add_edge('a', 'c', 2)
+    g.add_edge('c', 'b', 1)
+    g.add_edge('b', 'd', 6)
+    g.add_edge('b', 'a', 1)
+    g.add_edge('c', 'e', 5)
+    g.add_edge('d', 'e', 2)
+    return g
+
+
+@pytest.fixture
+def four_node_five_edge_graph_path():
+    """Return a graph with four nodes and five edges."""
+    g = Graph()
+    g.add_edge('a', 'b', 10)
+    g.add_edge('b', 'c', 1)
+    g.add_edge('b', 'd', 5)
+    g.add_edge('c', 'd', 2)
+    g.add_edge('a', 'd', 14)
+    return g
+
+
+PATH_PARAMS = [
+    (('a', 'b'), 3),
+    (('b', 'c'), 3),
+    (('d', 'e'), 2),
+    (('a', 'd'), 9),
+    (('a', 'e'), 7),
+    (('a', 'c'), 2),
+]
+
+PATH_SHORTER_PARAMS = [
+    (('a', 'd'), 13),
+    (('b', 'd'), 3),
+    (('a', 'b'), 10),
+    (('c', 'd'), 2),
+]
+
+
+PATH_PARAMS_NEG = [
+    ((5, 7), 4),
+    ((7, 5), 5),
+    ((1, 6), -1),
+    ((1, 7), 0),
+]
+
+
 def test_nodes_in_empty_graph(empty_graph):
     """Test empty graph has no nodes."""
     assert empty_graph.nodes() == []
@@ -516,3 +586,117 @@ def test_breadth_seven_node_heapish_graph(seven_node_heapish_graph):
     assert g.breadth_first_traversal(5) == [5, 6, 7]
     assert g.breadth_first_traversal(2) == [2, 3, 4, 1, 5, 6, 7]
     assert g.breadth_first_traversal(7) == [7, 5, 6]
+
+
+def test_d_path_neither_node(three_node_cyclical_graph):
+    """Test if neither node is in the graph."""
+    with pytest.raises(KeyError):
+        three_node_cyclical_graph.d_shortest_path('cake', 'pie')
+
+
+def test_d_path_no_start_node(three_node_cyclical_graph):
+    """Test if start node is not in the graph."""
+    with pytest.raises(KeyError):
+        three_node_cyclical_graph.d_shortest_path('cake', 1)
+
+
+def test_d_path_no_end_node(three_node_cyclical_graph):
+    """Test if end node is not in the graph."""
+    with pytest.raises(KeyError):
+        three_node_cyclical_graph.d_shortest_path(2, 'pie')
+
+
+def test_bf_path_neither_node(three_node_cyclical_graph):
+    """Test if neither node is in the graph."""
+    with pytest.raises(KeyError):
+        three_node_cyclical_graph.b_f_shortest_path('cake', 'pie')
+
+
+def test_bf_path_no_start_node(three_node_cyclical_graph):
+    """Test if start node is not in the graph."""
+    with pytest.raises(KeyError):
+        three_node_cyclical_graph.b_f_shortest_path('cake', 3)
+
+
+def test_bf_path_no_end_node(three_node_cyclical_graph):
+    """Test if end node is not in the graph."""
+    with pytest.raises(KeyError):
+        three_node_cyclical_graph.b_f_shortest_path(1, 'pie')
+
+
+def test_d_no_edges(two_node_no_edge_graph):
+    """Test if no edges in graph."""
+    with pytest.raises(KeyError):
+        two_node_no_edge_graph.d_shortest_path('corn', 'beans')
+
+
+def test_b_f_no_edges(two_node_no_edge_graph):
+    """Test if no edges in graph."""
+    with pytest.raises(KeyError):
+        two_node_no_edge_graph.b_f_shortest_path('corn', 'beans')
+
+
+def test_d_no_connection_start_to_end(seven_node_graph_with_floating_nodes):
+    """Test if the end is floating."""
+    with pytest.raises(IndexError):
+        seven_node_graph_with_floating_nodes.d_shortest_path(1, 6)
+
+
+def test_b_f_no_connection_start_to_end(seven_node_graph_with_floating_nodes):
+    """Test if the end is floating."""
+    with pytest.raises(IndexError):
+        seven_node_graph_with_floating_nodes.b_f_shortest_path(6, 3)
+
+
+def test_d_no_connection_from_start(seven_node_graph_with_floating_nodes):
+    """Test if the end is floating."""
+    with pytest.raises(IndexError):
+        seven_node_graph_with_floating_nodes.d_shortest_path(2, 7)
+
+
+def test_b_f_no_connection_from_start(seven_node_graph_with_floating_nodes):
+    """Test if the end is floating."""
+    with pytest.raises(IndexError):
+        seven_node_graph_with_floating_nodes.b_f_shortest_path(7, 4)
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS)
+def test_d_shortest_path(nodes, result, five_node_five_edge_graph_for_path):
+    """One test for d shortest path."""
+    g = five_node_five_edge_graph_for_path
+    assert g.d_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS_NEG)
+def test_d_shortest_path_neg(nodes, result, seven_node_heapish_graph):
+    """Second test for d shortest path with negatives."""
+    g = seven_node_heapish_graph
+    assert g.d_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_SHORTER_PARAMS)
+def test_d_shortest_path_short(nodes, result, four_node_five_edge_graph_path):
+    """Third test for d shortest path with shorter paths."""
+    g = four_node_five_edge_graph_path
+    assert g.d_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS)
+def test_b_f_shortest_path(nodes, result, five_node_five_edge_graph_for_path):
+    """One test for b_f shortest path."""
+    g = five_node_five_edge_graph_for_path
+    assert g.b_f_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_PARAMS_NEG)
+def test_b_f_shortest_path_neg(nodes, result, seven_node_heapish_graph):
+    """Second test for b_f shortest path with negatives."""
+    g = seven_node_heapish_graph
+    assert g.b_f_shortest_path(nodes[0], nodes[1]) == result
+
+
+@pytest.mark.parametrize('nodes, result', PATH_SHORTER_PARAMS)
+def test_b_f_shorter_path(nodes, result, four_node_five_edge_graph_path):
+    """Third test for b_f shortest path with shorter paths."""
+    g = four_node_five_edge_graph_path
+    assert g.b_f_shortest_path(nodes[0], nodes[1]) == result

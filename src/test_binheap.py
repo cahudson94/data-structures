@@ -81,6 +81,24 @@ def test_bheap_init_list_mult_val():
     assert len(b._list) == 4
 
 
+def test_binheap_init_bad_iter_dict():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap({'a': 1})
+
+
+def test_binheap_init_bad_iter_int():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap(2)
+
+
+def test_binheap_init_bad_iter_bool():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap(True)
+
+
 def test_bheap_init_list_one_bad_val():
     """Init with longer list and one bad val."""
     with pytest.raises(ValueError):
@@ -193,10 +211,24 @@ def test_bheap_pop_once_right(build_heap_of_five):
 
 def test_bheap_pop_mult(build_heap_of_five):
     """Test pop on multiple values."""
-    build_heap_of_five.pop()
-    build_heap_of_five.pop()
-    build_heap_of_five.pop()
+    assert build_heap_of_five.pop() == 2
+    assert build_heap_of_five.pop() == 6.5
+    assert build_heap_of_five.pop() == 7
     assert build_heap_of_five._list == [15, 27]
+
+
+def test_bheap_pop_all_for_order(build_heap_of_ten):
+    """Test pop is sorting the bheap."""
+    assert build_heap_of_ten.pop() == 1.5
+    assert build_heap_of_ten.pop() == 2
+    assert build_heap_of_ten.pop() == 3
+    assert build_heap_of_ten.pop() == 6
+    assert build_heap_of_ten.pop() == 7
+    assert build_heap_of_ten.pop() == 8
+    assert build_heap_of_ten.pop() == 9
+    assert build_heap_of_ten.pop() == 15
+    assert build_heap_of_ten.pop() == 16
+    assert build_heap_of_ten.pop() == 27
 
 
 def test_bheap_pop_all(build_heap_of_two):

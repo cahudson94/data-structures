@@ -87,7 +87,7 @@ def test_linked_list_push_not_val():
 
 def test_linked_list_pop_one():
     """Test linked list pop method returns value and changes head once."""
-    assert POP_LIST.pop()== 'three'
+    assert POP_LIST.pop() == 'three'
     assert POP_LIST.head.val == 'two'
 
 

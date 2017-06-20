@@ -75,7 +75,10 @@ class DoublyLinkedList(object):
             current_item = current_item.next_node
             if current_item is None:
                 raise ValueError('Node not in doubly linked list.')
-        if current_item.prev_node is None:
+        if self.head == self.tail:
+            self.head = None
+            self.tail = None
+        elif current_item.prev_node is None:
             self.head = current_item.next_node
             self.head.prev_node = None
         elif current_item.next_node is None:

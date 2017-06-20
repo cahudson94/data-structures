@@ -62,11 +62,14 @@ class LinkedList(object):
 
     def display(self):
         """Return string representing LinkedList as Python tuple."""
-        display_string = u', '
+        display_string = u''
+        comma_string = u', '
         current_node = self.head
         while current_node:
-                display_string = '{} {}'.format(current_node.val,
-                                                display_string)
+                display_string = '{}{}{}'.format(
+                    current_node.val,
+                    comma_string,
+                    display_string)
                 current_node = current_node.next_node
         display_string = display_string[0:-2]
         display_string = '({})'.format(display_string)

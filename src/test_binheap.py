@@ -217,6 +217,20 @@ def test_bheap_pop_mult(build_heap_of_five):
     assert build_heap_of_five._list == [15, 27]
 
 
+def test_bheap_pop_all_for_order(build_heap_of_ten):
+    """Test pop is sorting the bheap."""
+    assert build_heap_of_ten.pop() == 1.5
+    assert build_heap_of_ten.pop() == 2
+    assert build_heap_of_ten.pop() == 3
+    assert build_heap_of_ten.pop() == 6
+    assert build_heap_of_ten.pop() == 7
+    assert build_heap_of_ten.pop() == 8
+    assert build_heap_of_ten.pop() == 9
+    assert build_heap_of_ten.pop() == 15
+    assert build_heap_of_ten.pop() == 16
+    assert build_heap_of_ten.pop() == 27
+
+
 def test_bheap_pop_all(build_heap_of_two):
     """Test pop on all list items."""
     build_heap_of_two.pop()

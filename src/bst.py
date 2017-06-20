@@ -1,11 +1,11 @@
-"""."""
+"""Python implementation of Binary Search Tree."""
 
 
 class BST():
-    """."""
+    """Binary Search Tree."""
 
     def __init__(self, iterable=None):
-        """."""
+        """Initialize Binary Search tree."""
         self._root = None
         self._length = 0
         self._depth = 0
@@ -14,7 +14,8 @@ class BST():
             for i in iterable:
                 if type(i) in [int, float]:
                     self.insert(i)
-                raise TypeError('''
+                else:
+                    raise TypeError('''
 Try again with only numbers in your list or tuple.''')
         elif type(iterable) == int:
             self.insert(iterable)
@@ -22,7 +23,7 @@ Try again with only numbers in your list or tuple.''')
             raise TypeError('Try again with a list, tuple, int, or float.')
 
     def insert(self, val):
-        """."""
+        """Insert new node into Binary Search Tree."""
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
@@ -89,30 +90,30 @@ Try again with only numbers in your list or tuple.''')
                     return
 
     def search(self, val):
-        """."""
+        """Find the node at val in Binary Search Tree."""
         curr = self._root
         if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
         while True:
-            if val == curr.val:
-                return curr
-            elif curr is None:
+            if curr is None:
                 return None
-            elif val < curr.val and curr.left:
+            elif val == curr.val:
+                return curr
+            elif val < curr.val:
                 curr = curr.left
-            elif val > curr.val and curr.right:
+            elif val > curr.val:
                 curr = curr.right
 
     def size(self):
-        """."""
+        """Returns the amount of nodes in Binary Search Tree."""
         return self._length
 
     def depth(self):
-        """."""
+        """Returns the levels of the Binary Search Tree."""
         return self._depth
 
     def contains(self, val):
-        """."""
+        """Returns true if specified val is in tree, false if it is not."""
         if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
         if self.search(val):
@@ -120,15 +121,15 @@ Try again with only numbers in your list or tuple.''')
         return False
 
     def balance(self):
-        """."""
+        """Returns the difference of amount of left and right levels from root."""
         return self._balance
 
 
 class Node():
-    """."""
+    """Create a node to add to the Binary Search Tree."""
 
     def __init__(self, val, left=None, right=None):
-        """."""
+        """Initialize a new node."""
         self.val = val
         self.left = left
         self.right = right

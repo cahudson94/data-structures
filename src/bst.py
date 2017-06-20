@@ -12,18 +12,18 @@ class BST():
         self._balance = 0
         if type(iterable) in [tuple, list]:
             for i in iterable:
-                if type(i) == int:
+                if type(i) in [int, float]:
                     self.insert(i)
                 raise TypeError('''
 Try again with only numbers in your list or tuple.''')
         elif type(iterable) == int:
             self.insert(iterable)
         elif iterable is not None:
-            raise TypeError('Try again with a list, tuple, or int.')
+            raise TypeError('Try again with a list, tuple, int, or float.')
 
     def insert(self, val):
         """."""
-        if type(val) != int:
+        if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
         path = []
@@ -61,9 +61,9 @@ Try again with only numbers in your list or tuple.''')
                         left = True
                         iteration += 1
                     if left and bal_chg:
-                        self._balance += 1
-                    if right and bal_chg:
                         self._balance -= 1
+                    if right and bal_chg:
+                        self._balance += 1
                     return
             elif val > curr.val:
                 if curr.right:
@@ -83,15 +83,15 @@ Try again with only numbers in your list or tuple.''')
                         right = True
                         iteration += 1
                     if left and bal_chg:
-                        self._balance += 1
-                    if right and bal_chg:
                         self._balance -= 1
+                    if right and bal_chg:
+                        self._balance += 1
                     return
 
     def search(self, val):
         """."""
         curr = self._root
-        if type(val) != int:
+        if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
         while True:
             if val == curr.val:
@@ -113,7 +113,7 @@ Try again with only numbers in your list or tuple.''')
 
     def contains(self, val):
         """."""
-        if type(val) != int:
+        if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
         if self.search(val):
             return True

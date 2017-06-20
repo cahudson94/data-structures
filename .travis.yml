@@ -5,7 +5,7 @@ python:
 
 install:
   - pip install .
-  - pip pytest
+  - pip install pytest
 
 script: py.test
 

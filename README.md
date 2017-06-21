@@ -1,5 +1,5 @@
 # Data Structures
-Authors: Morgan Nomura and Chris Hudson
+Authors: Morgan Nomura, Chris Hudson, Carlos Cadena
 
 All modules and tests located in src directory.
 

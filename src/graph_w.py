@@ -117,26 +117,39 @@ class Graph(object):
         unvisited = self.nodes()
         unvisited.remove(start)
         unvisited.insert(0, start)
-        paths = {node: float("inf") for node in self.nodes()}
-        prev_paths = []
-        paths[start] = 0
+        paths = {node: [float("inf"), ''] for node in self.nodes()}
+        prev_paths = {node: [paths[node][0], paths[node][1]] for node in paths}
+        changing = True
+        overlap = []
+        paths[start][0] = 0
         if not len(self.edges()):
             raise KeyError('No edges in this graph.')
         edges = self.edges()
-        while iterations >= 0 and paths.keys() not in prev_paths:
+        while iterations >= 0 and changing:
             for node in unvisited:
-                if paths[node] != float("inf"):
+                if paths[node][0] != float("inf"):
                     for edge in edges:
                         if edge[0] == node and edge[1] != start:
-                            if paths[node] + edge[2] < paths[edge[1]]:
-                                paths[edge[1]] = paths[node] + edge[2]
+                            if paths[node][0] + edge[2] < paths[edge[1]][0]:
+                                paths[edge[1]][0] = paths[node][0] + edge[2]
+                                paths[edge[1]][1] = node
+            for node in self.nodes():
+                if paths[node][0] == prev_paths[node][0]:
+                    overlap.append(node)
+            if len(overlap) == len(self.nodes()):
+                changing = False
+            overlap = []
+            prev_paths = paths
             iterations -= 1
-            prev_paths = []
-            for key in paths:
-                prev_paths.append(paths[key])
-        if paths[end] == float("inf"):
+        if paths[end][0] == float("inf"):
             raise IndexError('There is no path between those nodes.')
-        return paths[end]
+        curr = end
+        path = []
+        while paths[curr][1]:
+            path.insert(0, curr)
+            curr = paths[curr][1]
+        path.insert(0, start)
+        return path
 
     def d_shortest_path(self, start, end):
         """Find the shortest path using Dijkstra's algorithm."""
@@ -145,17 +158,20 @@ class Graph(object):
         current_node = start
         visited = {}
         unvisited = {node: float("inf") for node in self.nodes()}
+        paths = {node: '' for node in self.nodes()}
         unvisited[current_node] = 0
         if not len(self.edges()):
             raise KeyError('No edges in this graph.')
         edges = {(edge[0], edge[1]): edge[2] for edge in self.edges()}
         while end not in visited or min(unvisited.values()) == float("inf"):
+            origin = current_node
             for node in unvisited:
                 if (current_node, node) in edges:
                     tentative_weight = (unvisited[current_node] +
                                         edges[(current_node, node)])
                     if unvisited[node] > tentative_weight:
                         unvisited[node] = tentative_weight
+                        paths[node] = origin
             visited[current_node] = min(unvisited.values())
             del unvisited[current_node]
             if len(unvisited):
@@ -164,4 +180,9 @@ class Graph(object):
                 break
         if visited[end] == float("inf"):
             raise IndexError('There is no path between those nodes.')
-        return visited[end]
+        curr = end
+        path = []
+        while start not in path:
+            path.insert(0, curr)
+            curr = paths[curr]
+        return path

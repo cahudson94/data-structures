@@ -188,6 +188,9 @@ All modules and tests located in src directory.
 ## Binary Search Tree
 - module: bst.py
 - test: test_bst.py
+- contribs:
+    - Erik Enderlein
+    - http://pythoncentral.io/time-a-python-function/
 - public methods:
     ### insert:
         - add a new node to the BST

@@ -164,7 +164,6 @@ class Graph(object):
             raise KeyError('No edges in this graph.')
         edges = {(edge[0], edge[1]): edge[2] for edge in self.edges()}
         while end not in visited or min(unvisited.values()) == float("inf"):
-            print(paths)
             origin = current_node
             for node in unvisited:
                 if (current_node, node) in edges:
@@ -181,7 +180,6 @@ class Graph(object):
                 break
         if visited[end] == float("inf"):
             raise IndexError('There is no path between those nodes.')
-        print(paths)
         curr = end
         path = []
         while start not in path:

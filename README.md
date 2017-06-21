@@ -1,5 +1,7 @@
 # Data Structures
+[![Build Status](https://travis-ci.org/CaHudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures)
 Authors: Morgan Nomura and Chris Hudson
+
 
 All modules and tests located in src directory.
 

@@ -1,5 +1,6 @@
-# Data Structures
 [![Build Status](https://travis-ci.org/CaHudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures)
+
+# Data Structures
 Authors: Morgan Nomura and Chris Hudson
 
 

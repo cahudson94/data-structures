@@ -266,9 +266,9 @@ def test_in_order_traversal_five_node(five_node_bst_with_tuple):
     five = five_node_bst_with_tuple.in_order()
     assert next(five) == 4
     assert next(five) == 6
-    assert next(five) == 8
     assert next(five) == 6.5
     assert next(five) == 7
+    assert next(five) == 8
 
 
 def test_in_order_traversal_ten_node(ten_node_bst_with_list):

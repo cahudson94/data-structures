@@ -277,16 +277,16 @@ def test_in_order_traversal_ten_node(ten_node_bst_with_list):
     Uses 'in order' order.
     """
     ten = ten_node_bst_with_list.in_order()
-    assert next(ten) == 5
     assert next(ten) == 2
     assert next(ten) == 4
+    assert next(ten) == 5
     assert next(ten) == 7
     assert next(ten) == 9
     assert next(ten) == 10
     assert next(ten) == 12
     assert next(ten) == 17
-    assert next(ten) == 50
     assert next(ten) == 23
+    assert next(ten) == 50
 
 
 def test_pre_order_traversal_five_node(five_node_bst_with_tuple):

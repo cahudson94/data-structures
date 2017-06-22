@@ -196,12 +196,14 @@ Try again with only numbers in your list or tuple.''')
                         elif curr.right:
                             nodes.append(curr)
                             curr = curr.parent
-                            if curr == self._root and len(nodes) == self._length - 1:
+                            if curr == self._root and (len(nodes) ==
+                                                       self._length - 1):
                                 nodes.append(curr)
                         else:
                             nodes.append(curr)
                             curr = curr.parent
-                            if curr == self._root and len(nodes) == self._length - 1:
+                            if curr == self._root and (len(nodes) ==
+                                                       self._length - 1):
                                 nodes.append(curr)
             elif curr.right:
                 curr = curr.right

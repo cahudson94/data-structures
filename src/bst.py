@@ -54,6 +54,7 @@ Try again with only numbers in your list or tuple.''')
                         iteration += 1
                 else:
                     curr.left = Node(val)
+                    curr.left.parent = curr
                     self._length += 1
                     path.append(curr.left)
                     if len(path) > self._depth:
@@ -76,6 +77,7 @@ Try again with only numbers in your list or tuple.''')
                         iteration += 1
                 else:
                     curr.right = Node(val)
+                    curr.right.parent = curr
                     self._length += 1
                     path.append(curr.right)
                     if len(path) > self._depth:
@@ -125,18 +127,116 @@ Try again with only numbers in your list or tuple.''')
         """Return the difference of left and right depth from root."""
         return self._balance
 
+    def in_order(self):
+        """Return generator that returns values from BST 'in order'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if not curr.right and not curr.left and not curr.parent:
+                nodes.append(curr)
+            elif curr.left and curr not in nodes and curr.left not in nodes:
+                curr = curr.left
+            elif not curr.left and curr not in nodes:
+                nodes.append(curr)
+                if not curr.right:
+                    curr = curr.parent
+                if curr not in nodes:
+                    nodes.append(curr)
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            elif not curr.right and curr not in nodes:
+                nodes.append(curr)
+                curr = curr.parent
+            elif not curr.right:
+                curr = curr.parent
+            else:
+                curr = curr.parent
+                nodes.append(curr)
+        for node in nodes:
+            yield node.val
+
+    def pre_order(self):
+        """Return generator that returns values from BST 'pre ordered'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if curr not in nodes:
+                nodes.append(curr)
+            if curr.left and curr.left not in nodes:
+                curr = curr.left
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            else:
+                if not curr.left and not curr.right:
+                    curr = curr.parent
+                elif curr.left in nodes and curr.right in nodes:
+                    curr = curr.parent
+        for node in nodes:
+            yield node.val
+
+    def post_order(self):
+        """Return generator that returns values from BST 'post ordered'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if not curr.right and not curr.left and not curr.parent:
+                nodes.append(curr)
+            elif curr.left and curr not in nodes and curr.left not in nodes:
+                curr = curr.left
+            elif not curr.left and not curr.right and curr not in nodes:
+                nodes.append(curr)
+                if not curr.right:
+                    curr = curr.parent
+                    while curr != self._root:
+                        if curr.left and curr.left not in nodes:
+                            curr = curr.left
+                            break
+                        elif curr.right and curr.right not in nodes:
+                            curr = curr.right
+                        elif curr.right:
+                            nodes.append(curr)
+                            curr = curr.parent
+                            if curr == self._root and (len(nodes) ==
+                                                       self._length - 1):
+                                nodes.append(curr)
+                        else:
+                            nodes.append(curr)
+                            curr = curr.parent
+                            if curr == self._root and (len(nodes) ==
+                                                       self._length - 1):
+                                nodes.append(curr)
+            elif curr.right:
+                curr = curr.right
+        for node in nodes:
+            yield node.val
+
+    def breadth_first(self):
+        """Return generator that returns values from BST 'breadth first'."""
+        nodes = []
+        curr_index = 0
+        nodes.append(self._root)
+        while len(nodes) != self._length:
+            if nodes[curr_index].left:
+                nodes.append(nodes[curr_index].left)
+            if nodes[curr_index].right:
+                nodes.append(nodes[curr_index].right)
+            curr_index += 1
+        for node in nodes:
+            yield node.val
+
 
 class Node():
     """Create a node to add to the Binary Search Tree."""
 
-    def __init__(self, val, left=None, right=None):
+    def __init__(self, val, parent=None, left=None, right=None):
         """Initialize a new node."""
         self.val = val
+        self.parent = parent
         self.left = left
         self.right = right
 
 
-def wrapper(func, *args, **kwargs):
+def wrapper(func, *args, **kwargs):  # pragma: no cover
     """Create a value for a function with a specific arguement called to it."""
     def wrapped():
         return func(*args, **kwargs)
@@ -145,7 +245,7 @@ def wrapper(func, *args, **kwargs):
     #  he found it at http://pythoncentral.io/time-a-python-function/
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     best_stuff_tree = BST()
     find5 = wrapper(best_stuff_tree.search, 5)
     find24 = wrapper(best_stuff_tree.search, 24)

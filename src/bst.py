@@ -1,4 +1,5 @@
 """Python implementation of Binary Search Tree."""
+from timeit import timeit
 
 
 class BST():
@@ -105,15 +106,15 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.right
 
     def size(self):
-        """Returns the amount of nodes in Binary Search Tree."""
+        """Return the amount of nodes in Binary Search Tree."""
         return self._length
 
     def depth(self):
-        """Returns the levels of the Binary Search Tree."""
+        """Return the levels of the Binary Search Tree."""
         return self._depth
 
     def contains(self, val):
-        """Returns true if specified val is in tree, false if it is not."""
+        """Return true if specified val is in tree, false if it is not."""
         if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
         if self.search(val):
@@ -121,7 +122,7 @@ Try again with only numbers in your list or tuple.''')
         return False
 
     def balance(self):
-        """Returns the difference of amount of left and right levels from root."""
+        """Return the difference of left and right depth from root."""
         return self._balance
 
 
@@ -133,3 +134,25 @@ class Node():
         self.val = val
         self.left = left
         self.right = right
+
+
+def wrapper(func, *args, **kwargs):
+    """Create a value for a function with a specific arguement called to it."""
+    def wrapped():
+        return func(*args, **kwargs)
+    return wrapped
+    #  code found through Erik Enderlein
+    #  he found it at http://pythoncentral.io/time-a-python-function/
+
+
+if __name__ == '__main__':
+    best_stuff_tree = BST()
+    find5 = wrapper(best_stuff_tree.search, 5)
+    find24 = wrapper(best_stuff_tree.search, 24)
+    nodes = [5, 3, 8, 2.2, 4, 9.5, 1, 2.6,
+             3.3, 4.5, 9, 11, 8.5, 10, 14,
+             16, 15, 21, 23, 24]
+    for node in nodes:
+        best_stuff_tree.insert(node)
+    print(timeit(find5))
+    print(timeit(find24))

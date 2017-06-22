@@ -72,7 +72,7 @@ class DoublyLinkedList(object):
         """Find and remove the first Node with a given value."""
         current_item = self.head
         if current_item is None:
-            raise ValueError('Doubly linked list is empty.')
+            raise ValueError('Node not in doubly linked list, it is empty.')
         while current_item.val != val:
             current_item = current_item.next_node
             if current_item is None:

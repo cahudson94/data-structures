@@ -76,8 +76,7 @@ def test_next_node_three_nodes(build_queue_three_nodes):
 
 def test_peek_empty_queue(build_empty_queue):
     """Test peek method for empty queue."""
-    with pytest.raises(IndexError):
-        build_empty_queue.peek()
+    assert build_empty_queue.peek() is None
 
 
 def test_peek_one_node(build_queue_one_node):
@@ -122,8 +121,7 @@ def test_dequeue_all(build_queue_three_nodes):
     build_queue_three_nodes.dequeue()
     build_queue_three_nodes.dequeue()
     assert len(build_queue_three_nodes) == 0
-    with pytest.raises(IndexError):
-        build_queue_three_nodes.peek()
+    assert build_queue_three_nodes.peek() is None
 
 
 def test_len_empty_queue(build_empty_queue):

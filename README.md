@@ -3,6 +3,7 @@
 # Data Structures
 Authors: Morgan Nomura, Chris Hudson, Carlos Cadena
 
+
 All modules and tests located in src directory.
 
 ## Linked List
@@ -185,7 +186,6 @@ All modules and tests located in src directory.
     ### d_shortest_path:
         - find the shortest path from start to end
         - uses dijkstras algorithm
-
 
 ## Binary Search Tree
 - module: bst.py

@@ -6,7 +6,7 @@ from bst import Node
 
 @pytest.fixture
 def empty_bst():
-    """Creates empty BST."""
+    """Create empty BST."""
     return BST()
 
 
@@ -70,7 +70,7 @@ def test_empty_bst_features(empty_bst):
 
 
 def test_empty_bst_size_returns_0(empty_bst):
-    """Test size of empty BST"""
+    """Test size of empty BST."""
     assert empty_bst.size() == 0
 
 
@@ -256,3 +256,127 @@ def test_insert_with_list_raises_type_error(one_node_bst):
     """Test insert with list raises TypeError."""
     with pytest.raises(TypeError):
         one_node_bst.insert([23, 44])
+
+
+def test_in_order_traversal_five_node(five_node_bst_with_tuple):
+    """Test five node BST returns one val at a time.
+
+    Uses 'in order' order.
+    """
+    five = five_node_bst_with_tuple.in_order()
+    assert next(five) == 4
+    assert next(five) == 6
+    assert next(five) == 8
+    assert next(five) == 6.5
+    assert next(five) == 7
+
+
+def test_in_order_traversal_ten_node(ten_node_bst_with_list):
+    """Test ten node BST returns one val at a time.
+
+    Uses 'in order' order.
+    """
+    ten = ten_node_bst_with_list.in_order()
+    assert next(ten) == 5
+    assert next(ten) == 2
+    assert next(ten) == 4
+    assert next(ten) == 7
+    assert next(ten) == 9
+    assert next(ten) == 10
+    assert next(ten) == 12
+    assert next(ten) == 17
+    assert next(ten) == 50
+    assert next(ten) == 23
+
+
+def test_pre_order_traversal_five_node(five_node_bst_with_tuple):
+    """Test five node BST returns one val at a time.
+
+    Uses 'pre order' order.
+    """
+    five = five_node_bst_with_tuple.pre_order()
+    assert next(five) == 6
+    assert next(five) == 4
+    assert next(five) == 8
+    assert next(five) == 7
+    assert next(five) == 6.5
+
+
+def test_pre_order_traversal_ten_node(ten_node_bst_with_list):
+    """Test ten node BST returns one val at a time.
+
+    Uses 'pre order' order.
+    """
+    ten = ten_node_bst_with_list.pre_order()
+    assert next(ten) == 10
+    assert next(ten) == 7
+    assert next(ten) == 4
+    assert next(ten) == 2
+    assert next(ten) == 5
+    assert next(ten) == 9
+    assert next(ten) == 12
+    assert next(ten) == 23
+    assert next(ten) == 17
+    assert next(ten) == 50
+
+
+def test_post_order_traversal_five_node(five_node_bst_with_tuple):
+    """Test five node BST returns one val at a time.
+
+    Uses 'post order' order.
+    """
+    five = five_node_bst_with_tuple.post_order()
+    assert next(five) == 4
+    assert next(five) == 6.5
+    assert next(five) == 7
+    assert next(five) == 8
+    assert next(five) == 6
+
+
+def test_post_order_traversal_ten_node(ten_node_bst_with_list):
+    """Test ten node BST returns one val at a time.
+
+    Uses 'post order' order.
+    """
+    ten = ten_node_bst_with_list.post_order()
+    assert next(ten) == 2
+    assert next(ten) == 5
+    assert next(ten) == 4
+    assert next(ten) == 9
+    assert next(ten) == 7
+    assert next(ten) == 17
+    assert next(ten) == 50
+    assert next(ten) == 23
+    assert next(ten) == 12
+    assert next(ten) == 10
+
+
+def test_breadth_first_traversal_five_node(five_node_bst_with_tuple):
+    """Test five node BST returns one val at a time.
+
+    Uses breadth first order.
+    """
+    five = five_node_bst_with_tuple.breadth_first()
+    assert next(five) == 6
+    assert next(five) == 4
+    assert next(five) == 8
+    assert next(five) == 7
+    assert next(five) == 6.5
+
+
+def test_breadth_first_traversal_ten_node(ten_node_bst_with_list):
+    """Test ten node BST returns one val at a time.
+
+    Uses breadth first order.
+    """
+    ten = ten_node_bst_with_list.breadth_first()
+    assert next(ten) == 10
+    assert next(ten) == 7
+    assert next(ten) == 12
+    assert next(ten) == 4
+    assert next(ten) == 9
+    assert next(ten) == 23
+    assert next(ten) == 2
+    assert next(ten) == 5
+    assert next(ten) == 17
+    assert next(ten) == 50

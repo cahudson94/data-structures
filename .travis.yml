@@ -4,14 +4,14 @@ python:
   - "3.6"
 
 install:
-  - pip install .
   - pip install coveralls
   - pip install pytest
+  - pip install pytest-cov
 
-script: py.test
+script: - py.test src/ --cov=src/ --cov-report term-missing
 
 after_success:
   -coveralls
 
 notifications:
-  email: false
+email: false

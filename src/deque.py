@@ -39,11 +39,15 @@ class Deque(object):
 
     def peek(self):
         """Return the Dequeue tail."""
-        return self._doubly_linked_list.tail
+        if self._doubly_linked_list.tail is None:
+            return None
+        return self._doubly_linked_list.tail.val
 
     def peekleft(self):
         """Return the Dequeue head."""
-        return self._doubly_linked_list.head
+        if self._doubly_linked_list.head is None:
+            return None
+        return self._doubly_linked_list.head.val
 
     def size(self):
         """Return the size of the queue."""

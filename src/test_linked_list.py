@@ -156,4 +156,4 @@ def test_linked_list_repr():
 def test_linked_list_remove_empty():
     """Test linked list remove raises error when empty."""
     with pytest.raises(ValueError):
-        EMPTY_LIST.remove(5)
+        EMPTY_LIST_POP.remove(5)

@@ -30,9 +30,7 @@ Try again with only numbers in your list or tuple.''')
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
-        tree_side = 0
         depth = 0
-        left = False
         if curr is None:
             curr = Node(val)
             self._root = curr
@@ -46,8 +44,6 @@ Try again with only numbers in your list or tuple.''')
                 if curr.left:
                     curr = curr.left
                     depth += 1
-                    if tree_side == 0:
-                        left = True
                 else:
                     curr.left = Node(val)
                     curr.left.parent = curr
@@ -56,9 +52,7 @@ Try again with only numbers in your list or tuple.''')
                         depth += 1
                     elif curr == self._root:
                         depth += 1
-                    if tree_side == 0:
-                        left = True
-                    if left:
+                    if val < self._root:
                         if depth > self._ldepth:
                             self._ldepth = depth
                     else:
@@ -71,7 +65,6 @@ Try again with only numbers in your list or tuple.''')
                 if curr.right:
                     curr = curr.right
                     depth += 1
-                    tree_side += 1
                 else:
                     curr.right = Node(val)
                     curr.right.parent = curr
@@ -80,7 +73,7 @@ Try again with only numbers in your list or tuple.''')
                         depth += 1
                     elif curr == self._root:
                         depth += 1
-                    if left:
+                    if val < self._root:
                         if depth > self._ldepth:
                             self._ldepth = depth
                     else:

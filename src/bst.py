@@ -9,6 +9,8 @@ class BST():
         """Initialize Binary Search tree."""
         self._root = None
         self._length = 0
+        self._rdepth = 0
+        self._ldepth = 0
         self._depth = 0
         self._balance = 0
         if type(iterable) in [tuple, list]:
@@ -28,69 +30,193 @@ Try again with only numbers in your list or tuple.''')
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
-        path = []
-        iteration = 0
+        tree_side = 0
+        depth = 0
         left = False
-        right = False
-        bal_chg = False
         if curr is None:
             curr = Node(val)
             self._root = curr
             self._length += 1
-            path.append(curr)
-            if len(path) > self._depth:
-                self._depth = len(path)
+            self._depth = 1
             return
-        path.append(curr)
         while True:
             if val == curr.val:
                 return
             elif val < curr.val:
                 if curr.left:
-                    path.append(curr)
                     curr = curr.left
-                    if iteration == 0:
+                    depth += 1
+                    if tree_side == 0:
                         left = True
-                        iteration += 1
                 else:
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
-                    path.append(curr.left)
-                    if len(path) > self._depth:
-                        self._depth = len(path)
-                        bal_chg = True
-                    if iteration == 0:
+                    if not curr.right:
+                        depth += 1
+                    elif curr == self._root:
+                        depth += 1
+                    if tree_side == 0:
                         left = True
-                        iteration += 1
-                    if left and bal_chg:
-                        self._balance -= 1
-                    if right and bal_chg:
-                        self._balance += 1
+                    if left:
+                        if depth > self._ldepth:
+                            self._ldepth = depth
+                    else:
+                        if depth > self._rdepth:
+                            self._rdepth = depth
+                    self._balance = self._rdepth - self._ldepth
+                    self._depth = max([self._rdepth, self._ldepth]) + 1
                     return
             elif val > curr.val:
                 if curr.right:
-                    path.append(curr)
                     curr = curr.right
-                    if iteration == 0:
-                        right = True
-                        iteration += 1
+                    depth += 1
+                    tree_side += 1
                 else:
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
-                    path.append(curr.right)
-                    if len(path) > self._depth:
-                        self._depth = len(path)
-                        bal_chg = True
-                    if iteration == 0:
-                        right = True
-                        iteration += 1
-                    if left and bal_chg:
-                        self._balance -= 1
-                    if right and bal_chg:
-                        self._balance += 1
+                    if not curr.left:
+                        depth += 1
+                    elif curr == self._root:
+                        depth += 1
+                    if left:
+                        if depth > self._ldepth:
+                            self._ldepth = depth
+                    else:
+                        if depth > self._rdepth:
+                            self._rdepth = depth
+                    self._balance = self._rdepth - self._ldepth
+                    self._depth = max([self._rdepth, self._ldepth]) + 1
                     return
+
+    def delete(self, val):
+        """Delete the node with value from the Binary Search Tree."""
+        to_del = self.search(val)
+        if to_del == self._root:
+            self._root_shift(to_del, self._balance)
+        elif to_del.left and to_del.right:
+            sub_balance = self._sub_tree_bal(to_del)
+            self._root_shift(to_del, sub_balance)
+        elif to_del.left:
+            if to_del.parent.left == to_del:
+                to_del.parent.left = to_del.left
+                to_del.left.parent = to_del.parent
+            else:
+                to_del.parent.right = to_del.right
+                to_del.right.parent = to_del.parent
+        elif to_del.right:
+            if to_del.parent.left == to_del:
+                to_del.parent.left = to_del.left
+                to_del.left.parent = to_del.parent
+            else:
+                to_del.parent.right = to_del.right
+                to_del.right.parent = to_del.parent
+        else:
+            self._del_leaf(to_del)
+        self._length -= 1
+        return
+
+    def _sub_tree_bal(self, node):
+        """Get the balance of a sub tree for deletion."""
+        l_depth = 1
+        r_depth = 1
+        visited = []
+        curr = node.left
+        right_side = False
+        while curr != node and not right_side:
+            if curr.left and curr.right:
+                if curr not in visited:
+                    visited.append(curr)
+                if curr.left not in visited:
+                    curr = curr.left
+                elif curr.right not in visited:
+                    curr = curr.right
+                    if curr == node:
+                        curr = node.right
+                        right_side = True
+            elif curr.left:
+                if curr not in visited:
+                    visited.append(curr)
+                if curr.left not in visited:
+                    curr = curr.left
+            elif curr.right:
+                if curr not in visited:
+                    visited.append(curr)
+                if curr.right not in visited:
+                    curr = curr.right
+                else:
+                    if right_side:
+                        r_depth += 1
+                    else:
+                        l_depth += 1
+                    curr = curr.parent
+            else:
+                if curr.parent.left and curr == curr.parent.left:
+                    if right_side:
+                        r_depth += 1
+                    else:
+                        l_depth += 1
+                elif not curr.parent.left:
+                    if right_side:
+                        r_depth += 1
+                    else:
+                        l_depth += 1
+                else:
+                    if right_side:
+                        r_depth += 1
+                    else:
+                        l_depth += 1
+                visited.append(curr)
+                curr = curr.parent
+        bal = r_depth - l_depth
+        return bal
+
+    def _root_shift(self, node, balance):
+        """Delete the root of the tree or sub trees."""
+        if balance < 0:
+            curr = node.left
+            while curr.right:
+                curr = curr.right
+            if curr.left:
+                curr.parent.right = curr.left
+            if node == self._root:
+                self._root = curr
+            elif node == node.parent.left:
+                node.parent.left = curr
+            elif node == node.parent.right:
+                node.parent.right = curr
+            if node.right != curr:
+                curr.right = node.right
+                curr.right.parent = curr
+            curr.left = node.left
+            curr.left.parent = curr
+        else:
+            curr = node.right
+            while curr.left:
+                curr = curr.left
+            if curr.right:
+                curr.parent.left = curr.right
+            if node == self._root:
+                self._root = curr
+            elif node == node.parent.left:
+                node.parent.left = curr
+            elif node == node.parent.right:
+                node.parent.right = curr
+            if node.left != curr:
+                curr.left = node.left
+                curr.left.parent = curr
+            curr.right = node.right
+            curr.right.parent = curr
+
+    def _del_leaf(self, node):
+        """If the node being deleted is a leaf."""
+        par = node.parent
+        if node == par.left:
+            par.left = None
+            return
+        par.right = None
+        return
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
@@ -167,10 +293,7 @@ Try again with only numbers in your list or tuple.''')
             elif curr.right and curr.right not in nodes:
                 curr = curr.right
             else:
-                if not curr.left and not curr.right:
-                    curr = curr.parent
-                elif curr.left in nodes and curr.right in nodes:
-                    curr = curr.parent
+                curr = curr.parent
         for node in nodes:
             yield node.val
 

@@ -189,7 +189,7 @@ def test_five_node_bst_correct_size(five_node_bst_with_tuple):
 
 def test_five_node_bst_correct_balance(five_node_bst_by_insert):
     """Test the balance of a 5 node BST."""
-    assert five_node_bst_by_insert.balance() == -2
+    assert five_node_bst_by_insert.balance() == -1
 
 
 def test_five_node_bst_correct_depth(five_node_bst_with_tuple):
@@ -221,7 +221,7 @@ def test_ten_node_bst_correct_size(ten_node_bst_with_list):
 
 def test_ten_node_bst_correct_balance(ten_node_bst_with_list):
     """Test the balance of ten node BST."""
-    assert ten_node_bst_with_list.balance() == -3
+    assert ten_node_bst_with_list.balance() == 0
 
 
 def test_ten_node_bst_correct_depth(ten_node_bst_with_list):

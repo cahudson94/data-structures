@@ -52,7 +52,7 @@ Try again with only numbers in your list or tuple.''')
                         depth += 1
                     elif curr == self._root:
                         depth += 1
-                    if val < self._root:
+                    if val < self._root.val:
                         if depth > self._ldepth:
                             self._ldepth = depth
                     else:
@@ -73,7 +73,7 @@ Try again with only numbers in your list or tuple.''')
                         depth += 1
                     elif curr == self._root:
                         depth += 1
-                    if val < self._root:
+                    if val < self._root.val:
                         if depth > self._ldepth:
                             self._ldepth = depth
                     else:

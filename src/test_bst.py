@@ -157,7 +157,7 @@ def test_three_node_bst_correct_size(three_node_bst):
 
 def test_three_node_bst_correct_balance(three_node_bst_with_list):
     """Test three node BST returns correct balance."""
-    assert three_node_bst_with_list.balance() == -1
+    assert three_node_bst_with_list.balance() == 0
 
 
 def test_three_node_bst_correct_depth(three_node_bst):

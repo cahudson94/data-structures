@@ -46,8 +46,7 @@ Try again with only numbers in your list or tuple.''')
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
-                    self._bal_and_rotate(curr)
-                    self._depth = max([self._rdepth, self._ldepth]) + 1
+                    self._bal_and_rotate(curr.left)
                     return
             elif val > curr.val:
                 if curr.right:
@@ -56,13 +55,13 @@ Try again with only numbers in your list or tuple.''')
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
-                    self._bal_and_rotate(curr)
-                    self._depth = max([self._rdepth, self._ldepth]) + 1
+                    self._bal_and_rotate(curr.right)
                     return
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
         to_del = self.search(val)
+        par_for_bal = to_del.parent
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
         elif to_del.left and to_del.right:
@@ -86,6 +85,7 @@ Try again with only numbers in your list or tuple.''')
         else:
             self._del_leaf(to_del)
         self._length -= 1
+        self._bal_and_rotate(par_for_bal)
         return
 
     def _bal_and_rotate(self, node):
@@ -94,15 +94,16 @@ Try again with only numbers in your list or tuple.''')
         curr = node
         while not balanced:
             auto_bal = self._check_bal(curr.parent, curr)
-            # import pdb; pdb.set_trace()
             if len(auto_bal) == 2:
                 balanced = True
                 self._rdepth = auto_bal[0]
                 self._ldepth = auto_bal[1]
-            elif auto_bal[2] == -2 and auto_bal[3] == -1:
+                self._balance = self._rdepth - self._ldepth
+                self._depth = max([self._rdepth, self._ldepth]) + 1
+            elif auto_bal[2] == -2 and auto_bal[3] in [-1, 0]:
                 self._rotate_right(auto_bal[0])
                 curr = auto_bal[0]
-            elif auto_bal[2] == 2 and auto_bal[3] == 1:
+            elif auto_bal[2] == 2 and auto_bal[3] in [1, 0]:
                 self._rotate_left(auto_bal[0])
                 curr = auto_bal[0]
             elif auto_bal[2] == -2 and auto_bal[3] == 1:
@@ -121,22 +122,25 @@ Try again with only numbers in your list or tuple.''')
         Continues up till out of balance or complete.
         """
         while True:
-            child_bal = self._tree_depth(child)
+            if child.right or child.left:
+                child_bal = self._tree_depth(child)
+            else:
+                child_bal = (0, 0)
             if par_node is not None:
                 par_bal = self._tree_depth(par_node)
                 bal = par_bal[0] - par_bal[1]
-                if bal in range(-2, 2):
+                if bal in range(-1, 2):
                     child = par_node
                     par_node = par_node.parent
                 else:
                     return par_node, child, bal, child_bal[0] - child_bal[1]
-            return child_bal[0], child_bal[1]
+            else:
+                return child_bal[0], child_bal[1]
 
     def _rotate_right(self, node):
         """Right rotation for current node."""
         curr = node.left
-        while curr.right:
-            curr = curr.right
+        node.left = curr.right
         curr.parent = node.parent
         curr.right = node
         node.parent = curr
@@ -145,13 +149,16 @@ Try again with only numbers in your list or tuple.''')
                 curr.parent.right = curr
             else:
                 curr.parent.left = curr
+        else:
+            self._root = curr
+            curr.parent = None
+        return
 
     def _rotate_left(self, node):
         """Left rotation for current node."""
         curr = node.right
-        while curr.left:
-            curr = curr.left
-        curr.right = node
+        node.right = curr.left
+        curr.left = node
         curr.parent = node.parent
         node.parent = curr
         if curr.parent:
@@ -159,6 +166,10 @@ Try again with only numbers in your list or tuple.''')
                 curr.parent.right = curr
             else:
                 curr.parent.left = curr
+        else:
+            self._root = curr
+            curr.parent = None
+        return
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
@@ -166,22 +177,39 @@ Try again with only numbers in your list or tuple.''')
         r_depth = 0
         visited = []
         right_side = False
+        curr = None
         if node.left:
             curr = node.left
-        else:
+        elif node.right:
             curr = node.right
+        elif node.parent == self._root:
+            if node == node.parent.left:
+                l_depth += 1
+                return (r_depth, l_depth)
+            else:
+                r_depth += 1
+                return (r_depth, l_depth)
         while True:
             if curr == node.right:
+                right_side = True
+            elif not node.left:
                 right_side = True
             if curr.left and curr.right:
                 if curr not in visited:
                     visited.append(curr)
+                    if curr != node:
+                        if right_side:
+                            r_depth += 1
+                        else:
+                            l_depth += 1
                 if curr.left not in visited:
                     curr = curr.left
                 elif curr.right not in visited:
                     if curr == node:
                         right_side = True
                     curr = curr.right
+                else:
+                    curr = curr.parent
             elif curr.left:
                 if curr not in visited:
                     visited.append(curr)
@@ -189,8 +217,6 @@ Try again with only numbers in your list or tuple.''')
                         r_depth += 1
                     else:
                         l_depth += 1
-                if curr.left in visited and curr == node:
-                    return r_depth, l_depth
                 if curr.left not in visited:
                     curr = curr.left
                 else:
@@ -198,23 +224,27 @@ Try again with only numbers in your list or tuple.''')
             elif curr.right:
                 if curr not in visited:
                     visited.append(curr)
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
-                if curr.right in visited and curr == node:
-                    return r_depth, l_depth
+                    if not curr.parent.left or curr.parent == node:
+                        if right_side:
+                            r_depth += 1
+                        else:
+                            l_depth += 1
                 if curr.right not in visited:
                     curr = curr.right
                 else:
                     curr = curr.parent
             else:
-                if curr.parent.left and curr == curr.parent.left:
+                if curr == curr.parent.left:
                     if right_side:
                         r_depth += 1
                     else:
                         l_depth += 1
                 elif not curr.parent.left:
+                    if right_side:
+                        r_depth += 1
+                    else:
+                        l_depth += 1
+                elif curr.parent == node:
                     if right_side:
                         r_depth += 1
                     else:
@@ -274,6 +304,7 @@ Try again with only numbers in your list or tuple.''')
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
         curr = self._root
+        # import pdb; pdb.set_trace()
         if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
         while True:
@@ -288,7 +319,6 @@ Try again with only numbers in your list or tuple.''')
 
     def size(self):
         """Return the amount of nodes in Binary Search Tree."""
-        # import pdb; pdb.set_trace()
         return self._length
 
     def depth(self):

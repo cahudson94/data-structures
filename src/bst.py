@@ -30,7 +30,6 @@ Try again with only numbers in your list or tuple.''')
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
-        depth = 0
         if curr is None:
             curr = Node(val)
             self._root = curr
@@ -43,43 +42,21 @@ Try again with only numbers in your list or tuple.''')
             elif val < curr.val:
                 if curr.left:
                     curr = curr.left
-                    depth += 1
                 else:
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
-                    if not curr.right:
-                        depth += 1
-                    elif curr == self._root:
-                        depth += 1
-                    if val < self._root:
-                        if depth > self._ldepth:
-                            self._ldepth = depth
-                    else:
-                        if depth > self._rdepth:
-                            self._rdepth = depth
-                    self._balance = self._rdepth - self._ldepth
+                    self._bal_and_rotate(curr)
                     self._depth = max([self._rdepth, self._ldepth]) + 1
                     return
             elif val > curr.val:
                 if curr.right:
                     curr = curr.right
-                    depth += 1
                 else:
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
-                    if not curr.left:
-                        depth += 1
-                    elif curr == self._root:
-                        depth += 1
-                    if val < self._root:
-                        if depth > self._ldepth:
-                            self._ldepth = depth
-                    else:
-                        if depth > self._rdepth:
-                            self._rdepth = depth
-                    self._balance = self._rdepth - self._ldepth
+                    self._bal_and_rotate(curr)
                     self._depth = max([self._rdepth, self._ldepth]) + 1
                     return
 
@@ -89,7 +66,8 @@ Try again with only numbers in your list or tuple.''')
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
         elif to_del.left and to_del.right:
-            sub_balance = self._sub_tree_bal(to_del)
+            sub_tree = self._tree_depth(to_del)
+            sub_balance = sub_tree[0], sub_tree[1]
             self._root_shift(to_del, sub_balance)
         elif to_del.left:
             if to_del.parent.left == to_del:
@@ -110,39 +88,125 @@ Try again with only numbers in your list or tuple.''')
         self._length -= 1
         return
 
-    def _sub_tree_bal(self, node):
-        """Get the balance of a sub tree for deletion."""
-        l_depth = 1
-        r_depth = 1
-        visited = []
+    def _bal_and_rotate(self, node):
+        """Check balance and rotate as needed for full tree."""
+        balanced = False
+        curr = node
+        while not balanced:
+            auto_bal = self._check_bal(curr.parent, curr)
+            # import pdb; pdb.set_trace()
+            if len(auto_bal) == 2:
+                balanced = True
+                self._rdepth = auto_bal[0]
+                self._ldepth = auto_bal[1]
+            elif auto_bal[2] == -2 and auto_bal[3] == -1:
+                self._rotate_right(auto_bal[0])
+                curr = auto_bal[0]
+            elif auto_bal[2] == 2 and auto_bal[3] == 1:
+                self._rotate_left(auto_bal[0])
+                curr = auto_bal[0]
+            elif auto_bal[2] == -2 and auto_bal[3] == 1:
+                self._rotate_left(auto_bal[1])
+                self._rotate_right(auto_bal[0])
+                curr = auto_bal[0]
+            elif auto_bal[2] == 2 and auto_bal[3] == -1:
+                self._rotate_right(auto_bal[1])
+                self._rotate_left(auto_bal[0])
+                curr = auto_bal[0]
+        return
+
+    def _check_bal(self, par_node, child):
+        """Check the for balance of tree or sub tree.
+
+        Continues up till out of balance or complete.
+        """
+        while True:
+            child_bal = self._tree_depth(child)
+            if par_node is not None:
+                par_bal = self._tree_depth(par_node)
+                bal = par_bal[0] - par_bal[1]
+                if bal in range(-2, 2):
+                    child = par_node
+                    par_node = par_node.parent
+                else:
+                    return par_node, child, bal, child_bal[0] - child_bal[1]
+            return child_bal[0], child_bal[1]
+
+    def _rotate_right(self, node):
+        """Right rotation for current node."""
         curr = node.left
+        while curr.right:
+            curr = curr.right
+        curr.parent = node.parent
+        curr.right = node
+        node.parent = curr
+        if curr.parent:
+            if curr.parent.right == node:
+                curr.parent.right = curr
+            else:
+                curr.parent.left = curr
+
+    def _rotate_left(self, node):
+        """Left rotation for current node."""
+        curr = node.right
+        while curr.left:
+            curr = curr.left
+        curr.right = node
+        curr.parent = node.parent
+        node.parent = curr
+        if curr.parent:
+            if curr.parent.right == node:
+                curr.parent.right = curr
+            else:
+                curr.parent.left = curr
+
+    def _tree_depth(self, node):
+        """Get the depth of the tree or sub tree."""
+        l_depth = 0
+        r_depth = 0
+        visited = []
         right_side = False
-        while curr != node and not right_side:
+        if node.left:
+            curr = node.left
+        else:
+            curr = node.right
+        while True:
+            if curr == node.right:
+                right_side = True
             if curr.left and curr.right:
                 if curr not in visited:
                     visited.append(curr)
                 if curr.left not in visited:
                     curr = curr.left
                 elif curr.right not in visited:
-                    curr = curr.right
                     if curr == node:
-                        curr = node.right
                         right_side = True
+                    curr = curr.right
             elif curr.left:
                 if curr not in visited:
                     visited.append(curr)
-                if curr.left not in visited:
-                    curr = curr.left
-            elif curr.right:
-                if curr not in visited:
-                    visited.append(curr)
-                if curr.right not in visited:
-                    curr = curr.right
-                else:
                     if right_side:
                         r_depth += 1
                     else:
                         l_depth += 1
+                if curr.left in visited and curr == node:
+                    return r_depth, l_depth
+                if curr.left not in visited:
+                    curr = curr.left
+                else:
+                    curr = curr.parent
+            elif curr.right:
+                if curr not in visited:
+                    visited.append(curr)
+                    if right_side:
+                        r_depth += 1
+                    else:
+                        l_depth += 1
+                if curr.right in visited and curr == node:
+                    return r_depth, l_depth
+                if curr.right not in visited:
+                    curr = curr.right
+                else:
                     curr = curr.parent
             else:
                 if curr.parent.left and curr == curr.parent.left:
@@ -155,15 +219,11 @@ Try again with only numbers in your list or tuple.''')
                         r_depth += 1
                     else:
                         l_depth += 1
-                else:
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
                 visited.append(curr)
                 curr = curr.parent
-        bal = r_depth - l_depth
-        return bal
+            if right_side or not node.right:
+                if curr == node:
+                    return (r_depth, l_depth)
 
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""
@@ -228,6 +288,7 @@ Try again with only numbers in your list or tuple.''')
 
     def size(self):
         """Return the amount of nodes in Binary Search Tree."""
+        # import pdb; pdb.set_trace()
         return self._length
 
     def depth(self):

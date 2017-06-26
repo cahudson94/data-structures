@@ -168,7 +168,7 @@ Try again with only numbers in your list or tuple.''')
 
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""
-        if balance < 0:
+        if balance <= 0:
             curr = node.left
             while curr.right:
                 curr = curr.right

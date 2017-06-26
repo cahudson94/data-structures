@@ -233,7 +233,7 @@ Try again with only numbers in your list or tuple.''')
             self._root_shift(to_del, self._balance)
         elif to_del.left and to_del.right:
             sub_tree = self._tree_depth(to_del)
-            sub_balance = sub_tree[0], sub_tree[1]
+            sub_balance = sub_tree[0] - sub_tree[1]
             self._root_shift(to_del, sub_balance)
         elif to_del.left:
             if to_del.parent.left == to_del:
@@ -252,7 +252,12 @@ Try again with only numbers in your list or tuple.''')
         else:
             self._del_leaf(to_del)
         self._length -= 1
-        self._bal_and_rotate(par_for_bal)
+        if par_for_bal.left:
+            self._bal_and_rotate(par_for_bal.left)
+        elif par_for_bal.right:
+            self._bal_and_rotate(par_for_bal.right)
+        else:
+            self._bal_and_rotate(par_for_bal)
         return
 
     def _root_shift(self, node, balance):
@@ -261,36 +266,37 @@ Try again with only numbers in your list or tuple.''')
             curr = node.left
             while curr.right:
                 curr = curr.right
-            if curr.left:
-                curr.parent.right = curr.left
             if node == self._root:
                 self._root = curr
+                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
+                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
+                curr.parent = node.parent
             if node.right != curr:
                 curr.right = node.right
                 curr.right.parent = curr
-            curr.left = node.left
-            curr.left.parent = curr
+            node.left = curr.left
+
         else:
             curr = node.right
             while curr.left:
                 curr = curr.left
-            if curr.right:
-                curr.parent.left = curr.right
             if node == self._root:
                 self._root = curr
+                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
+                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
+                curr.parent = node.parent
             if node.left != curr:
                 curr.left = node.left
                 curr.left.parent = curr
-            curr.right = node.right
-            curr.right.parent = curr
+            node.right = curr.right
 
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""

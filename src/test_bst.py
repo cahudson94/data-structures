@@ -77,7 +77,6 @@ def ten_node_bst_with_list():
     ten_node.insert(9)
     ten_node.insert(23)
     ten_node.insert(2)
-    # import pdb; pdb.set_trace()
     ten_node.insert(5)
     ten_node.insert(17)
     ten_node.insert(50)

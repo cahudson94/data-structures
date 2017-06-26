@@ -96,12 +96,12 @@ Try again with only numbers in your list or tuple.''')
                 to_del.parent.left = to_del.left
                 to_del.left.parent = to_del.parent
             else:
-                to_del.parent.right = to_del.right
-                to_del.right.parent = to_del.parent
+                to_del.parent.right = to_del.left
+                to_del.left.parent = to_del.parent
         elif to_del.right:
             if to_del.parent.left == to_del:
-                to_del.parent.left = to_del.left
-                to_del.left.parent = to_del.parent
+                to_del.parent.left = to_del.right
+                to_del.right.parent = to_del.parent
             else:
                 to_del.parent.right = to_del.right
                 to_del.right.parent = to_del.parent

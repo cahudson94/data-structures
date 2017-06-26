@@ -221,7 +221,7 @@ Try again with only numbers in your list or tuple.''')
         r_depth = 0
         l_depth = 0
         nodes.append(self._root)
-        if node < self._root:
+        if node.val < self._root.val:
             while len(nodes) != self._length:
                 if nodes[curr_index].left:
                     nodes.append(nodes[curr_index].left)

@@ -89,7 +89,7 @@ Try again with only numbers in your list or tuple.''')
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
         elif to_del.left and to_del.right:
-            sub_balance = self._sub_tree_bal(to_del)
+            sub_balance = self._tree_depth(to_del)
             self._root_shift(to_del, sub_balance)
         elif to_del.left:
             if to_del.parent.left == to_del:
@@ -110,42 +110,70 @@ Try again with only numbers in your list or tuple.''')
         self._length -= 1
         return
 
-    def _sub_tree_bal(self, node):
-        """Get the balance of a sub tree for deletion."""
-        l_depth = 1
-        r_depth = 1
+    def _tree_depth(self, node):
+        """Get the depth of the tree or sub tree."""
+        l_depth = 0
+        r_depth = 0
         visited = []
-        curr = node.left
         right_side = False
-        while curr != node and not right_side:
+        curr = None
+        if node.left:
+            curr = node.left
+        elif node.right:
+            curr = node.right
+        elif node.parent == self._root:
+            if node == node.parent.left:
+                l_depth += 1
+                return (r_depth, l_depth)
+            else:
+                r_depth += 1
+                return (r_depth, l_depth)
+        while True:
+            if curr == node.right:
+                right_side = True
+            elif not node.left:
+                right_side = True
             if curr.left and curr.right:
                 if curr not in visited:
                     visited.append(curr)
+                    if curr != node:
+                        if right_side:
+                            r_depth += 1
+                        else:
+                            l_depth += 1
                 if curr.left not in visited:
                     curr = curr.left
                 elif curr.right not in visited:
-                    curr = curr.right
                     if curr == node:
-                        curr = node.right
                         right_side = True
+                    curr = curr.right
+                else:
+                    curr = curr.parent
             elif curr.left:
                 if curr not in visited:
                     visited.append(curr)
-                if curr.left not in visited:
-                    curr = curr.left
-            elif curr.right:
-                if curr not in visited:
-                    visited.append(curr)
-                if curr.right not in visited:
-                    curr = curr.right
-                else:
                     if right_side:
                         r_depth += 1
                     else:
                         l_depth += 1
+                if curr.left not in visited:
+                    curr = curr.left
+                else:
+                    curr = curr.parent
+            elif curr.right:
+                if curr not in visited:
+                    visited.append(curr)
+                    if not curr.parent.left or curr.parent == node:
+                        if right_side:
+                            r_depth += 1
+                        else:
+                            l_depth += 1
+                if curr.right not in visited:
+                    curr = curr.right
+                else:
                     curr = curr.parent
             else:
-                if curr.parent.left and curr == curr.parent.left:
+                if curr == curr.parent.left:
                     if right_side:
                         r_depth += 1
                     else:
@@ -155,15 +183,16 @@ Try again with only numbers in your list or tuple.''')
                         r_depth += 1
                     else:
                         l_depth += 1
-                else:
+                elif curr.parent == node:
                     if right_side:
                         r_depth += 1
                     else:
                         l_depth += 1
                 visited.append(curr)
                 curr = curr.parent
-        bal = r_depth - l_depth
-        return bal
+            if right_side or not node.right:
+                if curr == node:
+                    return (r_depth, l_depth)
 
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""

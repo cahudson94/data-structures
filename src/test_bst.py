@@ -441,3 +441,4 @@ def test_delete_on_five_node_bst(five_node_bst_with_tuple):
     five_node.delete(8)
     assert five_node._root.right.val == 7
     assert five_node.balance() == 1
+    assert five_node.depth() == 3

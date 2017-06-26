@@ -245,6 +245,7 @@ Try again with only numbers in your list or tuple.''')
             self._rdepth = r_depth
         else:
             self._ldepth = l_depth
+        self._depth = max([self._rdepth, self._ldepth]) + 1
         self._balance = self._rdepth - self._ldepth
 
     def search(self, val):

@@ -207,8 +207,10 @@ Try again with only numbers in your list or tuple.''')
         par = node.parent
         if node == par.left:
             par.left = None
+            node.parent = None
             return
         par.right = None
+        node.parent = None
         return
 
     def search(self, val):

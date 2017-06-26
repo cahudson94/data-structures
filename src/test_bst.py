@@ -436,7 +436,7 @@ def test_post_order_edge_case(five_node_edge_case):
 
 
 def test_delete_on_five_node_bst(five_node_bst_with_tuple):
-    """Test of the delete functionality on a five node BST."""
+    """Test delete functionality on a five node BST once."""
     five_node = five_node_bst_with_tuple
     five_node.delete(8)
     assert five_node._root.right.val == 7

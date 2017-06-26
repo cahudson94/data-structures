@@ -433,3 +433,10 @@ def test_post_order_edge_case(five_node_edge_case):
     assert next(five) == 5
     assert next(five) == 3
     assert next(five) == 6
+
+
+def test_delete_on_five_node_bst(five_node_bst_with_tuple):
+    """Test of the delete functionality on a five node BST."""
+    five_node = five_node_bst_with_tuple
+    five_node.delete(8)
+    assert five_node._root.right.val == 7

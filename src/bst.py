@@ -58,36 +58,6 @@ Try again with only numbers in your list or tuple.''')
                     self._bal_and_rotate(curr.right)
                     return
 
-    def delete(self, val):
-        """Delete the node with value from the Binary Search Tree."""
-        to_del = self.search(val)
-        par_for_bal = to_del.parent
-        if to_del == self._root:
-            self._root_shift(to_del, self._balance)
-        elif to_del.left and to_del.right:
-            sub_tree = self._tree_depth(to_del)
-            sub_balance = sub_tree[0], sub_tree[1]
-            self._root_shift(to_del, sub_balance)
-        elif to_del.left:
-            if to_del.parent.left == to_del:
-                to_del.parent.left = to_del.left
-                to_del.left.parent = to_del.parent
-            else:
-                to_del.parent.right = to_del.right
-                to_del.right.parent = to_del.parent
-        elif to_del.right:
-            if to_del.parent.left == to_del:
-                to_del.parent.left = to_del.left
-                to_del.left.parent = to_del.parent
-            else:
-                to_del.parent.right = to_del.right
-                to_del.right.parent = to_del.parent
-        else:
-            self._del_leaf(to_del)
-        self._length -= 1
-        self._bal_and_rotate(par_for_bal)
-        return
-
     def _bal_and_rotate(self, node):
         """Check balance and rotate as needed for full tree."""
         balanced = False
@@ -255,6 +225,36 @@ Try again with only numbers in your list or tuple.''')
                 if curr == node:
                     return (r_depth, l_depth)
 
+    def delete(self, val):
+        """Delete the node with value from the Binary Search Tree."""
+        to_del = self.search(val)
+        par_for_bal = to_del.parent
+        if to_del == self._root:
+            self._root_shift(to_del, self._balance)
+        elif to_del.left and to_del.right:
+            sub_tree = self._tree_depth(to_del)
+            sub_balance = sub_tree[0], sub_tree[1]
+            self._root_shift(to_del, sub_balance)
+        elif to_del.left:
+            if to_del.parent.left == to_del:
+                to_del.parent.left = to_del.left
+                to_del.left.parent = to_del.parent
+            else:
+                to_del.parent.right = to_del.left
+                to_del.left.parent = to_del.parent
+        elif to_del.right:
+            if to_del.parent.left == to_del:
+                to_del.parent.left = to_del.right
+                to_del.right.parent = to_del.parent
+            else:
+                to_del.parent.right = to_del.right
+                to_del.right.parent = to_del.parent
+        else:
+            self._del_leaf(to_del)
+        self._length -= 1
+        self._bal_and_rotate(par_for_bal)
+        return
+
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""
         if balance < 0:
@@ -297,8 +297,10 @@ Try again with only numbers in your list or tuple.''')
         par = node.parent
         if node == par.left:
             par.left = None
+            node.parent = None
             return
         par.right = None
+        node.parent = None
         return
 
     def search(self, val):

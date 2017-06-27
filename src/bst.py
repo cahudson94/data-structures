@@ -227,11 +227,36 @@ Try again with only numbers in your list or tuple.''')
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
+        if self._length == 1:
+            self._root = None
+            self._length = 0
+            self._depth = 0
+            return
         to_del = self.search(val)
-        par_for_bal = to_del.parent
+        if self._length == 2:
+            self._length -= 1
+            if to_del == self._root and to_del.right:
+                self._root = to_del.right
+                self._root.parent = None
+            elif to_del == self._root and to_del.left:
+                self._root = to_del.left
+                self._root.parent = None
+            else:
+                self._del_leaf(to_del)
+            self._rdepth = 0
+            self._ldepth = 0
+            self._depth = 1
+            self._balance = 0
+            return
+        if to_del is None:
+            return None
+        to_del = self.search(val)
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
-        elif to_del.left and to_del.right:
+            par_for_bal = to_del
+        else:
+            par_for_bal = to_del.parent
+        if to_del.left and to_del.right:
             sub_tree = self._tree_depth(to_del)
             sub_balance = sub_tree[0] - sub_tree[1]
             self._root_shift(to_del, sub_balance)
@@ -266,37 +291,40 @@ Try again with only numbers in your list or tuple.''')
             curr = node.left
             while curr.right:
                 curr = curr.right
+            if curr != node.left:
+                curr.parent.right = curr.left
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
             if node.right != curr:
                 curr.right = node.right
                 curr.right.parent = curr
-            node.left = curr.left
-
+            if curr.left:
+                curr.left = node.left
+                curr.left.parent = curr
+            curr.parent = node.parent
         else:
             curr = node.right
             while curr.left:
                 curr = curr.left
+            if curr != node.right:
+                curr.parent.left = curr.right
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
             if node.left != curr:
                 curr.left = node.left
                 curr.left.parent = curr
-            node.right = curr.right
+            if curr.right:
+                curr.right = node.right
+                curr.right.parent = curr
+            curr.parent = node.parent
 
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""
@@ -312,7 +340,6 @@ Try again with only numbers in your list or tuple.''')
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
         curr = self._root
-        # import pdb; pdb.set_trace()
         if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
         while True:
@@ -350,6 +377,7 @@ Try again with only numbers in your list or tuple.''')
         nodes = []
         curr = self._root
         while len(nodes) != self._length:
+            # import pdb; pdb.set_trace()
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
             elif curr.left and curr not in nodes and curr.left not in nodes:
@@ -369,7 +397,8 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.parent
             else:
                 curr = curr.parent
-                nodes.append(curr)
+                if curr not in nodes:
+                    nodes.append(curr)
         for node in nodes:
             yield node.val
 

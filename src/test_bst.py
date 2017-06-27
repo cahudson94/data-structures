@@ -502,3 +502,27 @@ def test_ten_node_delete_right_side(ten_node_bst_with_list):
     """."""
     ten_node_bst_with_list.delete(23)
     assert ten_node_bst_with_list._root.right.right.val == 17
+
+
+def test_delete_right_most_left_most_has_right_child():
+    """Delete one child deletion test."""
+    new_bst = BST([1, 5, 3, 10, 8, 6, 20, 7])
+    assert new_bst.depth() == 6
+    new_bst.delete(5)
+    assert new_bst._root.right.val == 6
+    assert new_bst.depth() == 5
+    assert new_bst._root.right.right.val == 10
+
+
+def test_multiple_deletes_on_more_robust_tree():
+    """Test a BST with more nodes and full branches on both sides."""
+    new_bst = BST([10, 2, 1, 9, 4, 3, 8, 6, 5, 7, 18, 11, 19, 16, 12, 17, 14, 13, 15])
+    assert new_bst._root.val == 10
+    new_bst.delete(16)
+    assert new_bst._root.right.left.right.val == 15
+    assert new_bst._root.right.left.right.left.val == 12
+    new_bst.delete(11)
+    assert new_bst._root.right.left.val == 15
+    new_bst.delete(4)
+    assert new_bst._root.left.right.left.val == 5
+    assert new_bst.depth() == 7

@@ -85,7 +85,6 @@ Try again with only numbers in your list or tuple.''')
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
-        root_true = False
         if self._length == 1:
             self._root = None
             self._length = 0
@@ -97,24 +96,23 @@ Try again with only numbers in your list or tuple.''')
             if to_del == self._root and to_del.right:
                 self._root = to_del.right
                 self._root.parent = None
-                self._depth_and_bal(to_del)
-                return
             elif to_del == self._root and to_del.left:
                 self._root = to_del.left
                 self._root.parent = None
-                self._depth_and_bal(to_del)
-                return
             else:
                 self._del_leaf(to_del)
-                self._depth_and_bal(to_del)
-                return
+            self._rdepth = 0
+            self._ldepth = 0
+            self._depth = 1
+            self._balance = 0
+            return
         if to_del is None:
             return None
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
-            root_true = True
         elif to_del.left and to_del.right:
-            sub_balance = self._sub_tree_bal(to_del)
+            sub_depth = self._tree_depth(to_del)
+            sub_balance = sub_depth[0] - sub_depth[1]
             self._root_shift(to_del, sub_balance)
         elif to_del.left:
             if to_del.parent.left == to_del:
@@ -133,10 +131,10 @@ Try again with only numbers in your list or tuple.''')
         else:
             self._del_leaf(to_del)
         self._length -= 1
-        self._depth_and_bal(to_del, root_true)
+        self._depth_and_bal(self._root)
         return
 
-    def _sub_tree_bal(self, node):
+    def _tree_depth(self, node):
         """Get the balance of a sub tree for deletion."""
         l_depth = 0
         r_depth = 0
@@ -218,8 +216,7 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.parent
             if right_side or not node.right:
                 if curr == node:
-                    bal = r_depth - l_depth
-                    return bal
+                    return (r_depth, l_depth)
 
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""
@@ -229,6 +226,8 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.right
             if curr != node.left:
                 curr.parent.right = curr.left
+                curr.left = node.left
+                curr.left.parent = curr
             if node == self._root:
                 self._root = curr
             elif node == node.parent.left:
@@ -238,9 +237,6 @@ Try again with only numbers in your list or tuple.''')
             if node.right != curr:
                 curr.right = node.right
                 curr.right.parent = curr
-            if curr.left:
-                curr.left = node.left
-                curr.left.parent = curr
             curr.parent = node.parent
         else:
             curr = node.right
@@ -248,6 +244,8 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.left
             if curr != node.right:
                 curr.parent.left = curr.right
+                curr.right = node.right
+                curr.right.parent = curr
             if node == self._root:
                 self._root = curr
             elif node == node.parent.left:
@@ -257,8 +255,6 @@ Try again with only numbers in your list or tuple.''')
             if node.left != curr:
                 curr.left = node.left
                 curr.left.parent = curr
-            curr.right = node.right
-            curr.right.parent = curr
             curr.parent = node.parent
 
     def _del_leaf(self, node):
@@ -272,64 +268,13 @@ Try again with only numbers in your list or tuple.''')
         node.parent = None
         return
 
-    def _depth_and_bal(self, node, root_true=False):
+    def _depth_and_bal(self, node):
         """."""
-        nodes = []
-        curr_index = 0
-        r_depth = 0
-        l_depth = 0
-        nodes.append(self._root)
-        if not root_true:
-            if node.val < self._root.val:
-                while len(nodes) != self._length:
-                    if nodes[curr_index].left:
-                        nodes.append(nodes[curr_index].left)
-                        l_depth += 1
-                    if nodes[curr_index].right:
-                        nodes.append(nodes[curr_index].right)
-                        if not nodes[curr_index].left:
-                            l_depth += 1
-                    curr_index += 1
-            else:
-                while len(nodes) != self._length:
-                    if nodes[curr_index].left:
-                        nodes.append(nodes[curr_index].left)
-                        r_depth += 1
-                    if nodes[curr_index].right:
-                        nodes.append(nodes[curr_index].right)
-                        if not nodes[curr_index].left:
-                                r_depth += 1
-                    curr_index += 1
-        else:
-            if node.val > self._root.val:
-                while len(nodes) != self._length:
-                    if nodes[curr_index].left:
-                        nodes.append(nodes[curr_index].left)
-                        l_depth += 1
-                    if nodes[curr_index].right:
-                        nodes.append(nodes[curr_index].right)
-                        if not nodes[curr_index].left:
-                            l_depth += 1
-                    curr_index += 1
-            else:
-                while len(nodes) != self._length:
-                    if nodes[curr_index].left:
-                        nodes.append(nodes[curr_index].left)
-                        r_depth += 1
-                    if nodes[curr_index].right:
-                        nodes.append(nodes[curr_index].right)
-                        if not nodes[curr_index].left:
-                                r_depth += 1
-                    curr_index += 1
-        if r_depth:
-            self._rdepth = r_depth
-        elif not r_depth and not l_depth:
-            self._rdepth = 0
-            self._ldepth = 0
-        else:
-            self._ldepth = l_depth
-        self._depth = max([self._rdepth, self._ldepth]) + 1
+        depth = self._tree_depth(node)
+        self._rdepth = depth[0]
+        self._ldepth = depth[1]
         self._balance = self._rdepth - self._ldepth
+        self._depth = max([self._rdepth, self._ldepth]) + 1
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
@@ -371,6 +316,7 @@ Try again with only numbers in your list or tuple.''')
         nodes = []
         curr = self._root
         while len(nodes) != self._length:
+            # import pdb; pdb.set_trace()
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
             elif curr.left and curr not in nodes and curr.left not in nodes:
@@ -390,7 +336,8 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.parent
             else:
                 curr = curr.parent
-                nodes.append(curr)
+                if curr not in nodes:
+                    nodes.append(curr)
         for node in nodes:
             yield node.val
 

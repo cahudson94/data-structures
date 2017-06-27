@@ -20,7 +20,7 @@ class BST():
                 else:
                     raise TypeError('''
 Try again with only numbers in your list or tuple.''')
-        elif type(iterable) == int:
+        elif type(iterable) in [int, float]:
             self.insert(iterable)
         elif iterable is not None:
             raise TypeError('Try again with a list, tuple, int, or float.')

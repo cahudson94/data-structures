@@ -34,7 +34,7 @@ Try again with only numbers in your list or tuple.''')
         if curr is None:
             curr = Node(val)
             self._root = curr
-            self._length += 1
+            self._length = 1
             self._depth = 1
             return
         while True:
@@ -45,6 +45,7 @@ Try again with only numbers in your list or tuple.''')
                     curr = curr.left
                     depth += 1
                 else:
+                    print(val)
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
@@ -66,6 +67,7 @@ Try again with only numbers in your list or tuple.''')
                     curr = curr.right
                     depth += 1
                 else:
+                    print(val)
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
@@ -91,6 +93,8 @@ Try again with only numbers in your list or tuple.''')
             self._depth = 0
             return
         to_del = self.search(val)
+        if to_del is None:
+            return None
         if self._length == 2:
             self._length -= 1
             if to_del == self._root and to_del.right:
@@ -106,8 +110,6 @@ Try again with only numbers in your list or tuple.''')
             self._depth = 1
             self._balance = 0
             return
-        if to_del is None:
-            return None
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
         elif to_del.left and to_del.right:
@@ -135,7 +137,7 @@ Try again with only numbers in your list or tuple.''')
         return
 
     def _tree_depth(self, node):
-        """Get the balance of a sub tree for deletion."""
+        """Get the depth of the tree or sub tree."""
         l_depth = 0
         r_depth = 0
         visited = []
@@ -157,14 +159,22 @@ Try again with only numbers in your list or tuple.''')
                 right_side = True
             elif not node.left:
                 right_side = True
-            if curr.left and curr.right:
-                if curr not in visited:
-                    visited.append(curr)
-                    if curr != node:
+            if curr != node:
+                if curr == curr.parent.left or not curr.parent.left:
+                    if curr not in visited:
                         if right_side:
                             r_depth += 1
                         else:
                             l_depth += 1
+                elif curr == node.right:
+                    if curr not in visited:
+                        if right_side:
+                            r_depth += 1
+                        else:
+                            l_depth += 1
+            if curr.left and curr.right:
+                if curr not in visited:
+                    visited.append(curr)
                 if curr.left not in visited:
                     curr = curr.left
                 elif curr.right not in visited:
@@ -176,10 +186,6 @@ Try again with only numbers in your list or tuple.''')
             elif curr.left:
                 if curr not in visited:
                     visited.append(curr)
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
                 if curr.left not in visited:
                     curr = curr.left
                 else:
@@ -187,31 +193,11 @@ Try again with only numbers in your list or tuple.''')
             elif curr.right:
                 if curr not in visited:
                     visited.append(curr)
-                    if not curr.parent.left or curr.parent == node:
-                        if right_side:
-                            r_depth += 1
-                        else:
-                            l_depth += 1
                 if curr.right not in visited:
                     curr = curr.right
                 else:
                     curr = curr.parent
             else:
-                if curr == curr.parent.left:
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
-                elif not curr.parent.left:
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
-                elif curr.parent == node:
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
                 visited.append(curr)
                 curr = curr.parent
             if right_side or not node.right:
@@ -225,37 +211,46 @@ Try again with only numbers in your list or tuple.''')
             while curr.right:
                 curr = curr.right
             if curr != node.left:
+                if curr.left:
+                    curr.left.parent = curr.parent
                 curr.parent.right = curr.left
                 curr.left = node.left
                 curr.left.parent = curr
+            curr.right = node.right
             if node == self._root:
                 self._root = curr
+                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
+                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-            if node.right != curr:
-                curr.right = node.right
+                curr.parent = node.parent
+            if curr.right:
                 curr.right.parent = curr
-            curr.parent = node.parent
+
         else:
             curr = node.right
             while curr.left:
                 curr = curr.left
             if curr != node.right:
+                if curr.right:
+                    curr.right.parent = curr.parent
                 curr.parent.left = curr.right
                 curr.right = node.right
                 curr.right.parent = curr
+            curr.left = node.left
             if node == self._root:
                 self._root = curr
+                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
+                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-            if node.left != curr:
-                curr.left = node.left
+                curr.parent = node.parent
+            if curr.left:
                 curr.left.parent = curr
-            curr.parent = node.parent
 
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""
@@ -316,7 +311,6 @@ Try again with only numbers in your list or tuple.''')
         nodes = []
         curr = self._root
         while len(nodes) != self._length:
-            # import pdb; pdb.set_trace()
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
             elif curr.left and curr not in nodes and curr.left not in nodes:

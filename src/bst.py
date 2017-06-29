@@ -33,7 +33,7 @@ Try again with only numbers in your list or tuple.''')
         if curr is None:
             curr = Node(val)
             self._root = curr
-            self._length += 1
+            self._length = 1
             self._depth = 1
             return
         while True:

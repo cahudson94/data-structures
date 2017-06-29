@@ -348,14 +348,22 @@ Try again with only numbers in your list or tuple.''')
                 right_side = True
             elif not node.left:
                 right_side = True
-            if curr.left and curr.right:
-                if curr not in visited:
-                    visited.append(curr)
-                    if curr != node:
+            if curr != node:
+                if curr == curr.parent.left or not curr.parent.left:
+                    if curr not in visited:
                         if right_side:
                             r_depth += 1
                         else:
                             l_depth += 1
+                elif curr == node.right:
+                    if curr not in visited:
+                        if right_side:
+                            r_depth += 1
+                        else:
+                            l_depth += 1
+            if curr.left and curr.right:
+                if curr not in visited:
+                    visited.append(curr)
                 if curr.left not in visited:
                     curr = curr.left
                 elif curr.right not in visited:
@@ -367,10 +375,6 @@ Try again with only numbers in your list or tuple.''')
             elif curr.left:
                 if curr not in visited:
                     visited.append(curr)
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
                 if curr.left not in visited:
                     curr = curr.left
                 else:
@@ -378,31 +382,11 @@ Try again with only numbers in your list or tuple.''')
             elif curr.right:
                 if curr not in visited:
                     visited.append(curr)
-                    if curr == curr.parent.left or curr.parent == node:
-                        if right_side:
-                            r_depth += 1
-                        else:
-                            l_depth += 1
                 if curr.right not in visited:
                     curr = curr.right
                 else:
                     curr = curr.parent
             else:
-                if curr == curr.parent.left:
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
-                elif not curr.parent.left:
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
-                elif curr.parent == node:
-                    if right_side:
-                        r_depth += 1
-                    else:
-                        l_depth += 1
                 visited.append(curr)
                 curr = curr.parent
             if right_side or not node.right:
@@ -418,7 +402,7 @@ Try again with only numbers in your list or tuple.''')
             if curr != node.left:
                 if curr.left:
                     curr.left.parent = curr.parent
-                curr.parent.right = curr.right
+                curr.parent.right = curr.left
                 curr.left = node.left
                 curr.left.parent = curr
             curr.right = node.right
@@ -441,7 +425,7 @@ Try again with only numbers in your list or tuple.''')
             if curr != node.right:
                 if curr.right:
                     curr.right.parent = curr.parent
-                curr.parent.left = curr.left
+                curr.parent.left = curr.right
                 curr.right = node.right
                 curr.right.parent = curr
             curr.left = node.left

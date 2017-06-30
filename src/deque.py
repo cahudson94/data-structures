@@ -25,6 +25,8 @@ class Deque(object):
 
     def pop(self):
         """Remove the back of the Dequeue."""
+        if not self._doubly_linked_list.tail:
+            raise IndexError('The Deque is empty.')
         popped = self._doubly_linked_list.shift()
         self.tail = self._doubly_linked_list.tail
         self.head = self._doubly_linked_list.head
@@ -32,6 +34,8 @@ class Deque(object):
 
     def popleft(self):
         """Remove the front of the Dequeue."""
+        if not self._doubly_linked_list.head:
+            raise IndexError('The Deque is empty.')
         popped = self._doubly_linked_list.pop()
         self.head = self._doubly_linked_list.head
         self.tail = self._doubly_linked_list.tail
@@ -39,11 +43,15 @@ class Deque(object):
 
     def peek(self):
         """Return the Dequeue tail."""
-        return self._doubly_linked_list.tail
+        if self._doubly_linked_list.tail is None:
+            return None
+        return self._doubly_linked_list.tail.val
 
     def peekleft(self):
         """Return the Dequeue head."""
-        return self._doubly_linked_list.head
+        if self._doubly_linked_list.head is None:
+            return None
+        return self._doubly_linked_list.head.val
 
     def size(self):
         """Return the size of the queue."""

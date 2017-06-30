@@ -7,9 +7,11 @@ class BinaryHeap(object):
     def __init__(self, iterable=None):
         """Init binheap."""
         self._list = []
-        if type(iterable) in [list, tuple]:
+        if type(iterable) in [list, tuple, str]:
             for i in iterable:
                 self.push(i)
+        elif iterable is not None:
+            raise TypeError('Try again with a list, tuple, or string.')
 
     def push(self, val):
         """Add value to the bottom of heap and bubbles up as appropriate."""
@@ -79,6 +81,12 @@ class BinaryHeap(object):
                 self._list[curr_index] = left_child
                 self._list[left] = curr_val
                 curr_index = left
+            elif right and self._list[curr_index] > self._list[right]:
+                right_child = self._list[right]
+                curr_val = self._list[curr_index]
+                self._list[curr_index] = right_child
+                self._list[right] = curr_val
+                curr_index = right
             else:
                 bubble = False
         return popped

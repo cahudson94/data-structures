@@ -58,7 +58,7 @@ def test_invalid_priority_tuple(build_empty_pq):
 def test_insert_no_priority_empty_pq(build_empty_pq):
     """Insert one with no priority, empty PQ."""
     build_empty_pq.insert('greetings!')
-    assert build_empty_pq.peek() == [0, 'greetings!']
+    assert build_empty_pq.peek() == 'greetings!'
 
 
 def test_insert_no_priority_one_item_pq(build_one_item_pq):
@@ -77,21 +77,21 @@ def test_insert_no_priority_full_pq(build_mult_item_pq):
 def test_insert_one_with_priority_empty_pq(build_empty_pq):
     """Insert one with priority, empty PQ."""
     build_empty_pq.insert({'favorite': 'red'}, -1)
-    assert build_empty_pq.peek() == [-1, {'favorite': 'red'}]
+    assert build_empty_pq.peek() == {'favorite': 'red'}
     assert len(build_empty_pq._list) == 1
 
 
 def test_insert_one_with_top_priority_one_item_pq(build_one_item_pq):
     """Insert one with top priority, one-item PQ."""
     build_one_item_pq.insert({'favorite': 'red'}, 10)
-    assert build_one_item_pq.peek() == [10, {'favorite': 'red'}]
+    assert build_one_item_pq.peek() == {'favorite': 'red'}
     assert len(build_one_item_pq._list) == 2
 
 
 def test_insert_one_with_top_priority_full_pq(build_mult_item_pq):
     """Insert one with top priority, full PQ."""
     build_mult_item_pq.insert('my face', -10)
-    assert build_mult_item_pq.peek() == [-10, 'my face']
+    assert build_mult_item_pq.peek() == 'my face'
     assert len(build_mult_item_pq._list) == 4
 
 
@@ -145,57 +145,58 @@ def test_insert_two_with_same_val_different_priority(build_one_item_pq):
 
 def test_peek_empty_pq(build_empty_pq):
     """Peek with empty PQ."""
-    peeked = build_empty_pq.peek()
-    assert peeked == "No items in priority queue."
+    with pytest.raises(IndexError):
+        build_empty_pq.peek()
 
 
 def test_peek_one_item_pq(build_one_item_pq):
     """Peek with empty PQ."""
     peeked = build_one_item_pq.peek()
-    assert peeked == [12, 'cake']
+    assert peeked == 'cake'
 
 
 def test_peek_full_pq(build_mult_item_pq):
     """Peek with empty PQ."""
     peeked = build_mult_item_pq.peek()
-    assert peeked == [1, 'Hello!']
+    assert peeked == 'Hello!'
 
 
 def test_peek_mult_pops(build_mult_item_pq):
     """Check peek after multiple pops."""
-    assert build_mult_item_pq.pop() == [1, 'Hello!']
-    assert build_mult_item_pq.pop() == [3, [2, 3]]
-    assert build_mult_item_pq.peek() == [5, 3]
+    assert build_mult_item_pq.pop() == 'Hello!'
+    assert build_mult_item_pq.pop() == [2, 3]
+    assert build_mult_item_pq.peek() == 3
 
 
 def test_peek_after_pop(build_one_item_pq):
     """Check peek after 1 insert, 1 pop."""
     build_one_item_pq.insert('content', 20)
-    assert build_one_item_pq.pop() == [12, 'cake']
-    assert build_one_item_pq.peek() == [20, 'content']
+    assert build_one_item_pq.pop() == 'cake'
+    assert build_one_item_pq.peek() == 'content'
 
 
 def test_peek_after_inserts_one_pop(build_mult_item_pq):
     """Check peek after 2 inserts, 1 pop."""
     build_mult_item_pq.insert('content', 20)
     build_mult_item_pq.insert('my face', -100)
-    assert build_mult_item_pq.pop() == [-100, 'my face']
-    assert build_mult_item_pq.peek() == [1, 'Hello!']
+    assert build_mult_item_pq.pop() == 'my face'
+    assert build_mult_item_pq.peek() == 'Hello!'
 
 
 def test_pop_all(build_mult_item_pq):
     """Pop all items in a PQ."""
-    assert build_mult_item_pq.pop() == [1, 'Hello!']
-    assert build_mult_item_pq.pop() == [3, [2, 3]]
-    assert build_mult_item_pq.pop() == [5, 3]
+    assert build_mult_item_pq.pop() == 'Hello!'
+    assert build_mult_item_pq.pop() == [2, 3]
+    assert build_mult_item_pq.pop() == 3
     assert len(build_mult_item_pq._list) == 0
 
 
 def test_pop_one(build_one_item_pq):
     """Pop one item."""
-    assert build_one_item_pq.pop() == [12, 'cake']
+    assert build_one_item_pq.pop() == 'cake'
 
 
 def test_pop_empty(build_empty_pq):
     """Pop empty list."""
-    assert build_empty_pq.pop() == 'No items to pop in priority queue.'
+    with pytest.raises(IndexError):
+        build_empty_pq.pop()

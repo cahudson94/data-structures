@@ -5,7 +5,7 @@ from timeit import timeit
 class BST():
     """Binary Search Tree."""
 
-    def __init__(self, iterable=None):
+    def __init__(self, input=None):
         """Initialize Binary Search tree."""
         self._root = None
         self._length = 0
@@ -13,16 +13,16 @@ class BST():
         self._ldepth = 0
         self._depth = 0
         self._balance = 0
-        if type(iterable) in [tuple, list]:
-            for i in iterable:
+        if type(input) in [tuple, list]:
+            for i in input:
                 if type(i) in [int, float]:
                     self.insert(i)
                 else:
                     raise TypeError('''
 Try again with only numbers in your list or tuple.''')
-        elif type(iterable) in [int, float]:
-            self.insert(iterable)
-        elif iterable is not None:
+        elif type(input) in [int, float]:
+            self.insert(input)
+        elif input is not None:
             raise TypeError('Try again with a list, tuple, int, or float.')
 
     def insert(self, val):
@@ -37,9 +37,7 @@ Try again with only numbers in your list or tuple.''')
             self._depth = 1
             return
         while True:
-            if val == curr.val:
-                return
-            elif val < curr.val:
+            if val < curr.val:
                 if curr.left:
                     curr = curr.left
                 else:
@@ -57,6 +55,8 @@ Try again with only numbers in your list or tuple.''')
                     self._length += 1
                     self._bal_and_rotate(curr.right)
                     return
+            else:
+                return
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
@@ -92,28 +92,27 @@ Try again with only numbers in your list or tuple.''')
                 to_del.right.parent = to_del.parent
         else:
             self._del_leaf(to_del)
-        if par_for_bal.left:
-            self._bal_and_rotate(par_for_bal.left)
-        elif par_for_bal.right:
-            self._bal_and_rotate(par_for_bal.right)
-        else:
-            self._bal_and_rotate(par_for_bal)
-        return
+        self._bal_and_rotate(par_for_bal.left or par_for_bal.right or par_for_bal)
+        # if par_for_bal.left:
+        #     self._bal_and_rotate(par_for_bal.left)
+        # elif par_for_bal.right:
+        #     self._bal_and_rotate(par_for_bal.right)
+        # else:
+        #     self._bal_and_rotate(par_for_bal)
+        # return
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
         curr = self._root
         if type(val) not in [int, float]:
             raise TypeError('This tree only contains numbers.')
-        while True:
-            if curr is None:
-                return None
-            elif val == curr.val:
-                return curr
-            elif val < curr.val:
+        while curr:
+            if val < curr.val:
                 curr = curr.left
             elif val > curr.val:
                 curr = curr.right
+            else:
+                return curr
 
     def size(self):
         """Return the amount of nodes in Binary Search Tree."""
@@ -125,11 +124,7 @@ Try again with only numbers in your list or tuple.''')
 
     def contains(self, val):
         """Return true if specified val is in tree, false if it is not."""
-        if type(val) not in [int, float]:
-            raise TypeError('This tree only contains numbers.')
-        if self.search(val):
-            return True
-        return False
+        return not not self.search(val)
 
     def balance(self):
         """Return the difference of left and right depth from root."""
@@ -473,20 +468,18 @@ Try again with only numbers in your list or tuple.''')
                 self._root.right = to_del.right
                 self._rdepth = 1
                 self._ldepth = 0
-                self._depth = 2
                 self._balance = 1
             else:
                 if to_del == self._root.left:
                     self._rdepth = 1
                     self._ldepth = 0
-                    self._depth = 2
                     self._balance = 1
                 else:
                     self._rdepth = 0
                     self._ldepth = 1
-                    self._depth = 2
                     self._balance = -1
                 self._del_leaf(to_del)
+            self._depth = 2
 
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""

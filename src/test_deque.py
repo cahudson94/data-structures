@@ -117,17 +117,17 @@ def test_peek_empty_dequeue(build_empty_dequeue):
 
 def test_peek_one_node(build_dequeue_one_node):
     """Test peek method for one node queue."""
-    assert build_dequeue_one_node.peek().val == 'cake'
+    assert build_dequeue_one_node.peek() == 'cake'
 
 
 def test_peek_two_nodes(build_dequeue_two_nodes):
     """Test peek method for two node queue."""
-    assert build_dequeue_two_nodes.peek().val == 2
+    assert build_dequeue_two_nodes.peek() == 2
 
 
-def test_peek_against_head_two_nodes(build_dequeue_two_nodes):
-    """Test peek method for one node dequeue."""
-    assert build_dequeue_two_nodes.peek() == build_dequeue_two_nodes.tail
+def test_peek_against_tail_two_nodes(build_dequeue_two_nodes):
+    """Test peek method for two node dequeue against tail."""
+    assert build_dequeue_two_nodes.peek() == build_dequeue_two_nodes.tail.val
 
 
 def test_peekleft_empty_dequeue(build_empty_dequeue):
@@ -137,17 +137,38 @@ def test_peekleft_empty_dequeue(build_empty_dequeue):
 
 def test_peekleft_one_node(build_dequeue_one_node):
     """Test peekleft method for one node queue."""
-    assert build_dequeue_one_node.peekleft().val == 'cake'
+    assert build_dequeue_one_node.peekleft() == 'cake'
 
 
 def test_peekleft_two_nodes(build_dequeue_two_nodes):
     """Test peekleft method for two node queue."""
-    assert build_dequeue_two_nodes.peekleft().val == 'blue'
+    assert build_dequeue_two_nodes.peekleft() == 'blue'
 
 
 def test_peekleft_against_head_two_nodes(build_dequeue_two_nodes):
-    """Test peekleft method for one node dequeue."""
-    assert build_dequeue_two_nodes.peekleft() == build_dequeue_two_nodes.head
+    """Test peekleft method for two node dequeue against head."""
+    b = build_dequeue_two_nodes
+    assert b.peekleft() == b.head.val
+
+
+def test_popleft_all(build_dequeue_three_nodes):
+    """Test popleft on empty queue raises error."""
+    build_dequeue_three_nodes.popleft()
+    build_dequeue_three_nodes.popleft()
+    build_dequeue_three_nodes.popleft()
+    assert len(build_dequeue_three_nodes) == 0
+    assert build_dequeue_three_nodes.head is None
+    assert build_dequeue_three_nodes.tail is None
+
+
+def test_pop_all(build_dequeue_three_nodes):
+    """Test popleft on empty queue raises error."""
+    build_dequeue_three_nodes.pop()
+    build_dequeue_three_nodes.pop()
+    build_dequeue_three_nodes.pop()
+    assert len(build_dequeue_three_nodes) == 0
+    assert build_dequeue_three_nodes.head is None
+    assert build_dequeue_three_nodes.tail is None
 
 
 def test_popleft_empty_dequeue(build_empty_dequeue):

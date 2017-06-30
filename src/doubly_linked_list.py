@@ -18,6 +18,7 @@ class DoublyLinkedList(object):
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            new_node.next_node = None
             self._length += 1
             return
         self.head.prev_node = new_node
@@ -32,6 +33,7 @@ class DoublyLinkedList(object):
         if self.head is None:
             self.head = new_node
             self.tail = new_node
+            new_node.prev_node = None
             self._length += 1
             return
         self.tail.next_node = new_node
@@ -42,30 +44,43 @@ class DoublyLinkedList(object):
         """Remove and return node from head of doubly linked list."""
         current_node = self.head
         if current_node is None:
-            raise IndexError('Nothing to pop.')
-        self.head = current_node.next_node
-        current_node.next_node.prev_node = None
+            raise IndexError('There are no Nodes.')
+        if current_node.next_node is not None:
+            self.head = current_node.next_node
+            self.head.prev_node = None
+        else:
+            self.head = None
+            self.tail = None
         self._length -= 1
-        return current_node
+        return current_node.val
 
     def shift(self):
         """Remove and return node from tail of doubly linked list."""
         current_node = self.tail
         if current_node is None:
-            raise IndexError('Nothing to shift.')
-        self.tail = current_node.prev_node
-        current_node.prev_node.next_node = None
+            raise IndexError('There are no Nodes.')
+        if current_node.prev_node is not None:
+            self.tail = current_node.prev_node
+            self.tail.next_node = None
+        else:
+            self.head = None
+            self.tail = None
         self._length -= 1
-        return current_node
+        return current_node.val
 
     def remove(self, val):
         """Find and remove the first Node with a given value."""
         current_item = self.head
+        if current_item is None:
+            raise ValueError('Node not in doubly linked list, it is empty.')
         while current_item.val != val:
             current_item = current_item.next_node
             if current_item is None:
                 raise ValueError('Node not in doubly linked list.')
-        if current_item.prev_node is None:
+        if self.head == self.tail:
+            self.head = None
+            self.tail = None
+        elif current_item.prev_node is None:
             self.head = current_item.next_node
             self.head.prev_node = None
         elif current_item.next_node is None:

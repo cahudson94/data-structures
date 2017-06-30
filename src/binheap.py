@@ -10,6 +10,8 @@ class BinaryHeap(object):
         if type(iterable) in [list, tuple]:
             for i in iterable:
                 self.push(i)
+        elif iterable is not None:
+            raise TypeError('Plese instantiate with a list or tuple.')
 
     def push(self, val):
         """Add value to the bottom of heap and bubbles up as appropriate."""

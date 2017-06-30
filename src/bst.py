@@ -51,8 +51,6 @@ Try again with only numbers in your list or tuple.''')
                     self._length += 1
                     if not curr.right:
                         depth += 1
-                    elif curr == self._root:
-                        depth += 1
                     if val < self._root.val:
                         if depth > self._ldepth:
                             self._ldepth = depth

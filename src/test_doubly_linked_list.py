@@ -197,7 +197,7 @@ def test_dll_append_none(initialize_empty_dll):
 
 def test_dll_pop(initialize_three_dll):
     """Test doubly linked list pop method removes and returns head."""
-    assert initialize_three_dll.pop().val == 'three'
+    assert initialize_three_dll.pop() == 'three'
     assert initialize_three_dll.head.val == 'two'
 
 
@@ -228,7 +228,7 @@ def test_dll_pop_empty(initialize_empty_dll):
 
 def test_dll_shift(initialize_three_dll):
     """Test doubly linked list shift method removes and returns tail."""
-    assert initialize_three_dll.shift().val == 'one'
+    assert initialize_three_dll.shift() == 'one'
     assert initialize_three_dll.tail.val == 'two'
 
 
@@ -276,6 +276,14 @@ def test_dll_remove_not_found(initialize_three_dll):
         initialize_three_dll.remove('cake')
 
 
+def test_dll_remove_from_list_of_one(dll_push_one):
+    """Test doubly linked list remove method on only node."""
+    dll_push_one.remove(5)
+    assert len(dll_push_one) == 0
+    assert dll_push_one.head is None
+    assert dll_push_one.tail is None
+
+
 def test_dll_remove_from_head(initialize_two_dll):
     """Test doubly linked list remove method on the head of a list of two."""
     initialize_two_dll.remove('one')
@@ -303,6 +311,7 @@ def test_dll_len(initialize_three_dll):
     assert len(initialize_three_dll) == 3
 
 
-def test_dll_display(initialize_three_dll):
-    """Test display method."""
-    assert initialize_three_dll.display() == "(one, two, three)"
+def test_remove_from_empty_dll(initialize_empty_dll):
+    """Test remove raises error when dll is empty."""
+    with pytest.raises(ValueError):
+        initialize_empty_dll.remove('cake')

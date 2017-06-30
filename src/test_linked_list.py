@@ -87,13 +87,13 @@ def test_linked_list_push_not_val():
 
 def test_linked_list_pop_one():
     """Test linked list pop method returns value and changes head once."""
-    assert POP_LIST.pop().val == 'three'
+    assert POP_LIST.pop() == 'three'
     assert POP_LIST.head.val == 'two'
 
 
 def test_linked_list_pop_two():
     """Test linked list pop method returns value and changes head again."""
-    assert POP_LIST.pop().val == 'two'
+    assert POP_LIST.pop() == 'two'
     assert POP_LIST.head.val == 'one'
 
 
@@ -151,3 +151,9 @@ def test_linked_list_display():
 def test_linked_list_repr():
     """Test linked list print method."""
     assert repr(LIST_OF_THREE) == '(one, two, three)'
+
+
+def test_linked_list_remove_empty():
+    """Test linked list remove raises error when empty."""
+    with pytest.raises(ValueError):
+        EMPTY_LIST_POP.remove(5)

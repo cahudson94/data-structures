@@ -48,6 +48,13 @@ def build_heap_of_ten():
     return bh
 
 
+@pytest.fixture
+def bin_heap_edge_case():
+    """Init for eddge case testing."""
+    bh = BinaryHeap([4, 7, 18, 9, 11, 12, 20, 30, 31])
+    return bh
+
+
 def test_bheap_init_empty(build_empty_heap):
     """Init with no arg."""
     assert len(build_empty_heap._list) == 0
@@ -79,6 +86,24 @@ def test_bheap_init_list_mult_val():
     b = BinaryHeap([6, 12, -4, 25])
     assert b._list == [-4, 12, 6, 25]
     assert len(b._list) == 4
+
+
+def test_binheap_init_bad_iter_dict():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap({'a': 1})
+
+
+def test_binheap_init_bad_iter_int():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap(2)
+
+
+def test_binheap_init_bad_iter_bool():
+    """Init a binheap with a dict."""
+    with pytest.raises(TypeError):
+        BinaryHeap(True)
 
 
 def test_bheap_init_list_one_bad_val():
@@ -193,10 +218,24 @@ def test_bheap_pop_once_right(build_heap_of_five):
 
 def test_bheap_pop_mult(build_heap_of_five):
     """Test pop on multiple values."""
-    build_heap_of_five.pop()
-    build_heap_of_five.pop()
-    build_heap_of_five.pop()
+    assert build_heap_of_five.pop() == 2
+    assert build_heap_of_five.pop() == 6.5
+    assert build_heap_of_five.pop() == 7
     assert build_heap_of_five._list == [15, 27]
+
+
+def test_bheap_pop_all_for_order(build_heap_of_ten):
+    """Test pop is sorting the bheap."""
+    assert build_heap_of_ten.pop() == 1.5
+    assert build_heap_of_ten.pop() == 2
+    assert build_heap_of_ten.pop() == 3
+    assert build_heap_of_ten.pop() == 6
+    assert build_heap_of_ten.pop() == 7
+    assert build_heap_of_ten.pop() == 8
+    assert build_heap_of_ten.pop() == 9
+    assert build_heap_of_ten.pop() == 15
+    assert build_heap_of_ten.pop() == 16
+    assert build_heap_of_ten.pop() == 27
 
 
 def test_bheap_pop_all(build_heap_of_two):
@@ -262,3 +301,16 @@ def test_bheap_pop_push_equal_five(build_heap_of_five):
     assert popped1 == 2
     assert popped2 == 6.5
     assert build_heap_of_five._list == [2, 3, 15, 27, 7]
+
+
+def test_bheap_pop_all_for_order_edge_case(bin_heap_edge_case):
+    """Test pop is sorting the bheap."""
+    assert bin_heap_edge_case.pop() == 4
+    assert bin_heap_edge_case.pop() == 7
+    assert bin_heap_edge_case.pop() == 9
+    assert bin_heap_edge_case.pop() == 11
+    assert bin_heap_edge_case.pop() == 12
+    assert bin_heap_edge_case.pop() == 18
+    assert bin_heap_edge_case.pop() == 20
+    assert bin_heap_edge_case.pop() == 30
+    assert bin_heap_edge_case.pop() == 31

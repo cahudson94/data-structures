@@ -81,6 +81,12 @@ class BinaryHeap(object):
                 self._list[curr_index] = left_child
                 self._list[left] = curr_val
                 curr_index = left
+            elif right and self._list[curr_index] > self._list[right]:
+                right_child = self._list[right]
+                curr_val = self._list[curr_index]
+                self._list[curr_index] = right_child
+                self._list[right] = curr_val
+                curr_index = right
             else:
                 bubble = False
         return popped

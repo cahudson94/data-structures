@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/CaHudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures)
+[![Build Status](https://travis-ci.org/CaHudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures) [![Coverage Status](https://coveralls.io/repos/github/CaHudson94/data-structures/badge.svg?branch=master)](https://coveralls.io/github/CaHudson94/data-structures?branch=master)
 
 # Data Structures
-Authors: Morgan Nomura and Chris Hudson
+Authors: Morgan Nomura, Chris Hudson, Carlos Cadena
 
 
 All modules and tests located in src directory.
@@ -186,3 +186,27 @@ All modules and tests located in src directory.
     ### d_shortest_path:
         - find the shortest path from start to end
         - uses dijkstras algorithm
+
+## Binary Search Tree
+- module: bst.py
+- test: test_bst.py
+- contribs:
+    - Erik Enderlein
+    - http://pythoncentral.io/time-a-python-function/
+- public methods:
+    ### insert:
+        - add a new node to the BST
+        - iterates tracked variables
+    ### search:
+        - return the node for the value
+        - if not in the BST returns None
+    ### size:
+        - returns the size of the BST
+    ### depth:
+        - returns the amount of levels to the BST
+    ### contains:
+        - returns True if the value is in the BST
+        - otherwise returns False
+    ### balance:
+        - returns the balance
+        - difference between left and right depth

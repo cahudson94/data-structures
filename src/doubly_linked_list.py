@@ -44,7 +44,7 @@ class DoublyLinkedList(object):
         """Remove and return node from head of doubly linked list."""
         current_node = self.head
         if current_node is None:
-            raise IndexError('There are no Nodes.')
+            raise IndexError('The doubly linked list is empty.')
         if current_node.next_node is not None:
             self.head = current_node.next_node
             self.head.prev_node = None
@@ -58,7 +58,7 @@ class DoublyLinkedList(object):
         """Remove and return node from tail of doubly linked list."""
         current_node = self.tail
         if current_node is None:
-            raise IndexError('There are no Nodes.')
+            raise IndexError('The doubly linked list is empty.')
         if current_node.prev_node is not None:
             self.tail = current_node.prev_node
             self.tail.next_node = None
@@ -71,6 +71,8 @@ class DoublyLinkedList(object):
     def remove(self, val):
         """Find and remove the first Node with a given value."""
         current_item = self.head
+        if current_item is None:
+            raise ValueError('Node not in doubly linked list, it is empty.')
         while current_item.val != val:
             current_item = current_item.next_node
             if current_item is None:

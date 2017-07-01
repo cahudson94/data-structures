@@ -66,7 +66,11 @@ class Graph(object):
         """Return bool of whether val1 is val2's neighbor or vice versa."""
         if val1 not in self._graphdict or val2 not in self._graphdict:
             raise ValueError('One or both values are not in the graph.')
-        return val2 in self._graphdict[val1] or val1 in self._graphdict[val2]
+        if val1 in self._graphdict[val2]:
+            return True
+        else:
+            raise AssertionError('There is no edge from the \
+first value to the second.')
 
     def depth_first_traversal(self, val):
         """Return a path starting from val, traversing depth-first."""

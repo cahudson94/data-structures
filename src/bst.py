@@ -45,7 +45,6 @@ Try again with only numbers in your list or tuple.''')
                     curr = curr.left
                     depth += 1
                 else:
-                    print(val)
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
@@ -65,7 +64,6 @@ Try again with only numbers in your list or tuple.''')
                     curr = curr.right
                     depth += 1
                 else:
-                    print(val)
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
@@ -145,13 +143,6 @@ Try again with only numbers in your list or tuple.''')
             curr = node.left
         elif node.right:
             curr = node.right
-        elif node.parent == self._root:
-            if node == node.parent.left:
-                l_depth += 1
-                return (r_depth, l_depth)
-            else:
-                r_depth += 1
-                return (r_depth, l_depth)
         while True:
             if curr == node.right:
                 right_side = True
@@ -168,8 +159,6 @@ Try again with only numbers in your list or tuple.''')
                     if curr not in visited:
                         if right_side:
                             r_depth += 1
-                        else:
-                            l_depth += 1
             if curr.left and curr.right:
                 if curr not in visited:
                     visited.append(curr)

@@ -62,6 +62,20 @@ def five_node_edge_case():
 
 
 @pytest.fixture
+def six_node_right_heavy_bst():
+    """Six node BST for edge cases."""
+    b = BST([7, 5, 10, 8, 12, 32])
+    return b
+
+
+@pytest.fixture
+def nine_node_with_succesor_children():
+    """Nine node BST for edge cases."""
+    b = BST([15, 13, 17, 14, 9, 30, 23, 12, 10])
+    return b
+
+
+@pytest.fixture
 def ten_node_bst_with_list():
     """A BST initialized with ten nodes from list."""
     ten_node = BST([10, 7, 12, 4, 9, 23, 2, 5, 17, 50])
@@ -516,7 +530,8 @@ def test_delete_right_most_left_most_has_right_child():
 
 def test_multiple_deletes_on_more_robust_tree():
     """Test a BST with more nodes and full branches on both sides."""
-    new_bst = BST([10, 2, 1, 9, 4, 3, 8, 6, 5, 7, 18, 11, 19, 16, 12, 17, 14, 13, 15])
+    new_bst = BST([10, 2, 1, 9, 4, 3, 8, 6, 5, 7,
+                   18, 11, 19, 16, 12, 17, 14, 13, 15])
     assert new_bst._root.val == 10
     new_bst.delete(16)
     assert new_bst._root.right.left.right.val == 15
@@ -526,3 +541,75 @@ def test_multiple_deletes_on_more_robust_tree():
     new_bst.delete(4)
     assert new_bst._root.left.right.left.val == 5
     assert new_bst.depth() == 7
+
+
+def test_delete_leaf_of_root_small_tree(three_node_bst_with_list):
+    """Test deletion of a leaf off the root."""
+    b = three_node_bst_with_list
+    assert b._root.val == 2
+    assert b.size() == 3
+    b.delete(2)
+    assert b._root.val == 1
+    assert b.size() == 2
+    assert b.balance() == 1
+    b.delete(3)
+    assert b.balance() == 0
+    assert b.depth() == 1
+
+
+def test_delete_root_only_left_children(three_node_bst_with_list):
+    """Test test deletion of left child only root."""
+    b = three_node_bst_with_list
+    assert b._root.val == 2
+    assert b.size() == 3
+    b.delete(3)
+    assert b.size() == 2
+    assert b.balance() == -1
+    b.delete(2)
+    assert b._root.val == 1
+    assert b.balance() == 0
+    assert b.depth() == 1
+    b.delete(1)
+    assert b.size() == 0
+    assert b.depth() == 0
+
+
+def test_delete_left_child_with_left_child():
+    """Test deletion of left only child of a left child node."""
+    b = BST([15, 12, 16, 10])
+    b.delete(12)
+    assert b._root.left.left is None
+    assert b.size() == 3
+
+
+def test_delete_right_child_with_right_child():
+    """Test deletion of left only child of a left child node."""
+    b = BST([8, 2, 10, 16])
+    b.delete(10)
+    assert b._root.right.right is None
+    assert b.size() == 3
+
+
+def test_delete_sub_tree_succesor_has_child(nine_node_with_succesor_children):
+    """Test deletion of a sub tree root under the main root."""
+    b = nine_node_with_succesor_children
+    b.delete(13)
+    assert b._root.left.val == 12
+    assert b._root.left.right.val == 14
+    assert b._root.left.left.right.val == 10
+
+
+def test_delete_root_on_right_heavy_tree(six_node_right_heavy_bst):
+    """Test deletion of the root when right is heavier."""
+    b = six_node_right_heavy_bst
+    b.delete(7)
+    assert b._root.val == 8
+    assert b.size() == 5
+
+
+def test_delete_left_side_leaf(six_node_right_heavy_bst):
+    """Test deletion of the root when right is heavier."""
+    b = six_node_right_heavy_bst
+    b.delete(8)
+    assert b._root.right.left is None
+    assert b.size() == 5

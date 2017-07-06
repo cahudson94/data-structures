@@ -474,24 +474,24 @@ def test_post_order_edge_case(five_node_edge_case):
 
 
 def test_on_empty_bst_delete_returns_none(empty_bst):
-    """."""
+    """Test deletion on empty BST."""
     assert empty_bst.delete(7) is None
 
 
-def test_badval_delete_raises_error(empty_bst):
-    """."""
+def test_bad_data_delete_raises_error(empty_bst):
+    """Test deletion of non int data."""
     with pytest.raises(TypeError):
         empty_bst.delete('lkj')
 
 
 def test_delete_of_root_on_one_node_bst(one_node_bst):
-    """."""
+    """Test deletion of single node BST."""
     one_node_bst.delete(5)
     assert one_node_bst._root is None
 
 
 def test_delete_of_root_on_two_node_bst():
-    """."""
+    """Test deletion of root on two node BST."""
     new_bst = BST([2, 5])
     new_bst.delete(2)
     assert new_bst._root.val == 5
@@ -510,13 +510,13 @@ def test_delete_on_five_node_bst_with_tuple(five_node_bst_with_tuple):
 
 
 def test_delete_head_on_five_node_bst_with_insert(five_node_bst_by_insert):
-    """."""
+    """Test deletion of root changes root."""
     five_node_bst_by_insert.delete(6)
     assert five_node_bst_by_insert._root.val == 4.2
 
 
 def test_delete_multiple_heads_on_five_node_bst(five_node_bst_by_insert):
-    """."""
+    """Test deltion of root multiple times."""
     five_node_bst_by_insert.delete(6)
     assert five_node_bst_by_insert._root.val == 4.2
     assert five_node_bst_by_insert.depth() == 3
@@ -526,18 +526,18 @@ def test_delete_multiple_heads_on_five_node_bst(five_node_bst_by_insert):
 
 
 def test_ten_node_delete_2_nodes(ten_node_bst_with_list):
-    """."""
+    """Test deletion of two nodes from a ten node BST."""
     ten_node_bst_with_list.delete(9)
-    assert ten_node_bst_with_list._root.left.val == 4
-    assert ten_node_bst_with_list.size() == 9
+    assert ten_node_bst_with_list._length == 9
     ten_node_bst_with_list.delete(10)
     assert ten_node_bst_with_list._root.val == 7
-    assert ten_node_bst_with_list._root.right.val == 17
-    assert ten_node_bst_with_list._root.parent is None
+    node7 = ten_node_bst_with_list.search(7)
+    assert node7.right.val == 17
+    assert node7.parent is None
 
 
 def test_ten_node_delete_right_side(ten_node_bst_with_list):
-    """."""
+    """Test deletion from right side only."""
     ten_node_bst_with_list.delete(17)
     assert ten_node_bst_with_list._root.right.right.val == 50
 

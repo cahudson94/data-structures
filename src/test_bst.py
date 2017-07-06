@@ -57,12 +57,7 @@ def five_node_bst_by_insert():
 @pytest.fixture
 def five_node_edge_case():
     """A BST initialized with five nodes for edge case."""
-    five_node = BST()
-    five_node.insert(6)
-    five_node.insert(3)
-    five_node.insert(2)
-    five_node.insert(5)
-    five_node.insert(4)
+    five_node = BST((6, 3, 2, 5, 4))
     return five_node
 
 
@@ -83,17 +78,7 @@ def nine_node_with_succesor_children():
 @pytest.fixture
 def ten_node_bst_with_list():
     """A BST initialized with ten nodes from list."""
-    ten_node = BST()
-    ten_node.insert(10)
-    ten_node.insert(7)
-    ten_node.insert(12)
-    ten_node.insert(4)
-    ten_node.insert(9)
-    ten_node.insert(23)
-    ten_node.insert(2)
-    ten_node.insert(5)
-    ten_node.insert(17)
-    ten_node.insert(50)
+    ten_node = BST([10, 7, 12, 4, 9, 23, 2, 5, 17, 50])
     return ten_node
 
 
@@ -191,7 +176,7 @@ def test_three_node_bst_correct_balance(three_node_bst_with_list):
 
 def test_three_node_bst_correct_depth(three_node_bst):
     """Test three node BST returns correct depth."""
-    assert three_node_bst.depth() == 2
+    assert three_node_bst.depth() == 3
 
 
 def test_three_node_bst_search_returns_node(three_node_bst_with_list):
@@ -223,7 +208,7 @@ def test_five_node_bst_correct_balance(five_node_bst_by_insert):
 
 def test_five_node_bst_correct_depth(five_node_bst_with_tuple):
     """Test the depth of a five node BST."""
-    assert five_node_bst_with_tuple.depth() == 3
+    assert five_node_bst_with_tuple.depth() == 4
 
 
 def test_five_node_bst_search_returns_node(five_node_bst_by_insert):
@@ -351,9 +336,9 @@ def test_pre_order_traversal_five_node(five_node_bst_with_tuple):
     five = five_node_bst_with_tuple.pre_order()
     assert next(five) == 6
     assert next(five) == 4
+    assert next(five) == 8
     assert next(five) == 7
     assert next(five) == 6.5
-    assert next(five) == 8
 
 
 def test_pre_order_traversal_ten_node(ten_node_bst_with_list):
@@ -368,9 +353,9 @@ def test_pre_order_traversal_ten_node(ten_node_bst_with_list):
     assert next(ten) == 2
     assert next(ten) == 5
     assert next(ten) == 9
-    assert next(ten) == 17
     assert next(ten) == 12
     assert next(ten) == 23
+    assert next(ten) == 17
     assert next(ten) == 50
 
 
@@ -391,8 +376,8 @@ def test_post_order_traversal_five_node(five_node_bst_with_tuple):
     five = five_node_bst_with_tuple.post_order()
     assert next(five) == 4
     assert next(five) == 6.5
-    assert next(five) == 8
     assert next(five) == 7
+    assert next(five) == 8
     assert next(five) == 6
 
 
@@ -407,10 +392,10 @@ def test_post_order_traversal_ten_node(ten_node_bst_with_list):
     assert next(ten) == 4
     assert next(ten) == 9
     assert next(ten) == 7
-    assert next(ten) == 12
+    assert next(ten) == 17
     assert next(ten) == 50
     assert next(ten) == 23
-    assert next(ten) == 17
+    assert next(ten) == 12
     assert next(ten) == 10
 
 
@@ -431,9 +416,9 @@ def test_breadth_first_traversal_five_node(five_node_bst_with_tuple):
     five = five_node_bst_with_tuple.breadth_first()
     assert next(five) == 6
     assert next(five) == 4
+    assert next(five) == 8
     assert next(five) == 7
     assert next(five) == 6.5
-    assert next(five) == 8
 
 
 def test_breadth_first_traversal_ten_node(ten_node_bst_with_list):
@@ -444,13 +429,13 @@ def test_breadth_first_traversal_ten_node(ten_node_bst_with_list):
     ten = ten_node_bst_with_list.breadth_first()
     assert next(ten) == 10
     assert next(ten) == 7
-    assert next(ten) == 17
+    assert next(ten) == 12
     assert next(ten) == 4
     assert next(ten) == 9
-    assert next(ten) == 12
     assert next(ten) == 23
     assert next(ten) == 2
     assert next(ten) == 5
+    assert next(ten) == 17
     assert next(ten) == 50
 
 
@@ -459,31 +444,30 @@ def test_post_order_edge_case(five_node_edge_case):
     five = five_node_edge_case.post_order()
     assert next(five) == 2
     assert next(five) == 4
-    assert next(five) == 6
     assert next(five) == 5
     assert next(five) == 3
     assert next(five) == 6
 
 
 def test_on_empty_bst_delete_returns_none(empty_bst):
-    """."""
+    """Test deletion on empty BST."""
     assert empty_bst.delete(7) is None
 
 
 def test_bad_data_delete_raises_error(empty_bst):
-    """."""
+    """Test deletion of non int data."""
     with pytest.raises(TypeError):
         empty_bst.delete('lkj')
 
 
 def test_delete_of_root_on_one_node_bst(one_node_bst):
-    """."""
+    """Test deletion of single node BST."""
     one_node_bst.delete(5)
     assert one_node_bst._root is None
 
 
 def test_delete_of_root_on_two_node_bst():
-    """."""
+    """Test deletion of root on two node BST."""
     new_bst = BST([2, 5])
     new_bst.delete(2)
     assert new_bst._root.val == 5
@@ -502,13 +486,13 @@ def test_delete_on_five_node_bst_with_tuple(five_node_bst_with_tuple):
 
 
 def test_delete_head_on_five_node_bst_with_insert(five_node_bst_by_insert):
-    """."""
+    """Test deletion of root changes root."""
     five_node_bst_by_insert.delete(6)
     assert five_node_bst_by_insert._root.val == 4.2
 
 
 def test_delete_multiple_heads_on_five_node_bst(five_node_bst_by_insert):
-    """."""
+    """Test deltion of root multiple times."""
     five_node_bst_by_insert.delete(6)
     assert five_node_bst_by_insert._root.val == 4.2
     assert five_node_bst_by_insert.depth() == 3
@@ -518,7 +502,7 @@ def test_delete_multiple_heads_on_five_node_bst(five_node_bst_by_insert):
 
 
 def test_ten_node_delete_2_nodes(ten_node_bst_with_list):
-    """."""
+    """Test deletion of two nodes from a ten node BST."""
     ten_node_bst_with_list.delete(9)
     assert ten_node_bst_with_list._length == 9
     ten_node_bst_with_list.delete(10)
@@ -529,7 +513,7 @@ def test_ten_node_delete_2_nodes(ten_node_bst_with_list):
 
 
 def test_ten_node_delete_right_side(ten_node_bst_with_list):
-    """."""
+    """Test deletion from right side only."""
     ten_node_bst_with_list.delete(23)
     assert ten_node_bst_with_list._root.right.right.val == 17
 

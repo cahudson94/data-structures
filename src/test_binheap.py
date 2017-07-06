@@ -48,6 +48,13 @@ def build_heap_of_ten():
     return bh
 
 
+@pytest.fixture
+def bin_heap_edge_case():
+    """Init for eddge case testing."""
+    bh = BinaryHeap([4, 7, 18, 9, 11, 12, 20, 30, 31])
+    return bh
+
+
 def test_bheap_init_empty(build_empty_heap):
     """Init with no arg."""
     assert len(build_empty_heap._list) == 0
@@ -294,3 +301,16 @@ def test_bheap_pop_push_equal_five(build_heap_of_five):
     assert popped1 == 2
     assert popped2 == 6.5
     assert build_heap_of_five._list == [2, 3, 15, 27, 7]
+
+
+def test_bheap_pop_all_for_order_edge_case(bin_heap_edge_case):
+    """Test pop is sorting the bheap."""
+    assert bin_heap_edge_case.pop() == 4
+    assert bin_heap_edge_case.pop() == 7
+    assert bin_heap_edge_case.pop() == 9
+    assert bin_heap_edge_case.pop() == 11
+    assert bin_heap_edge_case.pop() == 12
+    assert bin_heap_edge_case.pop() == 18
+    assert bin_heap_edge_case.pop() == 20
+    assert bin_heap_edge_case.pop() == 30
+    assert bin_heap_edge_case.pop() == 31

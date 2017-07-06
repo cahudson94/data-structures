@@ -30,7 +30,6 @@ Try again with only numbers in your list or tuple.''')
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
-        depth = 0
         if curr is None:
             curr = Node(val)
             self._root = curr
@@ -43,42 +42,20 @@ Try again with only numbers in your list or tuple.''')
             elif val < curr.val:
                 if curr.left:
                     curr = curr.left
-                    depth += 1
                 else:
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
-                    if not curr.right:
-                        depth += 1
-                    if val < self._root.val:
-                        if depth > self._ldepth:
-                            self._ldepth = depth
-                    else:
-                        if depth > self._rdepth:
-                            self._rdepth = depth
-                    self._balance = self._rdepth - self._ldepth
-                    self._depth = max([self._rdepth, self._ldepth]) + 1
+                    self._depth_and_bal(self._root)
                     return
             elif val > curr.val:
                 if curr.right:
                     curr = curr.right
-                    depth += 1
                 else:
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
-                    if not curr.left:
-                        depth += 1
-                    elif curr == self._root:
-                        depth += 1
-                    if val < self._root.val:
-                        if depth > self._ldepth:
-                            self._ldepth = depth
-                    else:
-                        if depth > self._rdepth:
-                            self._rdepth = depth
-                    self._balance = self._rdepth - self._ldepth
-                    self._depth = max([self._rdepth, self._ldepth]) + 1
+                    self._depth_and_bal(self._root)
                     return
 
     def delete(self, val):
@@ -242,7 +219,7 @@ Try again with only numbers in your list or tuple.''')
         return
 
     def _depth_and_bal(self, node):
-        """."""
+        """Get the new depth and balance of the tree."""
         depth = self._tree_depth(node)
         self._rdepth = depth[0]
         self._ldepth = depth[1]

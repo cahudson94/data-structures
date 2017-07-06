@@ -92,14 +92,9 @@ Try again with only numbers in your list or tuple.''')
                 to_del.right.parent = to_del.parent
         else:
             self._del_leaf(to_del)
-        self._bal_and_rotate(par_for_bal.left or par_for_bal.right or par_for_bal)
-        # if par_for_bal.left:
-        #     self._bal_and_rotate(par_for_bal.left)
-        # elif par_for_bal.right:
-        #     self._bal_and_rotate(par_for_bal.right)
-        # else:
-        #     self._bal_and_rotate(par_for_bal)
-        # return
+        self._bal_and_rotate(par_for_bal.left or
+                             par_for_bal.right or
+                             par_for_bal)
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
@@ -149,9 +144,6 @@ Try again with only numbers in your list or tuple.''')
                 if curr not in nodes:
                     nodes.append(curr)
                 curr = curr.right
-            elif not curr.right and curr not in nodes:
-                nodes.append(curr)
-                curr = curr.parent
             elif not curr.right:
                 curr = curr.parent
             else:
@@ -188,26 +180,22 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.left
             elif not curr.left and not curr.right and curr not in nodes:
                 nodes.append(curr)
-                if not curr.right:
-                    curr = curr.parent
-                    while curr != self._root:
-                        if curr.left and curr.left not in nodes:
-                            curr = curr.left
-                            break
-                        elif curr.right and curr.right not in nodes:
-                            curr = curr.right
-                        elif curr.right:
+                curr = curr.parent
+                while curr != self._root:
+                    if curr.left and curr.left not in nodes:
+                        curr = curr.left
+                        break
+                    elif curr.right and curr.right not in nodes:
+                        curr = curr.right
+                    elif curr.right:
+                        nodes.append(curr)
+                        curr = curr.parent
+                        if curr == self._root and (len(nodes) ==
+                                                   self._length - 1):
                             nodes.append(curr)
-                            curr = curr.parent
-                            if curr == self._root and (len(nodes) ==
-                                                       self._length - 1):
-                                nodes.append(curr)
-                        else:
-                            nodes.append(curr)
-                            curr = curr.parent
-                            if curr == self._root and (len(nodes) ==
-                                                       self._length - 1):
-                                nodes.append(curr)
+                    else:
+                        nodes.append(curr)
+                        curr = curr.parent
             elif curr.right:
                 curr = curr.right
         for node in nodes:
@@ -322,71 +310,53 @@ Try again with only numbers in your list or tuple.''')
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
-        l_depth = 0
-        r_depth = 0
-        visited = []
-        right_side = False
+        lside = {}
+        rside = {}
+        on_right = False
         curr = None
         if node.left:
             curr = node.left
         elif node.right:
             curr = node.right
-        elif node.parent == self._root:
-            if node == node.parent.left:
-                l_depth += 1
-                return (r_depth, l_depth)
-            else:
-                r_depth += 1
-                return (r_depth, l_depth)
         while True:
             if curr == node.right:
-                right_side = True
+                on_right = True
             elif not node.left:
-                right_side = True
-            if curr != node:
-                if curr == curr.parent.left or not curr.parent.left:
-                    if curr not in visited:
-                        if right_side:
-                            r_depth += 1
-                        else:
-                            l_depth += 1
-                elif curr == node.right:
-                    if curr not in visited:
-                        if right_side:
-                            r_depth += 1
-                        else:
-                            l_depth += 1
-            if curr.left and curr.right:
-                if curr not in visited:
-                    visited.append(curr)
-                if curr.left not in visited:
-                    curr = curr.left
-                elif curr.right not in visited:
-                    if curr == node:
-                        right_side = True
+                on_right = True
+            if curr == node and curr.left and curr.left in lside.keys():
                     curr = curr.right
-                else:
-                    curr = curr.parent
-            elif curr.left:
-                if curr not in visited:
-                    visited.append(curr)
-                if curr.left not in visited:
+                    on_right = True
+            elif on_right:
+                if curr not in rside.keys() and curr.parent in rside.keys():
+                    rside[curr] = rside[curr.parent] + 1
+                elif curr == node.right:
+                    rside[curr] = 1
+                if curr.left and curr.left not in rside.keys():
                     curr = curr.left
-                else:
-                    curr = curr.parent
-            elif curr.right:
-                if curr not in visited:
-                    visited.append(curr)
-                if curr.right not in visited:
+                elif curr.right and curr.right not in rside.keys():
                     curr = curr.right
                 else:
                     curr = curr.parent
             else:
-                visited.append(curr)
-                curr = curr.parent
-            if right_side or not node.right:
+                if curr not in lside.keys() and curr.parent in lside.keys():
+                    lside[curr] = lside[curr.parent] + 1
+                elif curr == node.left:
+                    lside[curr] = 1
+                if curr.left and curr.left not in lside.keys():
+                    curr = curr.left
+                elif curr.right and curr.right not in lside.keys():
+                    curr = curr.right
+                else:
+                    curr = curr.parent
+            if on_right or not node.right:
                 if curr == node:
-                    return (r_depth, l_depth)
+                    if rside and lside:
+                        return (max(rside.values()),
+                                max(lside.values()))
+                    elif rside:
+                        return (max(rside.values()), 0)
+                    else:
+                        return (0, max(lside.values()))
 
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""

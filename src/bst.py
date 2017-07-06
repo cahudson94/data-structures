@@ -5,7 +5,7 @@ from timeit import timeit
 class BST():
     """Binary Search Tree."""
 
-    def __init__(self, iterable=None):
+    def __init__(self, input=None):
         """Initialize Binary Search tree."""
         self._root = None
         self._length = 0
@@ -13,16 +13,16 @@ class BST():
         self._ldepth = 0
         self._depth = 0
         self._balance = 0
-        if type(iterable) in [tuple, list]:
-            for i in iterable:
+        if type(input) in [tuple, list]:
+            for i in input:
                 if type(i) in [int, float]:
                     self.insert(i)
                 else:
                     raise TypeError('''
 Try again with only numbers in your list or tuple.''')
-        elif type(iterable) == int:
-            self.insert(iterable)
-        elif iterable is not None:
+        elif type(input) in [int, float]:
+            self.insert(input)
+        elif input is not None:
             raise TypeError('Try again with a list, tuple, int, or float.')
 
     def insert(self, val):
@@ -37,9 +37,7 @@ Try again with only numbers in your list or tuple.''')
             self._depth = 1
             return
         while True:
-            if val == curr.val:
-                return
-            elif val < curr.val:
+            if val < curr.val:
                 if curr.left:
                     curr = curr.left
                 else:
@@ -57,6 +55,8 @@ Try again with only numbers in your list or tuple.''')
                     self._length += 1
                     self._depth_and_bal(self._root)
                     return
+            else:
+                return
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
@@ -105,8 +105,226 @@ Try again with only numbers in your list or tuple.''')
                 to_del.right.parent = to_del.parent
         else:
             self._del_leaf(to_del)
-        self._length -= 1
-        self._depth_and_bal(self._root)
+        self._bal_and_rotate(par_for_bal.left or
+                             par_for_bal.right or
+                             par_for_bal)
+
+    def _depth_and_bal(self, node):
+        """Get the new depth and balance of the tree."""
+        depth = self._tree_depth(node)
+        self._rdepth = depth[0]
+        self._ldepth = depth[1]
+        self._balance = self._rdepth - self._ldepth
+        self._depth = max([self._rdepth, self._ldepth]) + 1
+
+    def search(self, val):
+        """Find the node at val in Binary Search Tree."""
+        curr = self._root
+        if type(val) not in [int, float]:
+            raise TypeError('This tree only contains numbers.')
+        while curr:
+            if val < curr.val:
+                curr = curr.left
+            elif val > curr.val:
+                curr = curr.right
+            else:
+                return curr
+
+    def size(self):
+        """Return the amount of nodes in Binary Search Tree."""
+        return self._length
+
+    def depth(self):
+        """Return the levels of the Binary Search Tree."""
+        return self._depth
+
+    def contains(self, val):
+        """Return true if specified val is in tree, false if it is not."""
+        return not not self.search(val)
+
+    def balance(self):
+        """Return the difference of left and right depth from root."""
+        return self._balance
+
+    def in_order(self):
+        """Return generator that returns values from BST 'in order'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if not curr.right and not curr.left and not curr.parent:
+                nodes.append(curr)
+            elif curr.left and curr not in nodes and curr.left not in nodes:
+                curr = curr.left
+            elif not curr.left and curr not in nodes:
+                nodes.append(curr)
+                if not curr.right:
+                    curr = curr.parent
+                if curr not in nodes:
+                    nodes.append(curr)
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            elif not curr.right:
+                curr = curr.parent
+            else:
+                curr = curr.parent
+                if curr not in nodes:
+                    nodes.append(curr)
+        for node in nodes:
+            yield node.val
+
+    def pre_order(self):
+        """Return generator that returns values from BST 'pre ordered'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if curr not in nodes:
+                nodes.append(curr)
+            if curr.left and curr.left not in nodes:
+                curr = curr.left
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            else:
+                curr = curr.parent
+        for node in nodes:
+            yield node.val
+
+    def post_order(self):
+        """Return generator that returns values from BST 'post ordered'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if not curr.right and not curr.left and not curr.parent:
+                nodes.append(curr)
+            elif curr.left and curr not in nodes and curr.left not in nodes:
+                curr = curr.left
+            elif not curr.left and not curr.right and curr not in nodes:
+                nodes.append(curr)
+                curr = curr.parent
+                while curr != self._root:
+                    if curr.left and curr.left not in nodes:
+                        curr = curr.left
+                        break
+                    elif curr.right and curr.right not in nodes:
+                        curr = curr.right
+                    elif curr.right:
+                        nodes.append(curr)
+                        curr = curr.parent
+                        if curr == self._root and (len(nodes) ==
+                                                   self._length - 1):
+                            nodes.append(curr)
+                    else:
+                        nodes.append(curr)
+                        curr = curr.parent
+            elif curr.right:
+                curr = curr.right
+        for node in nodes:
+            yield node.val
+
+    def breadth_first(self):
+        """Return generator that returns values from BST 'breadth first'."""
+        nodes = []
+        curr_index = 0
+        nodes.append(self._root)
+        while len(nodes) != self._length:
+            if nodes[curr_index].left:
+                nodes.append(nodes[curr_index].left)
+            if nodes[curr_index].right:
+                nodes.append(nodes[curr_index].right)
+            curr_index += 1
+        for node in nodes:
+            yield node.val
+
+    def _bal_and_rotate(self, node):
+        """Check balance and rotate as needed for full tree."""
+        balanced = False
+        curr = node
+        if curr != self._root:
+            par_bal = self._tree_depth(curr.parent)
+            if par_bal[0] > par_bal[1]:
+                curr = curr.parent.right
+            else:
+                curr = curr.parent.left
+        while not balanced:
+            auto_bal = self._check_bal(curr.parent, curr)
+            if len(auto_bal) == 2:
+                balanced = True
+                self._rdepth = auto_bal[0]
+                self._ldepth = auto_bal[1]
+                self._balance = self._rdepth - self._ldepth
+                self._depth = max([self._rdepth, self._ldepth]) + 1
+            elif auto_bal[2] == -2 and auto_bal[3] in [-1, 0]:
+                self._rotate_right(auto_bal[0])
+                curr = auto_bal[0]
+            elif auto_bal[2] == 2 and auto_bal[3] in [1, 0]:
+                self._rotate_left(auto_bal[0])
+                curr = auto_bal[0]
+            elif auto_bal[2] == -2 and auto_bal[3] == 1:
+                self._rotate_left(auto_bal[1])
+                self._rotate_right(auto_bal[0])
+                curr = auto_bal[0]
+            elif auto_bal[2] == 2 and auto_bal[3] == -1:
+                self._rotate_right(auto_bal[1])
+                self._rotate_left(auto_bal[0])
+                curr = auto_bal[0]
+        return
+
+    def _check_bal(self, par_node, child):
+        """Check the for balance of tree or sub tree.
+
+        Continues up till out of balance or complete.
+        """
+        while True:
+            if child.right or child.left:
+                child_bal = self._tree_depth(child)
+            else:
+                child_bal = (0, 0)
+            if par_node is not None:
+                par_bal = self._tree_depth(par_node)
+                bal = par_bal[0] - par_bal[1]
+                if bal in range(-1, 2):
+                    child = par_node
+                    par_node = par_node.parent
+                else:
+                    return par_node, child, bal, child_bal[0] - child_bal[1]
+            else:
+                return child_bal[0], child_bal[1]
+
+    def _rotate_right(self, node):
+        """Right rotation for current node."""
+        curr = node.left
+        node.left = curr.right
+        if node.left:
+            node.left.parent = node
+        curr.parent = node.parent
+        curr.right = node
+        node.parent = curr
+        if curr.parent:
+            if curr.parent.right == node:
+                curr.parent.right = curr
+            else:
+                curr.parent.left = curr
+        else:
+            self._root = curr
+            curr.parent = None
+        return
+
+    def _rotate_left(self, node):
+        """Left rotation for current node."""
+        curr = node.right
+        node.right = curr.left
+        if node.right:
+            node.right.parent = node
+        curr.parent = node.parent
+        curr.left = node
+        node.parent = curr
+        if curr.parent:
+            if curr.parent.right == node:
+                curr.parent.right = curr
+            else:
+                curr.parent.left = curr
+        else:
+            self._root = curr
+            curr.parent = None
         return
 
     def _tree_depth(self, node):
@@ -207,6 +425,51 @@ Try again with only numbers in your list or tuple.''')
             if curr.left:
                 curr.left.parent = curr
 
+    def _del_small_tree(self, val):
+        """Delete node from tree of three or less."""
+        to_del = self.search(val)
+        if self._length == 1:
+            self._root = None
+            self._length = 0
+            self._depth = 0
+            return
+        elif self._length == 2:
+            self._length -= 1
+            if to_del == self._root and to_del.right:
+                self._root = to_del.right
+                self._root.parent = None
+            elif to_del == self._root and to_del.left:
+                self._root = to_del.left
+                self._root.parent = None
+            else:
+                self._del_leaf(to_del)
+            self._rdepth = 0
+            self._ldepth = 0
+            self._depth = 1
+            self._balance = 0
+            return
+        else:
+            self._length -= 1
+            if to_del == self._root:
+                to_del.left.parent = None
+                self._root = to_del.left
+                to_del.right.parent = self._root
+                self._root.right = to_del.right
+                self._rdepth = 1
+                self._ldepth = 0
+                self._balance = 1
+            else:
+                if to_del == self._root.left:
+                    self._rdepth = 1
+                    self._ldepth = 0
+                    self._balance = 1
+                else:
+                    self._rdepth = 0
+                    self._ldepth = 1
+                    self._balance = -1
+                self._del_leaf(to_del)
+            self._depth = 2
+
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""
         par = node.parent
@@ -217,145 +480,6 @@ Try again with only numbers in your list or tuple.''')
         par.right = None
         node.parent = None
         return
-
-    def _depth_and_bal(self, node):
-        """Get the new depth and balance of the tree."""
-        depth = self._tree_depth(node)
-        self._rdepth = depth[0]
-        self._ldepth = depth[1]
-        self._balance = self._rdepth - self._ldepth
-        self._depth = max([self._rdepth, self._ldepth]) + 1
-
-    def search(self, val):
-        """Find the node at val in Binary Search Tree."""
-        curr = self._root
-        if type(val) not in [int, float]:
-            raise TypeError('This tree only contains numbers.')
-        while True:
-            if curr is None:
-                return None
-            elif val == curr.val:
-                return curr
-            elif val < curr.val:
-                curr = curr.left
-            elif val > curr.val:
-                curr = curr.right
-
-    def size(self):
-        """Return the amount of nodes in Binary Search Tree."""
-        return self._length
-
-    def depth(self):
-        """Return the levels of the Binary Search Tree."""
-        return self._depth
-
-    def contains(self, val):
-        """Return true if specified val is in tree, false if it is not."""
-        if type(val) not in [int, float]:
-            raise TypeError('This tree only contains numbers.')
-        if self.search(val):
-            return True
-        return False
-
-    def balance(self):
-        """Return the difference of left and right depth from root."""
-        return self._balance
-
-    def in_order(self):
-        """Return generator that returns values from BST 'in order'."""
-        nodes = []
-        curr = self._root
-        while len(nodes) != self._length:
-            if not curr.right and not curr.left and not curr.parent:
-                nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
-                curr = curr.left
-            elif not curr.left and curr not in nodes:
-                nodes.append(curr)
-                if not curr.right:
-                    curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
-            elif curr.right and curr.right not in nodes:
-                curr = curr.right
-            elif not curr.right and curr not in nodes:
-                nodes.append(curr)
-                curr = curr.parent
-            elif not curr.right:
-                curr = curr.parent
-            else:
-                curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
-        for node in nodes:
-            yield node.val
-
-    def pre_order(self):
-        """Return generator that returns values from BST 'pre ordered'."""
-        nodes = []
-        curr = self._root
-        while len(nodes) != self._length:
-            if curr not in nodes:
-                nodes.append(curr)
-            if curr.left and curr.left not in nodes:
-                curr = curr.left
-            elif curr.right and curr.right not in nodes:
-                curr = curr.right
-            else:
-                curr = curr.parent
-        for node in nodes:
-            yield node.val
-
-    def post_order(self):
-        """Return generator that returns values from BST 'post ordered'."""
-        nodes = []
-        curr = self._root
-        while len(nodes) != self._length:
-            if not curr.right and not curr.left and not curr.parent:
-                nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
-                curr = curr.left
-            elif not curr.left and not curr.right and curr not in nodes:
-                nodes.append(curr)
-                if not curr.right:
-                    curr = curr.parent
-                    while curr != self._root:
-                        if curr.left and curr.left not in nodes:
-                            curr = curr.left
-                            break
-                        elif curr.right and curr.right not in nodes:
-                            curr = curr.right
-                        elif curr.right:
-                            nodes.append(curr)
-                            curr = curr.parent
-                            if curr == self._root and (len(nodes) ==
-                                                       self._length - 1):
-                                nodes.append(curr)
-                        else:
-                            nodes.append(curr)
-                            curr = curr.parent
-                            if curr == self._root and (len(nodes) ==
-                                                       self._length - 1):
-                                nodes.append(curr)
-            elif curr.right:
-                curr = curr.right
-        for node in nodes:
-            yield node.val
-
-    def breadth_first(self):
-        """Return generator that returns values from BST 'breadth first'."""
-        nodes = []
-        curr_index = 0
-        nodes.append(self._root)
-        while len(nodes) != self._length:
-            if nodes[curr_index].left:
-                nodes.append(nodes[curr_index].left)
-            if nodes[curr_index].right:
-                nodes.append(nodes[curr_index].right)
-            curr_index += 1
-        for node in nodes:
-            yield node.val
-
 
 class Node():
     """Create a node to add to the Binary Search Tree."""

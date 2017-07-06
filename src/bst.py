@@ -44,7 +44,7 @@ Try again with only numbers in your list or tuple.''')
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
-                    self._bal_and_rotate(curr.left)
+                    self._depth_and_bal(self._root)
                     return
             elif val > curr.val:
                 if curr.right:
@@ -53,28 +53,41 @@ Try again with only numbers in your list or tuple.''')
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
-                    self._bal_and_rotate(curr.right)
+                    self._depth_and_bal(self._root)
                     return
             else:
                 return
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
+        if self._length == 1:
+            self._root = None
+            self._length = 0
+            self._depth = 0
+            return
         to_del = self.search(val)
         if to_del is None:
             return None
-        if to_del != self._root:
-            par_for_bal = to_del.parent
-        if self._length <= 3:
-            self._del_small_tree(val)
+        if self._length == 2:
+            self._length -= 1
+            if to_del == self._root and to_del.right:
+                self._root = to_del.right
+                self._root.parent = None
+            elif to_del == self._root and to_del.left:
+                self._root = to_del.left
+                self._root.parent = None
+            else:
+                self._del_leaf(to_del)
+            self._rdepth = 0
+            self._ldepth = 0
+            self._depth = 1
+            self._balance = 0
             return
-        self._length -= 1
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
-            par_for_bal = self._root
         elif to_del.left and to_del.right:
-            sub_tree = self._tree_depth(to_del)
-            sub_balance = sub_tree[0] - sub_tree[1]
+            sub_depth = self._tree_depth(to_del)
+            sub_balance = sub_depth[0] - sub_depth[1]
             self._root_shift(to_del, sub_balance)
         elif to_del.left:
             if to_del.parent.left == to_del:
@@ -95,6 +108,14 @@ Try again with only numbers in your list or tuple.''')
         self._bal_and_rotate(par_for_bal.left or
                              par_for_bal.right or
                              par_for_bal)
+
+    def _depth_and_bal(self, node):
+        """Get the new depth and balance of the tree."""
+        depth = self._tree_depth(node)
+        self._rdepth = depth[0]
+        self._ldepth = depth[1]
+        self._balance = self._rdepth - self._ldepth
+        self._depth = max([self._rdepth, self._ldepth]) + 1
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
@@ -141,8 +162,6 @@ Try again with only numbers in your list or tuple.''')
                 if curr not in nodes:
                     nodes.append(curr)
             elif curr.right and curr.right not in nodes:
-                if curr not in nodes:
-                    nodes.append(curr)
                 curr = curr.right
             elif not curr.right:
                 curr = curr.parent
@@ -462,7 +481,6 @@ Try again with only numbers in your list or tuple.''')
         node.parent = None
         return
 
-
 class Node():
     """Create a node to add to the Binary Search Tree."""
 
@@ -474,19 +492,19 @@ class Node():
         self.right = right
 
 
-def _wrapper(func, *args, **kwargs):  # pragma: no cover
+def wrapper(func, *args, **kwargs):  # pragma: no cover
     """Create a value for a function with a specific arguement called to it."""
-    def _wrapped():
+    def wrapped():
         return func(*args, **kwargs)
-    return _wrapped
+    return wrapped
     #  code found through Erik Enderlein
     #  he found it at http://pythoncentral.io/time-a-python-function/
 
 
 if __name__ == '__main__':  # pragma: no cover
     best_stuff_tree = BST()
-    find5 = _wrapper(best_stuff_tree.search, 5)
-    find24 = _wrapper(best_stuff_tree.search, 24)
+    find5 = wrapper(best_stuff_tree.search, 5)
+    find24 = wrapper(best_stuff_tree.search, 24)
     nodes = [5, 3, 8, 2.2, 4, 9.5, 1, 2.6,
              3.3, 4.5, 9, 11, 8.5, 10, 14,
              16, 15, 21, 23, 24]

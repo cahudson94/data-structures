@@ -213,3 +213,12 @@ All modules and tests located in src directory.
     ### balance:
         - returns the balance
         - difference between left and right depth
+
+## Hash Table
+- module: hash_table.py
+- test: test_hash.py
+- public methods:
+    ### get:
+        - find a value on a key in the hash table.
+    ### set:
+        - add a new key value pair to the hash table.

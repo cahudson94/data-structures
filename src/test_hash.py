@@ -1,5 +1,5 @@
 """Test suite for hash tables."""
-from hash_table import Hash_Table
+from hash_table import HashTable
 from os import path
 import pytest
 from faker import Faker
@@ -15,7 +15,7 @@ with open(dictionary, 'r') as dictionary:
 @pytest.fixture
 def dictionary_filled_hash_table_one_bucket(dictionary_words):
     """Test for hash table with one bucket, dictionary."""
-    ht = Hash_Table(1)
+    ht = HashTable(1)
     for word in dictionary_words:
         ht.set(word[:-1], word[:-1])
     return ht
@@ -24,7 +24,7 @@ def dictionary_filled_hash_table_one_bucket(dictionary_words):
 @pytest.fixture
 def dictionary_filled_hash_table_ten_buckets(dictionary_words):
     """Test for hash table with ten buckets, dictionary."""
-    ht = Hash_Table(10)
+    ht = HashTable(10)
     for word in dictionary_words:
         ht.set(word[:-1], word[:-1])
     return ht
@@ -33,7 +33,7 @@ def dictionary_filled_hash_table_ten_buckets(dictionary_words):
 @pytest.fixture
 def dictionary_filled_hash_table_100_buckets(dictionary_words):
     """Test for hash table with 100 buckets, dictionary."""
-    ht = Hash_Table(100)
+    ht = HashTable(100)
     for word in dictionary_words:
         ht.set(word[:-1], word[:-1])
     return ht
@@ -42,7 +42,7 @@ def dictionary_filled_hash_table_100_buckets(dictionary_words):
 @pytest.fixture
 def dictionary_filled_hash_table_1000_buckets(dictionary_words):
     """Test for hash table with 1000 buckets, dictionary."""
-    ht = Hash_Table(1000)
+    ht = HashTable(1000)
     for word in dictionary_words:
         ht.set(word[:-1], word[:-1])
     return ht
@@ -51,7 +51,7 @@ def dictionary_filled_hash_table_1000_buckets(dictionary_words):
 @pytest.fixture
 def hash_table_with_string_numbers():
     """Test for hash table with string numbers."""
-    ht = Hash_Table(20)
+    ht = HashTable(20)
     for i in range(100):
         ht.set(str(i), str(i * 2))
     return ht
@@ -60,7 +60,7 @@ def hash_table_with_string_numbers():
 @pytest.fixture
 def hash_table_with_letters_and_numbers():
     """Test for hash table with both string letters and numbers."""
-    ht = Hash_Table(30)
+    ht = HashTable(30)
     stuff = []
     for i in range(50):
         stuff.append(str(i))

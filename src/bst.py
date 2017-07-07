@@ -174,30 +174,16 @@ Try again with only numbers in your list or tuple.''')
         nodes = []
         curr = self._root
         while len(nodes) != self._length:
-            if not curr.right and not curr.left and not curr.parent:
+            if not curr.right and not curr.left and curr not in nodes:
                 nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
+            elif curr.left and curr.left not in nodes:
                 curr = curr.left
-            elif not curr.left and not curr.right and curr not in nodes:
-                nodes.append(curr)
-                curr = curr.parent
-                while curr != self._root:
-                    if curr.left and curr.left not in nodes:
-                        curr = curr.left
-                        break
-                    elif curr.right and curr.right not in nodes:
-                        curr = curr.right
-                    elif curr.right:
-                        nodes.append(curr)
-                        curr = curr.parent
-                        if curr == self._root and (len(nodes) ==
-                                                   self._length - 1):
-                            nodes.append(curr)
-                    else:
-                        nodes.append(curr)
-                        curr = curr.parent
-            elif curr.right:
+            elif curr.right and curr.right not in nodes:
                 curr = curr.right
+            else:
+                if curr not in nodes:
+                    nodes.append(curr)
+                curr = curr.parent
         for node in nodes:
             yield node.val
 
@@ -205,7 +191,8 @@ Try again with only numbers in your list or tuple.''')
         """Return generator that returns values from BST 'breadth first'."""
         nodes = []
         curr_index = 0
-        nodes.append(self._root)
+        if self._root:
+            nodes.append(self._root)
         while len(nodes) != self._length:
             if nodes[curr_index].left:
                 nodes.append(nodes[curr_index].left)

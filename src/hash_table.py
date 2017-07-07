@@ -17,8 +17,9 @@ class HashTable(object):
 
     def get(self, key):
         """
-        Return the value associated with the key in the hash table,
-        else raise KeyError
+        Return the value associated with the key in the hash table.
+
+        If there is no value or key raise KeyError.
         """
         hash_val = self._hash(key)
         modulo_val = hash_val % len(self._buckets)
@@ -42,7 +43,6 @@ class HashTable(object):
         for char in key:
             lil_diff += ord(char)
         return int(((lil_diff + big_diff) * 11839) / 503)
-
 
 
 def naive_hash(key):

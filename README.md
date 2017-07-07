@@ -197,6 +197,9 @@ All modules and tests located in src directory.
     ### insert:
         - add a new node to the BST
         - iterates tracked variables
+    ### delete:
+        - remove a node from the BST
+        - decriment the tracked variables as appropriate
     ### search:
         - return the node for the value
         - if not in the BST returns None

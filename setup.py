@@ -15,7 +15,7 @@ setup(
     py_modules=['linked_list', 'doubly_linked_list',
                 'stack', 'que_', 'deque', 'binheap',
                 'priorityque', 'graph_1', 'graph_w',
-                'bst'],
+                'bst', 'hash_table', ],
     package_dir={'': 'src'},
     install_requires=[],
     extras_require=extra_packages,

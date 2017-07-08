@@ -6,7 +6,7 @@ from faker import Faker
 
 
 dictionary = path.realpath(__file__).replace('test_hash.py',
-                                             'words')
+                                             'american-english')
 
 with open(dictionary, 'r') as dictionary:
     dictionary_words = dictionary.read().split('\n')[:-1]

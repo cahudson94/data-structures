@@ -2,7 +2,7 @@
 from setuptools import setup
 
 extra_packages = {
-    'testing': ['ipython', 'pytest', 'pytest-cov', 'tox']
+    'testing': ['ipython', 'pytest', 'pytest-cov', 'tox', 'faker']
 }
 
 setup(

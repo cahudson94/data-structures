@@ -13,7 +13,7 @@ class HashTable(object):
         if hash_type is None:
             self._hash = self._mega_hash
         else:
-            self._hash == hash_type
+            self._hash = hash_type
 
     def get(self, key):
         """

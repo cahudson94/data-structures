@@ -63,10 +63,10 @@ class Graph(object):
         return self._graphdict[val]
 
     def adjacent(self, val1, val2):
-        """Return bool of whether val1 is val2's neighbor or vice versa."""
+        """Return bool of whether val1 is val2's neighbor."""
         if val1 not in self._graphdict or val2 not in self._graphdict:
             raise ValueError('One or both values are not in the graph.')
-        return val2 in self._graphdict[val1] or val1 in self._graphdict[val2]
+        return val2 in self._graphdict[val1]
 
     def depth_first_traversal(self, val):
         """Return a path starting from val, traversing depth-first."""

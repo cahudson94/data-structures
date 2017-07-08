@@ -197,6 +197,9 @@ All modules and tests located in src directory.
     ### insert:
         - add a new node to the BST
         - iterates tracked variables
+    ### delete:
+        - remove a node from the BST
+        - decriment the tracked variables as appropriate
     ### search:
         - return the node for the value
         - if not in the BST returns None
@@ -210,3 +213,12 @@ All modules and tests located in src directory.
     ### balance:
         - returns the balance
         - difference between left and right depth
+
+## Hash Table
+- module: hash_table.py
+- test: test_hash.py
+- public methods:
+    ### get:
+        - find a value on a key in the hash table.
+    ### set:
+        - add a new key value pair to the hash table.

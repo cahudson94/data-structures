@@ -63,10 +63,10 @@ class Graph(object):
         return self._graphdict[val]
 
     def adjacent(self, val1, val2):
-        """Return bool of whether val1 is val2's neighbor or vice versa."""
+        """Return bool of whether val1 is val2's neighbor."""
         if val1 not in self._graphdict or val2 not in self._graphdict:
             raise ValueError('One or both values are not in the graph.')
-        if val1 in self._graphdict[val2]:
+        if val2 in self._graphdict[val1]:
             return True
         else:
             raise AssertionError('There is no edge from the \

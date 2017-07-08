@@ -1,18 +1,18 @@
 """A testing suite for trie data structure."""
-from trie import Trie
+from trie import TrieTree
 import pytest
 
 
 @pytest.fixture
 def empty_trie():
-    """And empty Trie."""
-    return Trie()
+    """And empty TrieTree."""
+    return TrieTree()
 
 
 @pytest.fixture
 def three_word_trie_no_overlap():
     """A trie with three words that do not overlap."""
-    new_trie = Trie()
+    new_trie = TrieTree()
     new_trie.insert('cat')
     new_trie.insert('bear')
     new_trie.insert('mouse')
@@ -22,7 +22,7 @@ def three_word_trie_no_overlap():
 @pytest.fixture
 def three_word_trie_with_overlap():
     """A trie with three words that will overlap."""
-    new_trie = Trie()
+    new_trie = TrieTree()
     new_trie.insert('cake')
     new_trie.insert('car')
     new_trie.insert('carpet')
@@ -32,7 +32,7 @@ def three_word_trie_with_overlap():
 @pytest.fixture
 def six_word_trie_with_some_overlap():
     """A trie with six words that will have some overlap."""
-    new_trie = Trie()
+    new_trie = TrieTree()
     new_trie.insert('cake')
     new_trie.insert('car')
     new_trie.insert('carpet')
@@ -45,7 +45,7 @@ def six_word_trie_with_some_overlap():
 @pytest.fixture
 def twelve_word_trie_with_some_overlap():
     """A trie with twelve words that will have some overlap."""
-    new_trie = Trie()
+    new_trie = TrieTree()
     new_trie.insert('garden')
     new_trie.insert('gardener')
     new_trie.insert('bottle')
@@ -68,7 +68,7 @@ def test_insert_repeat_val(three_word_trie_with_overlap):
 
 
 def test_empty_trie_insert(empty_trie):
-    """Test insert on an empty trie"""
+    """Test insert on an empty trie."""
     empty_trie.insert('pie')
     empty_trie.insert('cake')
     assert empty_trie.size() == 2
@@ -89,7 +89,7 @@ def test_insert_with_overlap(twelve_word_trie_with_some_overlap):
 
 
 def test_contains_returns_true_when_true(twelve_word_trie_with_some_overlap):
-    """Test the contain method works correctly when word is in Trie."""
+    """Test the contain method works correctly when word is in TrieTree."""
     twwo = twelve_word_trie_with_some_overlap
     assert twwo.contains('hatch') is True
     assert twwo.contains('dagger') is True
@@ -97,7 +97,7 @@ def test_contains_returns_true_when_true(twelve_word_trie_with_some_overlap):
 
 
 def test_contains_returns_false_when_false(six_word_trie_with_some_overlap):
-    """Test the contain method works correctly when word isn't in Trie."""
+    """Test the contain method works correctly when word isn't in TrieTree."""
     twwo = twelve_word_trie_with_some_overlap
     assert twwo.contains('batch') is False
     assert twwo.contains('baker') is False
@@ -122,8 +122,9 @@ def test_remove_correctly_removes(three_word_trie_no_overlap):
 
 
 def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
-    """Test the removal of three words from twelve word Trie."""
+    """Test the removal of three words from twelve word TrieTree."""
     twwo = twelve_word_trie_with_some_overlap
+    import pdb; pdb.set_trace()
     twwo.remove('seattle')
     assert twwo.size() == 11
     assert twwo.contains('seattle') is False

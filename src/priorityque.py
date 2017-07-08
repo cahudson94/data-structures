@@ -37,4 +37,4 @@ class PriorityQ(object):
         if len(self._list):
             popped = self._list.pop(0)
             return popped[1]
-        raise IndexError("No items to pop in priority queue.")
+        raise IndexError("No items in priority queue.")

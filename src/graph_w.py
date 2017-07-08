@@ -1,4 +1,4 @@
-"""Python implementation of a graph that is unweighted and directed."""
+"""Python implementation of a graph that is weighted and directed."""
 
 
 class Graph(object):
@@ -32,7 +32,7 @@ class Graph(object):
         """Return boolean for node in graph membership."""
         return val in self._graphdict
 
-    def add_edge(self, val1, val2, weight):
+    def add_edge(self, val1, val2, weight=0):
         """Add an edge between to vals, add vals if not currently node."""
         if type(weight) not in [int, float]:
             raise ValueError('Weight must be int or float.')

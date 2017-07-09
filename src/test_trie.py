@@ -57,7 +57,7 @@ def twelve_word_trie_with_some_overlap():
     new_trie.insert('hatchet')
     new_trie.insert('hatch')
     new_trie.insert('alphabet')
-    new_trie.insert('Seattle')
+    new_trie.insert('seattle')
     return new_trie
 
 
@@ -158,3 +158,31 @@ def test_non_string_contains(empty_trie):
     """Test that an error is raised if you try to check for a non string."""
     with pytest.raises(TypeError):
         empty_trie.contains([{}, {}, {}])
+
+
+def test_depth_traversal_from_root(twelve_word_trie_with_some_overlap):
+    """Test full word depth traversal of twelve word tree."""
+    twwo = twelve_word_trie_with_some_overlap.depth_traversal('b')
+    assert next(twwo) == 'b'
+    assert next(twwo) == 'o'
+    assert next(twwo) == 't'
+    assert next(twwo) == 't'
+    assert next(twwo) == 'l'
+    assert next(twwo) == 'e'
+    assert next(twwo) == 'a'
+    assert next(twwo) == 't'
+    assert next(twwo) == 't'
+    assert next(twwo) == 'l'
+    assert next(twwo) == 'e'
+
+
+def test_depth_traversal_from_deeper_node(six_word_trie_with_some_overlap):
+    """Test a partial word traversal."""
+    six = six_word_trie_with_some_overlap.depth_traversal('a')
+    assert next(six) == 'a'
+    assert next(six) == 'k'
+    assert next(six) == 'e'
+    assert next(six) == 'r'
+    assert next(six) == 'p'
+    assert next(six) == 'e'
+    assert next(six) == 't'

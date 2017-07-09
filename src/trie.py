@@ -11,6 +11,8 @@ class TrieTree(object):
 
     def insert(self, string):
         """Insert a string into the Tree."""
+        if type(string) != str:
+            raise TypeError('This tree only contains strings.')
         if self.contains(string):
             raise ValueError('This string is already in the tree.')
         string = string.lower()
@@ -23,10 +25,10 @@ class TrieTree(object):
                 for node in next_list:
                     if next_list[node] == string[char_count]:
                         curr_node = node
-                    else:
-                        new_node = Node(string[char_count])
-                        curr_node.next.append(new_node)
-                        curr_node = new_node
+                if curr_node.val != string[char_count]:
+                    new_node = Node(string[char_count])
+                    curr_node.next.append(new_node)
+                    curr_node = new_node
             else:
                 new_node = Node(string[char_count])
                 curr_node.next.append(new_node)
@@ -37,6 +39,8 @@ class TrieTree(object):
 
     def contains(self, string):
         """Return true if the string is in the tree else return false."""
+        if type(string) != str:
+            raise TypeError('This tree only contains strings.')
         if self.size() == 0:
             return False
         string += '$'
@@ -44,15 +48,15 @@ class TrieTree(object):
         char_count = 0
         while curr_node != '$':
             next_list = self._get_node_val(curr_node)
-            for node in next_list:
-                if next_list[node] == string[char_count]:
-                    curr_node = node
-                else:
+            if next_list:
+                for node in next_list:
+                    if next_list[node] == string[char_count]:
+                        curr_node = node
+                        if curr_node == '$':
+                            return True
+                if curr_node.val != string[char_count]:
                     return False
-            if not next_list:
-                return False
             char_count += 1
-        return True
 
     def size(self):
         """Return the amount of words in the tree."""
@@ -60,21 +64,22 @@ class TrieTree(object):
 
     def remove(self, string):
         """Remove a string from the tree."""
+        if type(string) != str:
+            raise TypeError('This tree only contains strings.')
         if self.contains(string):
-            visited = []
             curr_node = self._root
             char_count = 0
-            while char_count <= len(string):
+            prev_node = None
+            while len(curr_node.next) > 1:
                 next_list = self._get_node_val(curr_node)
                 for node in next_list:
                     if next_list[node] == string[char_count]:
-                        visited.append(node)
-            for node in visited[::-1]:
-                if len(node.next) == 1:
-                    visited[visited.index(node) - 1].next.remove(node)
-                else:
-                    visited[visited.index(node) - 1].next.remove(node)
-                    return
+                        prev_node = curr_node
+                        curr_node = node
+                char_count += 1
+            prev_node.next.remove(curr_node)
+            self._size -= 1
+            return
         raise ValueError('This string is not in the tree.')
 
     def _get_node_val(self, node):

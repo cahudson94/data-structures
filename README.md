@@ -222,3 +222,26 @@ All modules and tests located in src directory.
         - find a value on a key in the hash table.
     ### set:
         - add a new key value pair to the hash table.
+
+## Trie Tree
+- module: trie.py
+- test: test_trie.py
+- public methods:
+    ### insert:
+        - O()
+        - add a string to the tree
+        - raise an error if it is in the tree
+        - raise an error if the input is not a string
+    ### contains:
+        - O()
+        - return true if the string is in the tree
+        - else return false
+        - raise an error if the input is not a string
+    ### size:
+        - O(1)
+        - return the amount of strings in the tree
+    ### remove:
+        - O()
+        - remove a string from the tree
+        - raise an error if it is in the tree
+        - raise an error if the input is not a string

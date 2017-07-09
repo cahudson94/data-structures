@@ -98,10 +98,10 @@ def test_contains_returns_true_when_true(twelve_word_trie_with_some_overlap):
 
 def test_contains_returns_false_when_false(six_word_trie_with_some_overlap):
     """Test the contain method works correctly when word isn't in TrieTree."""
-    twwo = twelve_word_trie_with_some_overlap
-    assert twwo.contains('batch') is False
-    assert twwo.contains('baker') is False
-    assert twwo.contains('portland') is False
+    six = six_word_trie_with_some_overlap
+    assert six.contains('batch') is False
+    assert six.contains('baker') is False
+    assert six.contains('portland') is False
 
 
 def test_size_of_empty_trie(empty_trie):
@@ -124,7 +124,6 @@ def test_remove_correctly_removes(three_word_trie_no_overlap):
 def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
     """Test the removal of three words from twelve word TrieTree."""
     twwo = twelve_word_trie_with_some_overlap
-    import pdb; pdb.set_trace()
     twwo.remove('seattle')
     assert twwo.size() == 11
     assert twwo.contains('seattle') is False
@@ -134,3 +133,28 @@ def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
     twwo.remove('garden')
     assert twwo.size() == 9
     assert twwo.contains('garden') is False
+
+
+def test_remove_string_not_in_tree(six_word_trie_with_some_overlap):
+    """Test removing a string not in the tree raises error."""
+    six = six_word_trie_with_some_overlap
+    with pytest.raises(ValueError):
+        six.remove('bananza')
+
+
+def test_non_string_insert(empty_trie):
+    """Test that an error is raised if you try to insert a non string."""
+    with pytest.raises(TypeError):
+        empty_trie.insert(1)
+
+
+def test_non_string_remove(empty_trie):
+    """Test that an error is raised if you try to remove a non string."""
+    with pytest.raises(TypeError):
+        empty_trie.remove((3, 'word', 'pickles'))
+
+
+def test_non_string_contains(empty_trie):
+    """Test that an error is raised if you try to check for a non string."""
+    with pytest.raises(TypeError):
+        empty_trie.contains([{}, {}, {}])

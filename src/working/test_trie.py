@@ -57,7 +57,7 @@ def twelve_word_trie_with_some_overlap():
     new_trie.insert('hatchet')
     new_trie.insert('hatch')
     new_trie.insert('alphabet')
-    new_trie.insert('seattle')
+    new_trie.insert('Seattle')
     return new_trie
 
 
@@ -93,7 +93,7 @@ def test_contains_returns_true_when_true(twelve_word_trie_with_some_overlap):
     twwo = twelve_word_trie_with_some_overlap
     assert twwo.contains('hatch') is True
     assert twwo.contains('dagger') is True
-    assert twwo.contains('seattle') is True
+    assert twwo.contains('Seattle') is True
 
 
 def test_contains_returns_false_when_false(six_word_trie_with_some_overlap):
@@ -124,15 +124,25 @@ def test_remove_correctly_removes(three_word_trie_no_overlap):
 def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
     """Test the removal of three words from twelve word TrieTree."""
     twwo = twelve_word_trie_with_some_overlap
-    twwo.remove('seattle')
+    twwo.remove('Seattle')
     assert twwo.size() == 11
-    assert twwo.contains('seattle') is False
+    assert twwo.contains('Seattle') is False
     twwo.remove('dagger')
     assert twwo.size() == 10
     assert twwo.contains('dagger') is False
     twwo.remove('garden')
     assert twwo.size() == 9
     assert twwo.contains('garden') is False
+
+
+def test_contains_case_sensative(twelve_word_trie_with_some_overlap):
+    """Test that the tree is case sensative."""
+    twwo = twelve_word_trie_with_some_overlap
+    assert twwo.contains('seattle') is False
+    assert twwo.contains('Seattle') is True
+    twwo.insert('seattle')
+    assert twwo.contains('seattle') is True
+    assert twwo.contains('Seattle') is True
 
 
 def test_remove_string_not_in_tree(six_word_trie_with_some_overlap):
@@ -163,26 +173,37 @@ def test_non_string_contains(empty_trie):
 def test_depth_traversal_from_root(twelve_word_trie_with_some_overlap):
     """Test full word depth traversal of twelve word tree."""
     twwo = twelve_word_trie_with_some_overlap.depth_traversal('b')
-    assert next(twwo) == 'b'
-    assert next(twwo) == 'o'
-    assert next(twwo) == 't'
-    assert next(twwo) == 't'
-    assert next(twwo) == 'l'
-    assert next(twwo) == 'e'
-    assert next(twwo) == 'a'
-    assert next(twwo) == 't'
-    assert next(twwo) == 't'
-    assert next(twwo) == 'l'
-    assert next(twwo) == 'e'
+    assert next(twwo) == 'bottle'
+    assert next(twwo) == 'battle'
 
 
 def test_depth_traversal_from_deeper_node(six_word_trie_with_some_overlap):
-    """Test a partial word traversal."""
+    """Test a traversal with a larger prefix."""
+    six = six_word_trie_with_some_overlap
+    six.insert('carpenter')
+    six.insert('carp')
+    six = six.depth_traversal('carp')
+    assert next(six) == 'carp'
+    assert next(six) == 'carpet'
+    assert next(six) == 'carpenter'
+
+
+def test_depth_traversal_non_prefix(six_word_trie_with_some_overlap):
+    """Test error is raised if start is not a prefix in the tree."""
     six = six_word_trie_with_some_overlap.depth_traversal('a')
-    assert next(six) == 'a'
-    assert next(six) == 'k'
-    assert next(six) == 'e'
-    assert next(six) == 'r'
-    assert next(six) == 'p'
-    assert next(six) == 'e'
-    assert next(six) == 't'
+    with pytest.raises(ValueError):
+        next(six)
+
+
+def test_depth_traversal_non_end_of_prefix(twelve_word_trie_with_some_overlap):
+    """Test error is raised when later parts of start are not in tree."""
+    twwo = twelve_word_trie_with_some_overlap.depth_traversal('gr')
+    with pytest.raises(ValueError):
+        next(twwo)
+
+
+def test_depth_traversal_bad_type(three_word_trie_no_overlap):
+    """Test error is raised if start is not a string."""
+    three = three_word_trie_no_overlap.depth_traversal(1)
+    with pytest.raises(TypeError):
+        next(three)

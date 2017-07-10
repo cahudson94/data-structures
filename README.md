@@ -228,12 +228,12 @@ All modules and tests located in src directory.
 - test: test_trie.py
 - public methods:
     ### insert:
-        - O()
+        - O(n^2)
         - add a string to the tree
         - raise an error if it is in the tree
         - raise an error if the input is not a string
     ### contains:
-        - O()
+        - O(1)
         - return true if the string is in the tree
         - else return false
         - raise an error if the input is not a string
@@ -241,7 +241,10 @@ All modules and tests located in src directory.
         - O(1)
         - return the amount of strings in the tree
     ### remove:
-        - O()
+        - O(n)
         - remove a string from the tree
         - raise an error if it is in the tree
         - raise an error if the input is not a string
+    ### depth_traversal:
+        - O(n^2)
+        - return as a generator every word that has the given prefix

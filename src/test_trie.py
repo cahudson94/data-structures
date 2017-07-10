@@ -93,7 +93,7 @@ def test_contains_returns_true_when_true(twelve_word_trie_with_some_overlap):
     twwo = twelve_word_trie_with_some_overlap
     assert twwo.contains('hatch') is True
     assert twwo.contains('dagger') is True
-    assert twwo.contains('seattle') is True
+    assert twwo.contains('Seattle') is True
 
 
 def test_contains_returns_false_when_false(six_word_trie_with_some_overlap):
@@ -124,7 +124,7 @@ def test_remove_correctly_removes(three_word_trie_no_overlap):
 def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
     """Test the removal of three words from twelve word TrieTree."""
     twwo = twelve_word_trie_with_some_overlap
-    twwo.remove('seattle')
+    twwo.remove('Seattle')
     assert twwo.size() == 11
     assert twwo.contains('seattle') is False
     twwo.remove('dagger')
@@ -133,6 +133,16 @@ def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
     twwo.remove('garden')
     assert twwo.size() == 9
     assert twwo.contains('garden') is False
+
+
+def test_contains_case_sensative(twelve_word_trie_with_some_overlap):
+    """Test that the tree is case sensative."""
+    twwo = twelve_word_trie_with_some_overlap
+    assert twwo.contains('seattle') is False
+    assert twwo.contains('Seattle') is True
+    twwo.insert('seattle')
+    assert twwo.contains('seattle') is True
+    assert twwo.contains('Seattle') is True
 
 
 def test_remove_string_not_in_tree(six_word_trie_with_some_overlap):

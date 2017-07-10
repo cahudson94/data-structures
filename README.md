@@ -245,3 +245,6 @@ All modules and tests located in src directory.
         - remove a string from the tree
         - raise an error if it is in the tree
         - raise an error if the input is not a string
+    ### depth_traversal:
+        - O(n^2)
+        - return as a generator every word that has the given prefix

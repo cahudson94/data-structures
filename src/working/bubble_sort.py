@@ -4,30 +4,23 @@
 def bubble_sort(data):
     """Sort the given input if it contains numbers or return error."""
     try:
-        current = []
+        curr = list(data)
         prev = []
-        if type(data) == tuple:
-            for num in data:
-                current.append(num)
-        else:
-            current = data
         idx = 0
-        size = len(current) - 1
-        while current != prev:
-            prev = current[:]
-            if idx == size and current == prev:
-                return current
-            if current[idx] > current[idx + 1]:
-                temp = current[idx]
-                current[idx] = current[idx + 1]
-                current[idx + 1] = temp
-                if current[idx + 1] == current[size]:
+        size = len(curr) - 1
+        while curr != prev:
+            prev = curr[:]
+            if idx == size and curr == prev:
+                return curr
+            if curr[idx] > curr[idx + 1]:
+                curr[idx], curr[idx + 1] = curr[idx + 1], curr[idx]
+                if curr[idx + 1] == curr[size]:
                     size -= 1
                     idx = -1
             elif idx != size:
                 prev = []
             idx += 1
-        return current
+        return curr
     except TypeError:
         return ('Please only pass in an iterable of numbers.')
 

@@ -173,8 +173,17 @@ def test_non_string_contains(empty_trie):
 def test_depth_traversal_from_root(twelve_word_trie_with_some_overlap):
     """Test full word depth traversal of twelve word tree."""
     twwo = twelve_word_trie_with_some_overlap.depth_traversal('b')
-    assert next(twwo) == 'bottle'
-    assert next(twwo) == 'battle'
+    assert next(twwo) == 'b'
+    assert next(twwo) == 'o'
+    assert next(twwo) == 't'
+    assert next(twwo) == 't'
+    assert next(twwo) == 'l'
+    assert next(twwo) == 'e'
+    assert next(twwo) == 'a'
+    assert next(twwo) == 't'
+    assert next(twwo) == 't'
+    assert next(twwo) == 'l'
+    assert next(twwo) == 'e'
 
 
 def test_depth_traversal_from_deeper_node(six_word_trie_with_some_overlap):
@@ -184,8 +193,12 @@ def test_depth_traversal_from_deeper_node(six_word_trie_with_some_overlap):
     six.insert('carp')
     six = six.depth_traversal('carp')
     assert next(six) == 'carp'
-    assert next(six) == 'carpet'
-    assert next(six) == 'carpenter'
+    assert next(six) == 'e'
+    assert next(six) == 't'
+    assert next(six) == 'n'
+    assert next(six) == 't'
+    assert next(six) == 'e'
+    assert next(six) == 'r'
 
 
 def test_depth_traversal_non_prefix(six_word_trie_with_some_overlap):

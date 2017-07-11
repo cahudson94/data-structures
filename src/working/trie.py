@@ -6,49 +6,50 @@ class TrieTree(object):
 
     def __init__(self):
         """Initalize properties of Tree."""
-        self._root = Node(None, 0)
+        self._root = {}
         self._size = 0
 
     def insert(self, string):
         """Insert a string into the Tree."""
         if type(string) != str:
             raise TypeError('This tree only contains strings.')
+        if len(string) < 1:
+            raise ValueError('You must give at least one character.')
         if self.contains(string):
             raise ValueError('This string is already in the tree.')
-        string += '$'
-        curr_node = self._root
-        char_count = 0
-        curr_depth = 0
-        while string[char_count] != '$':
-            depth_next_list = self._depth_check(curr_depth)
-            if depth_next_list:
-                for node in depth_next_list:
-                    if depth_next_list[node] == string[char_count]:
-                        if node not in curr_node.next:
-                            curr_node.next.append(node)
-                        curr_node = node
-                if (curr_node.val != string[char_count] or
-                   string[char_count] == string[char_count - 1]):
-                    new_node = Node(string[char_count], curr_depth + 1)
-                    curr_node.next.append(new_node)
-                    curr_node = new_node
+        curr = self._root
+        for char in string[:-1]:
+            if curr is None:
+                curr[char] = {}
+                curr = curr[char]
+            elif char in curr.keys():
+                curr = curr[char]
             else:
-                new_node = Node(string[char_count], curr_depth + 1)
-                curr_node.next.append(new_node)
-                curr_node = new_node
-            curr_depth += 1
-            char_count += 1
-        curr_node.next.append(string)
+                curr[char] = {}
+                curr = curr[char]
+        if string[-1] in curr.keys():
+            curr[string[-1]][None] = None
+        else:
+            curr[string[-1]] = {None: None}
         self._size += 1
 
     def contains(self, string):
         """Return true if the string is in the tree else return false."""
         if type(string) != str:
             raise TypeError('This tree only contains strings.')
-        if self.size() == 0:
+        if self._size == 0:
             return False
-        string += '$'
-        if string in self._depth_check(len(string) - 1):
+        curr = self._root
+        idx = 0
+        for char in string:
+            if curr is None:
+                return False
+            elif char in curr.keys():
+                curr = curr[char]
+                idx += 1
+            else:
+                return False
+        if None in curr.keys():
             return True
         return False
 
@@ -61,13 +62,16 @@ class TrieTree(object):
         if type(string) != str:
             raise TypeError('This tree only contains strings.')
         if self.contains(string):
-            string += '$'
-            char_count = len(string) - 2
-            depth_next_list = self._depth_check(char_count)
-            for node in depth_next_list:
-                if depth_next_list[node] == string[char_count]:
-                    curr_node = node
-            curr_node.next.remove(string)
+            curr = self._root
+            path = ''
+            for char in string:
+                path += char
+                curr = curr[char]
+            path = path[:-1]
+            if len(curr) == 1:
+                self._clean_up(curr, path)
+            else:
+                curr.pop(None)
             self._size -= 1
             return
         raise ValueError('This string is not in the tree.')
@@ -76,78 +80,71 @@ class TrieTree(object):
         """From the start do a full traversal of the tree."""
         if type(start) != str:
             raise TypeError('This tree only contains strings.')
-        words = []
-        curr_node = self._find_start(start)
-        if not curr_node:
+        return_chars = []
+        root = self._find_start(start)
+        if not root:
             raise ValueError('That prefix isn\'t in the tree.')
-        if curr_node.val:
-            to_visit = [curr_node]
-            while to_visit:
-                curr_node = to_visit[0]
-                for node in curr_node.next:
-                    if type(node) == str:
-                        words.append(node[:-1])
-                    else:
-                        to_visit.append(node)
-                to_visit.remove(curr_node)
-            for word in words:
-                if word.startswith(start):
-                    yield word
+        return_chars.append(start)
+        to_visit = []
+        for key in root.keys():
+            if key:
+                to_visit.append(key)
+        tree = self._find_all_paths(root, to_visit)
+        for char in tree:
+            return_chars.append(char)
+        for string in return_chars:
+            yield string
 
-    def _depth_check(self, depth):
+    def _clean_up(self, curr, path):
         """Find all nodes at a depth and return as dict with their values."""
-        curr = self._root
-        to_visit = [self._root]
-        depth_next_list = {}
-        while to_visit:
-            if curr.depth < depth:
-                for node in curr.next:
-                    if type(node) != str:
-                        to_visit.append(node)
-            elif curr.depth == depth:
-                for node in curr.next:
-                    if type(node) != str:
-                        if node not in depth_next_list.keys():
-                            depth_next_list[node] = node.val
-                    else:
-                        if node not in depth_next_list.keys():
-                            depth_next_list[node] = node
-            curr = to_visit[0]
-            to_visit.remove(curr)
-        return depth_next_list
+        start = curr
+        path_head = path[0]
+        while len(curr) == 1:
+            curr = self._root
+            for char in path:
+                prev = curr
+                curr = curr[char]
+            path = path[:-1]
+        if curr == start:
+            curr.pop(None)
+        elif curr == self._root:
+            curr.pop(path_head)
+        else:
+            curr.pop(prev)
 
-    def _find_start(self, node_val):
+    def _find_start(self, prefix):
         """Find the starting node for traversal or return None."""
-        curr_node = self._root
-        curr_index = 0
-        prev = None
-        while curr_index != len(node_val):
-            prev = curr_node
-            next_list = self._get_node_val(curr_node)
-            for node in next_list:
-                if next_list[node] == node_val[curr_index]:
-                    curr_node = node
-            curr_index += 1
-            if prev == curr_node:
-                return
-        return curr_node
-
-    def _get_node_val(self, node):
-        """Get the list of values for the currents next nodes."""
-        nodes = {}
-        for i in node.next:
-            if type(i) != str:
-                nodes[i] = i.val
+        curr = self._root
+        for char in prefix:
+            if char in curr:
+                curr = curr[char]
             else:
-                nodes[i] = i
-        return nodes
+                return
+        return curr
 
-
-class Node(object):
-    """Nodes for Tree."""
-
-    def __init__(self, val, depth):
-        """Make a node instance."""
-        self.val = val
-        self.depth = depth
-        self.next = []
+    def _find_all_paths(self, path, children):
+        """Find all characters under the path."""
+        parent_paths = []
+        for char in children:
+            parent_paths.append(path[char])
+        return_chars = []
+        paths_count = 0
+        while parent_paths:
+            curr = parent_paths[0]
+            if paths_count < len(children):
+                return_chars.append(children[paths_count])
+            parent_paths.remove(parent_paths[0])
+            paths_count += 1
+            if len(curr.keys()) > 1:
+                for key in curr.keys():
+                    if key:
+                        parent_paths.append(curr[key])
+            while len(curr.keys()) == 1 and curr != {None: None}:
+                for key in curr.keys():
+                    if key:
+                        return_chars.append(key)
+                        curr = curr[key]
+            for key in curr.keys():
+                if key:
+                    return_chars.append(key)
+        return return_chars

@@ -33,9 +33,9 @@ if __name__ == '__main__':  # pragma: no cover
         "from __main__ import insert_sort; from random import randint"
     )
     print("""
-Bubble sort is a simple sorting algorithm that repeatedly steps through
-the list to be sorted, compares each pair of adjacent items and swaps
-them if they are in the wrong order.
+Insert sort is a simple sorting algorithm that steps through
+the list to be sorted, and if a value is lower iterates it forward
+to it's appropriate position.
 """)
     print("#================= best case search 10000x ==============#")
     print(best.timeit(number=1000))

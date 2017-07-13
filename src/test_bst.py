@@ -19,6 +19,24 @@ def one_node_bst():
 
 
 @pytest.fixture
+def two_node_right_bst():
+    """Two node BST to the right."""
+    two = BST()
+    two.insert(0)
+    two.insert(1)
+    return two
+
+
+@pytest.fixture
+def two_node_left_bst():
+    """Two node BST to the left."""
+    two = BST()
+    two.insert(1)
+    two.insert(0)
+    return two
+
+
+@pytest.fixture
 def three_node_bst():
     """A BST initialized with three nodes."""
     three_node = BST()
@@ -431,3 +449,75 @@ def test_pre_order_edge_case(five_node_edge_case):
     for i in range(5):
         gen.append(next(five))
     assert gen == [6, 3, 2, 5, 4]
+
+
+def test_two_node_post_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via post order."""
+    two = two_node_right_bst.post_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
+
+
+def test_two_node_post_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via post order."""
+    two = two_node_left_bst.post_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_pre_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via pre order."""
+    two = two_node_right_bst.pre_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_pre_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via pre order."""
+    two = two_node_left_bst.pre_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
+
+
+def test_two_node_in_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via in order."""
+    two = two_node_right_bst.in_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_in_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via in order."""
+    two = two_node_left_bst.in_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_breadth_first_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via breadth first."""
+    two = two_node_right_bst.breadth_first()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_breadth_first_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via breadth first."""
+    two = two_node_left_bst.breadth_first()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]

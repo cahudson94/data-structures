@@ -158,25 +158,16 @@ Try again with only numbers in your list or tuple.''')
         while len(nodes) != self._length:
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
+            elif curr.left and curr.left not in nodes:
                 curr = curr.left
-            elif not curr.left and curr not in nodes:
+            elif curr not in nodes:
                 nodes.append(curr)
-                if not curr.right:
+                if curr.right and curr.right not in nodes:
+                    curr = curr.right
+                else:
                     curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
-            elif curr.right and curr.right not in nodes:
-                curr = curr.right
-            elif not curr.right and curr not in nodes:
-                nodes.append(curr)
-                curr = curr.parent
-            elif not curr.right:
-                curr = curr.parent
             else:
                 curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
         for node in nodes:
             yield node.val
 

@@ -9,6 +9,8 @@ class BST():
         """Initialize Binary Search tree."""
         self._root = None
         self._length = 0
+        self._rdepth = 0
+        self._ldepth = 0
         self._depth = 0
         self._balance = 0
         if type(iterable) in [tuple, list]:
@@ -28,69 +30,91 @@ Try again with only numbers in your list or tuple.''')
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
-        path = []
-        iteration = 0
-        left = False
-        right = False
-        bal_chg = False
         if curr is None:
             curr = Node(val)
             self._root = curr
-            self._length += 1
-            path.append(curr)
-            if len(path) > self._depth:
-                self._depth = len(path)
+            self._length = 1
+            self._depth = 1
             return
-        path.append(curr)
         while True:
             if val == curr.val:
                 return
             elif val < curr.val:
                 if curr.left:
-                    path.append(curr)
                     curr = curr.left
-                    if iteration == 0:
-                        left = True
-                        iteration += 1
                 else:
                     curr.left = Node(val)
                     curr.left.parent = curr
                     self._length += 1
-                    path.append(curr.left)
-                    if len(path) > self._depth:
-                        self._depth = len(path)
-                        bal_chg = True
-                    if iteration == 0:
-                        left = True
-                        iteration += 1
-                    if left and bal_chg:
-                        self._balance -= 1
-                    if right and bal_chg:
-                        self._balance += 1
+                    self._depth_and_bal(self._root)
                     return
             elif val > curr.val:
                 if curr.right:
-                    path.append(curr)
                     curr = curr.right
-                    if iteration == 0:
-                        right = True
-                        iteration += 1
                 else:
                     curr.right = Node(val)
                     curr.right.parent = curr
                     self._length += 1
-                    path.append(curr.right)
-                    if len(path) > self._depth:
-                        self._depth = len(path)
-                        bal_chg = True
-                    if iteration == 0:
-                        right = True
-                        iteration += 1
-                    if left and bal_chg:
-                        self._balance -= 1
-                    if right and bal_chg:
-                        self._balance += 1
+                    self._depth_and_bal(self._root)
                     return
+
+    def _tree_depth(self, node):
+        """Get the depth of the tree or sub tree."""
+        lside = {}
+        rside = {}
+        on_right = False
+        curr = None
+        if node.left:
+            curr = node.left
+        elif node.right:
+            curr = node.right
+        while True:
+            if curr == node.right:
+                on_right = True
+            elif not node.left:
+                on_right = True
+            if curr == node and curr.left and curr.left in lside.keys():
+                    curr = curr.right
+                    on_right = True
+            elif on_right:
+                if curr not in rside.keys() and curr.parent in rside.keys():
+                    rside[curr] = rside[curr.parent] + 1
+                elif curr == node.right:
+                    rside[curr] = 1
+                if curr.left and curr.left not in rside.keys():
+                    curr = curr.left
+                elif curr.right and curr.right not in rside.keys():
+                    curr = curr.right
+                else:
+                    curr = curr.parent
+            else:
+                if curr not in lside.keys() and curr.parent in lside.keys():
+                    lside[curr] = lside[curr.parent] + 1
+                elif curr == node.left:
+                    lside[curr] = 1
+                if curr.left and curr.left not in lside.keys():
+                    curr = curr.left
+                elif curr.right and curr.right not in lside.keys():
+                    curr = curr.right
+                else:
+                    curr = curr.parent
+            if on_right or not node.right:
+                if curr == node:
+                    if rside and lside:
+                        return (max(rside.values()),
+                                max(lside.values()))
+                    elif rside:
+                        return (max(rside.values()), 0)
+                    else:
+                        return (0, max(lside.values()))
+
+    def _depth_and_bal(self, node):
+        """Get the new depth and balance of the tree."""
+        depth = self._tree_depth(node)
+        self._rdepth = depth[0]
+        self._ldepth = depth[1]
+        self._balance = self._rdepth - self._ldepth
+        self._depth = max([self._rdepth, self._ldepth]) + 1
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
@@ -151,7 +175,8 @@ Try again with only numbers in your list or tuple.''')
                 curr = curr.parent
             else:
                 curr = curr.parent
-                nodes.append(curr)
+                if curr not in nodes:
+                    nodes.append(curr)
         for node in nodes:
             yield node.val
 
@@ -167,10 +192,7 @@ Try again with only numbers in your list or tuple.''')
             elif curr.right and curr.right not in nodes:
                 curr = curr.right
             else:
-                if not curr.left and not curr.right:
-                    curr = curr.parent
-                elif curr.left in nodes and curr.right in nodes:
-                    curr = curr.parent
+                curr = curr.parent
         for node in nodes:
             yield node.val
 

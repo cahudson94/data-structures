@@ -621,15 +621,15 @@ def test_delete_on_five_node_bst_with_tuple(five_node_bst_with_tuple):
 def test_delete_head_on_five_node_bst_with_insert(five_node_bst_by_insert):
     """Test deletion of root changes root."""
     five_node_bst_by_insert.delete(6)
-    assert five_node_bst_by_insert._root.val == 11
+    assert five_node_bst_by_insert._root.val == 4.2
 
 
 def test_delete_multiple_heads_on_five_node_bst(five_node_bst_by_insert):
     """Test deltion of root multiple times."""
     five_node_bst_by_insert.delete(6)
-    assert five_node_bst_by_insert._root.val == 11
+    assert five_node_bst_by_insert._root.val == 4.2
     assert five_node_bst_by_insert.depth() == 3
-    five_node_bst_by_insert.delete(11)
+    five_node_bst_by_insert.delete(4.2)
     assert five_node_bst_by_insert._root.val == 2
     assert five_node_bst_by_insert.depth() == 2
 
@@ -639,16 +639,16 @@ def test_ten_node_delete_2_nodes(ten_node_bst_with_list):
     ten_node_bst_with_list.delete(9)
     assert ten_node_bst_with_list._length == 9
     ten_node_bst_with_list.delete(10)
-    assert ten_node_bst_with_list._root.val == 7
+    assert ten_node_bst_with_list._root.val == 12
     node7 = ten_node_bst_with_list.search(7)
-    assert node7.right.val == 12
-    assert node7.parent is None
+    assert node7.left.val == 4
+    assert node7.parent.val == 12
 
 
 def test_ten_node_delete_right_side(ten_node_bst_with_list):
     """Test deletion from right side only."""
     ten_node_bst_with_list.delete(23)
-    assert ten_node_bst_with_list._root.right.right.val == 17
+    assert ten_node_bst_with_list._root.right.right.val == 50
 
 
 def test_delete_right_most_left_most_has_right_child():
@@ -656,8 +656,8 @@ def test_delete_right_most_left_most_has_right_child():
     new_bst = BST([1, 5, 3, 10, 8, 6, 20, 7])
     assert new_bst.depth() == 6
     new_bst.delete(5)
-    assert new_bst._root.right.val == 6
-    assert new_bst.depth() == 5
+    assert new_bst._root.right.val == 3
+    assert new_bst.depth() == 6
     assert new_bst._root.right.right.val == 10
 
 
@@ -667,12 +667,12 @@ def test_multiple_deletes_on_more_robust_tree():
                    18, 11, 19, 16, 12, 17, 14, 13, 15])
     assert new_bst._root.val == 10
     new_bst.delete(16)
-    assert new_bst._root.right.left.right.val == 15
+    assert new_bst._root.right.left.right.val == 17
     assert new_bst._root.right.left.right.left.val == 12
     new_bst.delete(11)
-    assert new_bst._root.right.left.val == 15
+    assert new_bst._root.right.left.val == 17
     new_bst.delete(4)
-    assert new_bst._root.left.right.left.val == 5
+    assert new_bst._root.left.right.left.val == 3
     assert new_bst.depth() == 7
 
 
@@ -682,9 +682,9 @@ def test_delete_leaf_of_root_small_tree(three_node_bst_with_list):
     assert b._root.val == 2
     assert b.size() == 3
     b.delete(2)
-    assert b._root.val == 1
+    assert b._root.val == 3
     assert b.size() == 2
-    assert b.balance() == -1
+    assert b.balance() == 1
     b.delete(3)
     assert b.balance() == 0
     assert b.depth() == 1
@@ -727,16 +727,16 @@ def test_delete_sub_tree_succesor_has_child(nine_node_with_succesor_children):
     """Test deletion of a sub tree root under the main root."""
     b = nine_node_with_succesor_children
     b.delete(13)
-    assert b._root.left.val == 12
-    assert b._root.left.right.val == 14
-    assert b._root.left.left.right.val == 10
+    assert b._root.left.val == 14
+    assert b._root.left.left.val == 9
+    assert b._root.val == 15
 
 
 def test_delete_root_on_right_heavy_tree(six_node_right_heavy_bst):
     """Test deletion of the root when right is heavier."""
     b = six_node_right_heavy_bst
     b.delete(7)
-    assert b._root.val == 5
+    assert b._root.val == 8
     assert b.size() == 5
 
 
@@ -788,3 +788,11 @@ def test_proper_deletion_from_a_large_tree(huge_random_bst):
     for i in range(20):
         b.delete(a[i])
     assert b.size() == 180
+
+
+def test_right_child_edge_case_root_del():
+    """Test for deletion of root with a right child right heavy."""
+    b = BST([5, 10, 7, 9, 11, 2])
+    b.delete(5)
+    assert b._root.val == 7
+    assert b._root.right.left.val == 9

@@ -68,23 +68,15 @@ Try again with only numbers in your list or tuple.''')
         to_del = self.search(val)
         if to_del is None:
             return None
-        if self._length == 2:
-            self._length -= 1
-            if to_del == self._root and to_del.right:
-                self._root = to_del.right
-                self._root.parent = None
-            elif to_del == self._root and to_del.left:
-                self._root = to_del.left
-                self._root.parent = None
-            else:
-                self._del_leaf(to_del)
-            self._rdepth = 0
-            self._ldepth = 0
-            self._depth = 1
-            self._balance = 0
-            return
         if to_del == self._root:
-            self._root_shift(to_del, self._balance)
+            if to_del.left and to_del.right:
+                self._root_shift(to_del, self._balance)
+            elif to_del.left:
+                self._root = to_del.left
+                to_del.left.parent = None
+            else:
+                self._root = to_del.right
+                to_del.right.parent = None
         elif to_del.left and to_del.right:
             sub_depth = self._tree_depth(to_del)
             sub_balance = sub_depth[0] - sub_depth[1]
@@ -109,6 +101,8 @@ Try again with only numbers in your list or tuple.''')
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
+        if self._length == 1:
+            return (0, 0)
         lside = {}
         rside = {}
         on_right = False
@@ -217,7 +211,7 @@ Try again with only numbers in your list or tuple.''')
         depth = self._tree_depth(node)
         self._rdepth = depth[0]
         self._ldepth = depth[1]
-        self._balance = self._rdepth - self._ldepth
+        self._balance = self._ldepth - self._rdepth
         self._depth = max([self._rdepth, self._ldepth]) + 1
 
     def search(self, val):

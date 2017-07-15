@@ -136,7 +136,7 @@ class Node():
         self.right = right
 
 
-def wrapper(func, *args, **kwargs):
+def wrapper(func, *args, **kwargs):  # pragma: no cover
     """Create a value for a function with a specific arguement called to it."""
     def wrapped():
         return func(*args, **kwargs)
@@ -145,7 +145,7 @@ def wrapper(func, *args, **kwargs):
     #  he found it at http://pythoncentral.io/time-a-python-function/
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     best_stuff_tree = BST()
     find5 = wrapper(best_stuff_tree.search, 5)
     find24 = wrapper(best_stuff_tree.search, 24)

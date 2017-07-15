@@ -215,7 +215,7 @@ Try again with only numbers in your list or tuple.''')
                 balanced = True
                 self._rdepth = auto_bal[0]
                 self._ldepth = auto_bal[1]
-                self._balance = self._rdepth - self._ldepth
+                self._balance = self._ldepth - self._rdepth
                 self._depth = max([self._rdepth, self._ldepth]) + 1
             elif auto_bal[2] == -2 and auto_bal[3] in [-1, 0]:
                 self._rotate_right(auto_bal[0])
@@ -291,8 +291,11 @@ Try again with only numbers in your list or tuple.''')
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
-        if self._length == 1:
-            return (0, 0)
+        if self._length == 2:
+            if node.right:
+                return (1, 0)
+            else:
+                return (0, 1)
         lside = {}
         rside = {}
         on_right = False
@@ -343,7 +346,7 @@ Try again with only numbers in your list or tuple.''')
 
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""
-        if balance <= 0:
+        if balance > 0:
             curr = node.left
             while curr.right:
                 curr = curr.right

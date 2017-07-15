@@ -20,6 +20,24 @@ def one_node_bst():
 
 
 @pytest.fixture
+def two_node_right_bst():
+    """Two node BST to the right."""
+    two = BST()
+    two.insert(0)
+    two.insert(1)
+    return two
+
+
+@pytest.fixture
+def two_node_left_bst():
+    """Two node BST to the left."""
+    two = BST()
+    two.insert(1)
+    two.insert(0)
+    return two
+
+
+@pytest.fixture
 def three_node_bst():
     """A BST initialized with three nodes."""
     three_node = BST()
@@ -63,6 +81,20 @@ def five_node_edge_case():
 
 
 @pytest.fixture
+def six_node_range_0_to_5_bst():
+    """Six nodes covering range zero to five."""
+    b = BST([0, 1, 2, 3, 4, 5])
+    return b
+
+
+@pytest.fixture
+def six_node_range_5_to_0_bst():
+    """Six nodes covering range five to zero."""
+    b = BST([5, 4, 3, 2, 1, 0])
+    return b
+
+
+@pytest.fixture
 def six_node_right_heavy_bst():
     """Six node BST for edge cases."""
     b = BST([10, 5, 12, 11, 1, 32])
@@ -81,6 +113,27 @@ def ten_node_bst_with_list():
     """A BST initialized with ten nodes from list."""
     ten_node = BST([10, 7, 12, 4, 9, 23, 2, 5, 17, 50])
     return ten_node
+
+
+@pytest.fixture
+def left_side_bst():
+    """A BST with only left nodes."""
+    left = BST([34, 22, 32, 20, 15, 21, 6])
+    return left
+
+
+@pytest.fixture
+def right_side_bst():
+    """A BST with only right nodes."""
+    right = BST([2, 14, 22, 10, 8, 6, 31, 55, 66, 77])
+    return right
+
+
+@pytest.fixture
+def wonky_bst():
+    """A BST that goes all over."""
+    wonky = BST([40, 22, 34, 30, 32, 55, 66, 77, 68, 1, 2, 3, 99, 4, 5, 6, 7])
+    return wonky
 
 
 @pytest.fixture
@@ -213,7 +266,7 @@ def test_five_node_bst_correctsize(five_node_bst_with_tuple):
 
 def test_five_node_bst_correct_balance(five_node_bst_by_insert):
     """Test the balance of a 5 node BST."""
-    assert five_node_bst_by_insert.balance() == -1
+    assert five_node_bst_by_insert.balance() == 1
 
 
 def test_five_node_bst_correct_depth(five_node_bst_with_tuple):
@@ -515,7 +568,7 @@ def test_delete_on_five_node_bst_with_tuple(five_node_bst_with_tuple):
     five_node = five_node_bst_with_tuple
     five_node.delete(8)
     assert five_node._root.right.val == 7
-    assert five_node.balance() == 1
+    assert five_node.balance() == -1
     assert five_node.depth() == 3
 
 
@@ -540,16 +593,16 @@ def test_ten_node_delete_2_nodes(ten_node_bst_with_list):
     ten_node_bst_with_list.delete(9)
     assert ten_node_bst_with_list._length == 9
     ten_node_bst_with_list.delete(10)
-    assert ten_node_bst_with_list._root.val == 7
+    assert ten_node_bst_with_list._root.val == 12
     node7 = ten_node_bst_with_list.search(7)
-    assert node7.right.val == 17
-    assert node7.parent is None
+    assert node7.left.val == 5
+    assert node7.parent.val == 4
 
 
 def test_ten_node_delete_right_side(ten_node_bst_with_list):
     """Test deletion from right side only."""
     ten_node_bst_with_list.delete(17)
-    assert ten_node_bst_with_list._root.right.right.val == 50
+    assert ten_node_bst_with_list._root.right.right.val == 23
 
 
 def test_delete_right_most_left_most_has_right_child():
@@ -569,11 +622,11 @@ def test_multiple_deletes_on_more_robust_tree():
     assert new_bst._root.val == 8
     new_bst.delete(16)
     assert new_bst._root.right.left.right.val == 12
-    assert new_bst._root.right.right.val == 15
+    assert new_bst._root.right.right.val == 17
     new_bst.delete(11)
-    assert new_bst._root.right.left.val == 10
+    assert new_bst._root.right.left.val == 12
     new_bst.delete(4)
-    assert new_bst._root.left.right.left.val == 5
+    assert new_bst._root.left.val == 5
     assert new_bst.depth() == 5
 
 
@@ -583,7 +636,7 @@ def test_delete_leaf_of_root_small_tree(three_node_bst_with_list):
     assert b._root.val == 2
     assert b.size() == 3
     b.delete(2)
-    assert b._root.val == 1
+    assert b._root.val == 3
     assert b.size() == 2
     assert b.balance() == 1
     b.delete(3)
@@ -598,7 +651,7 @@ def test_delete_root_only_left_children(three_node_bst_with_list):
     assert b.size() == 3
     b.delete(3)
     assert b.size() == 2
-    assert b.balance() == -1
+    assert b.balance() == 1
     b.delete(2)
     assert b._root.val == 1
     assert b.balance() == 0
@@ -646,17 +699,17 @@ def test_delete_sub_tree_succesor_has_child(nine_node_with_succesor_children):
     """Test deletion of a sub tree root under the main root."""
     b = nine_node_with_succesor_children
     b.delete(13)
-    assert b._root.left.val == 12
-    assert b._root.left.right.val == 14
+    assert b._root.left.val == 14
     assert b._root.left.left.val == 10
+    assert b._root.left.left.right.val == 12
 
 
 def test_delete_root_on_right_heavy_left_sub_tree():
     """Test deletion of the root when right is heavier."""
     b = BST([14, 8, 16, 9, 7, 18, 8.5, 12])
     b.delete(8)
-    assert b._root.left.val == 8.5
-    assert b._root.left.left.val == 7
+    assert b._root.left.val == 7
+    assert b._root.left.right.val == 9
     assert b.size() == 7
 
 
@@ -692,3 +745,193 @@ def test_proper_deletion_from_a_large_tree(huge_random_bst):
     for i in range(20):
         b.delete(a[i])
     assert b.size() == 180
+
+
+def test_empty_bst_size_returns_0(empty_bst):
+    """Test size of empty BST."""
+    assert empty_bst.size() == 0
+
+
+def test_search_with_bad_data_type(one_node_bst):
+    """Test bad data on search raises error."""
+    with pytest.raises(TypeError):
+        one_node_bst.search('five')
+
+
+def test_contains_with_bad_data_type(one_node_bst):
+    """Test bad data on contains raises error."""
+    with pytest.raises(TypeError):
+        one_node_bst.contains('lskdfj')
+
+
+def test_one_node_bst_correct_size(one_node_bst):
+    """Test that a BST with one node returns correct size."""
+    assert one_node_bst.size() == 1
+
+
+def test_three_node_bst_correct_size(three_node_bst):
+    """Test that a three node BST returns 3."""
+    assert three_node_bst.size() == 3
+
+
+def test_five_node_bst_correct_size(five_node_bst_with_tuple):
+    """Test the size of a BST with 5 nodes."""
+    assert five_node_bst_with_tuple.size() == 5
+
+
+def test_ten_node_bst_correct_size(ten_node_bst_with_list):
+    """Test the size of a 10 node BST."""
+    assert ten_node_bst_with_list.size() == 10
+
+
+def test_init_bst_raises_type_error_with_bad_data_in_list():
+    """Test init with bad data in list raises TypeError."""
+    with pytest.raises(TypeError):
+        BST([4, '23', 'balls'])
+
+
+def test_breadth_first_edge_case(five_node_edge_case):
+    """Test to left only tree traversal edge case breadth first."""
+    five = five_node_edge_case.breadth_first()
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [3, 2, 5, 4, 6]
+
+
+def test_in_order_edge_case(five_node_edge_case):
+    """Test to left only tree traversal edge case in order."""
+    five = five_node_edge_case.in_order()
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [2, 3, 4, 5, 6]
+
+
+def test_pre_order_edge_case(five_node_edge_case):
+    """Test to left only tree traversal edge case pre order."""
+    five = five_node_edge_case.pre_order()
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [3, 2, 5, 4, 6]
+
+
+def test_two_node_post_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via post order."""
+    two = two_node_right_bst.post_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
+
+
+def test_two_node_post_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via post order."""
+    two = two_node_left_bst.post_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_pre_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via pre order."""
+    two = two_node_right_bst.pre_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_pre_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via pre order."""
+    two = two_node_left_bst.pre_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
+
+
+def test_two_node_in_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via in order."""
+    two = two_node_right_bst.in_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_in_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via in order."""
+    two = two_node_left_bst.in_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_breadth_first_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via breadth first."""
+    two = two_node_right_bst.breadth_first()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_breadth_first_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via breadth first."""
+    two = two_node_left_bst.breadth_first()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
+
+
+def test_delete_root_on_right_heavy_tree(six_node_right_heavy_bst):
+    """Test deletion of the root when right is heavier."""
+    b = six_node_right_heavy_bst
+    b.delete(10)
+    assert b._root.val == 11
+    assert b.size() == 5
+
+
+def test_blance_and_depth_of_wonky_bst(wonky_bst):
+    """Test the balance of the wonky bst."""
+    assert wonky_bst.balance() == 1
+    assert wonky_bst.depth() == 5
+
+
+def test_blance_and_depth_of_right_bst(right_side_bst):
+    """Test the balance of the right bst."""
+    assert right_side_bst.balance() == -1
+    assert right_side_bst.depth() == 4
+
+
+def test_blance_and_depth_of_left_bst(left_side_bst):
+    """Test the balance of the left bst."""
+    assert left_side_bst.balance() == 1
+    assert left_side_bst.depth() == 4
+
+
+def test_zero_to_five_range_root_del(six_node_range_0_to_5_bst):
+    """Test deletion of root on six node tree at val 0."""
+    b = six_node_range_0_to_5_bst
+    b.delete(0)
+    assert b._root.val == 3
+
+
+def test_five_to_zero_range_root_del(six_node_range_5_to_0_bst):
+    """Test deletion of root on six node tree at val 0."""
+    b = six_node_range_5_to_0_bst
+    b.delete(5)
+    assert b._root.val == 2
+
+
+def test_left_edge_case_root_shift():
+    """Test when root shift runs the left side and has a left."""
+    b = BST([70, 80, 50, 40, 60, 75, 55])
+    b.delete(70)
+    assert b._root.val == 60
+    assert b._root.left.right.val == 55

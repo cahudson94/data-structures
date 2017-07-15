@@ -2,7 +2,7 @@
 from timeit import timeit
 
 
-class BST():
+class BST(object):
     """Binary Search Tree."""
 
     def __init__(self, iterable=None):
@@ -126,7 +126,7 @@ Try again with only numbers in your list or tuple.''')
         return self._balance
 
 
-class Node():
+class Node(object):
     """Create a node to add to the Binary Search Tree."""
 
     def __init__(self, val, left=None, right=None):

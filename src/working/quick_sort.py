@@ -1,34 +1,34 @@
 """Merge sort data structure."""
 
 
-def mergesort(data):
+def quicksort(data):
     """Sorting algorithm for merg sort."""
     try:
         if len(data) > 1:
-            half = len(data) // 2
-            left = data[:half]
-            right = data[half:]
+            mid = data[0]
+            left = []
+            right = []
 
-            mergesort(left)
-            mergesort(right)
+            for item in data[1:]:
+                if item >= mid:
+                    right.append(item)
+                else:
+                    left.append(item)
+
+            quicksort(left)
+            quicksort(right)
 
             di = 0
             li = 0
             ri = 0
 
-            while len(left) > li and len(right) > ri:
-                if left[li] < right[ri]:
-                    data[di] = left[li]
-                    li += 1
-                else:
-                    data[di] = right[ri]
-                    ri += 1
-                di += 1
-
             while len(left) > li:
                 data[di] = left[li]
                 li += 1
                 di += 1
+
+            data[di] = mid
+            di += 1
 
             while len(right) > ri:
                 data[di] = right[ri]

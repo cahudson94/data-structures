@@ -1,5 +1,5 @@
 """Testing for inesrt sort."""
-from merge_sort import mergesort
+from insert_sort import insert_sort
 import pytest
 from random import randint
 
@@ -22,22 +22,22 @@ PARAMS_TABLE = [
 @pytest.mark.parametrize('data', TEST_PARAMS)
 def test_insert_sort(data):
     """Test insert sort against data and sorted version of data."""
-    assert mergesort(data) == sorted(data)
+    assert insert_sort(data) == sorted(data)
 
 
 def test_strings_error_handling_in_bubble_sort():
     """Test that an error is thrown if there is a string."""
-    assert mergesort([1, 'blkja', 2324, 3]) == 'This sort method \
-only accepts values of one type in a list.'
+    assert insert_sort([1, 'blkja', 2324, 3]) == 'Please provide an \
+iterable with only one input type.'
 
 
 def test_iterable_type_error_handling():
     """Test if not list or tuple, ValueError raised."""
-    assert mergesort(('sfajlfka', 1, 5)) == 'This sort method \
-only accepts values of one type in a list.'
+    assert insert_sort(('sfajlfka', 1, 5)) == 'Please provide an \
+iterable with only one input type.'
 
 
 @pytest.mark.parametrize('data, result', PARAMS_TABLE)
 def test_bubble_sort(data, result):
     """Parametrized test for the bubble sort."""
-    assert mergesort(data) == result
+    assert insert_sort(data) == result

@@ -309,3 +309,9 @@ def test_dll_remove_invalid(initialize_three_dll):
 def test_dll_len(initialize_three_dll):
     """Test len method."""
     assert len(initialize_three_dll) == 3
+
+
+def test_remove_from_empty_dll(initialize_empty_dll):
+    """Test remove raises error when dll is empty."""
+    with pytest.raises(ValueError):
+        initialize_empty_dll.remove('cake')

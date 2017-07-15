@@ -700,3 +700,10 @@ def test_b_f_shorter_path(nodes, result, four_node_five_edge_graph_path):
     """Third test for b_f shortest path with shorter paths."""
     g = four_node_five_edge_graph_path
     assert g.b_f_shortest_path(nodes[0], nodes[1]) == result
+
+
+def test_cyclical_breadth_traversal(four_node_cyclical_graph):
+    """Test the traversal of a cyclical graph depth first."""
+    four = four_node_cyclical_graph
+    assert four.depth_first_traversal(1) == [1, 2, 3, 4]
+    assert four.depth_first_traversal(3) == [3, 4, 1, 2]

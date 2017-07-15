@@ -151,3 +151,9 @@ def test_linked_list_display():
 def test_linked_list_repr():
     """Test linked list print method."""
     assert repr(LIST_OF_THREE) == '(one, two, three)'
+
+
+def test_linked_list_remove_empty():
+    """Test linked list remove raises error when empty."""
+    with pytest.raises(ValueError):
+        EMPTY_LIST_POP.remove(5)

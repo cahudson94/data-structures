@@ -1,7 +1,8 @@
 """Testing suite for Binary Search Tree data structure."""
-import pytest
 from bst import BST
 from bst import Node
+import pytest
+import random
 
 
 @pytest.fixture
@@ -133,6 +134,15 @@ def wonky_bst():
     """A BST that goes all over."""
     wonky = BST([40, 22, 34, 30, 32, 55, 66, 77, 68, 1, 2, 3, 99, 4, 5, 6, 7])
     return wonky
+
+
+@pytest.fixture
+def huge_random_bst():
+    """A large BST with a random list."""
+    a = [i for i in range(200)]
+    random.shuffle(a)
+    b = BST(a)
+    return b
 
 
 def test_empty_bst_features(empty_bst):
@@ -768,3 +778,13 @@ def test_five_to_zero_range_root_del(six_node_range_5_to_0_bst):
     b = six_node_range_5_to_0_bst
     b.delete(5)
     assert b._root.val == 4
+
+
+def test_proper_deletion_from_a_large_tree(huge_random_bst):
+    """Test deletion of rnadom nodes in a large tree."""
+    b = huge_random_bst
+    a = [i for i in range(200)]
+    random.shuffle(a)
+    for i in range(20):
+        b.delete(a[i])
+    assert b.size() == 180

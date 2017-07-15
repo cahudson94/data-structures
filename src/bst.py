@@ -65,9 +65,6 @@ Try again with only numbers in your list or tuple.''')
             return None
         if to_del != self._root:
             par_for_bal = to_del.parent
-        if self._length <= 3:
-            self._del_small_tree(val)
-            return
         self._length -= 1
         if to_del == self._root:
             self._root_shift(to_del, self._balance)
@@ -282,6 +279,8 @@ Try again with only numbers in your list or tuple.''')
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
+        if self._length == 1:
+            return (0, 0)
         lside = {}
         rside = {}
         on_right = False
@@ -373,47 +372,6 @@ Try again with only numbers in your list or tuple.''')
             curr.parent = node.parent
             if curr.left:
                 curr.left.parent = curr
-
-    def _del_small_tree(self, val):
-        """Delete node from tree of three or less."""
-        to_del = self.search(val)
-        if self._length == 1:
-            self._root = None
-            self._depth = 0
-        elif self._length == 2:
-            if to_del == self._root and to_del.right:
-                self._root = to_del.right
-                self._root.parent = None
-            elif to_del == self._root and to_del.left:
-                self._root = to_del.left
-                self._root.parent = None
-            else:
-                self._del_leaf(to_del)
-            self._rdepth = 0
-            self._ldepth = 0
-            self._depth = 1
-            self._balance = 0
-        else:
-            if to_del == self._root:
-                to_del.left.parent = None
-                self._root = to_del.left
-                to_del.right.parent = self._root
-                self._root.right = to_del.right
-                self._rdepth = 1
-                self._ldepth = 0
-                self._balance = 1
-            else:
-                if to_del == self._root.left:
-                    self._rdepth = 1
-                    self._ldepth = 0
-                    self._balance = 1
-                else:
-                    self._rdepth = 0
-                    self._ldepth = 1
-                    self._balance = -1
-                self._del_leaf(to_del)
-            self._depth = 2
-        self._length -= 1
 
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""

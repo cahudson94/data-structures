@@ -227,3 +227,29 @@ All modules and tests located in src directory.
         - We used a simple addative hash for our naive.
     ### advanced:
         - We made a hash using a few math operations using prime numbers on each of the string vlaues and added a diferentiator through the last value.
+
+## Trie Tree
+- module: trie.py
+- test: test_trie.py
+- public methods:
+    ### insert:
+        - O(n^2)
+        - add a string to the tree
+        - raise an error if it is in the tree
+        - raise an error if the input is not a string
+    ### contains:
+        - O(1)
+        - return true if the string is in the tree
+        - else return false
+        - raise an error if the input is not a string
+    ### size:
+        - O(1)
+        - return the amount of strings in the tree
+    ### remove:
+        - O(n)
+        - remove a string from the tree
+        - raise an error if it is in the tree
+        - raise an error if the input is not a string
+    ### depth_traversal:
+        - O(n^2)
+        - return as a generator every word that has the given prefix

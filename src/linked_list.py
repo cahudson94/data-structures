@@ -48,6 +48,8 @@ class LinkedList(object):
         """Remove a node from the linked list."""
         current_node = self.head
         previous_node = None
+        if current_node is None:
+            raise ValueError('Node not in linked list, it is empty.')
         while current_node != node:
             previous_node = current_node
             current_node = current_node.next_node

@@ -100,6 +100,27 @@ def ten_node_bst_with_list():
     return ten_node
 
 
+@pytest.fixture
+def left_side_bst():
+    """A BST with only left nodes."""
+    left = BST([34, 22, 32, 20, 15, 21, 6])
+    return left
+
+
+@pytest.fixture
+def right_side_bst():
+    """A BST with only right nodes."""
+    right = BST([2, 14, 22, 10, 8, 6, 31, 55, 66, 77])
+    return right
+
+
+@pytest.fixture
+def wonky_bst():
+    """A BST that goes all over."""
+    wonky = BST([40, 22, 34, 30, 32, 55, 66, 77, 68, 1, 2, 3, 99, 4, 5, 6, 7])
+    return wonky
+
+
 def test_empty_bst_features(empty_bst):
     """Test base features of empty BST."""
     assert empty_bst._root is None
@@ -701,3 +722,21 @@ def test_delete_left_side_leaf(six_node_right_heavy_bst):
     b.delete(8)
     assert b._root.right.left is None
     assert b.size() == 5
+
+
+def test_blance_and_depth_of_wonky_bst(wonky_bst):
+    """Test the balance of the wonky bst."""
+    assert wonky_bst.balance() == -4
+    assert wonky_bst.depth() == 9
+
+
+def test_blance_and_depth_of_right_bst(right_side_bst):
+    """Test the balance of the right bst."""
+    assert right_side_bst.balance() == 6
+    assert right_side_bst.depth() == 7
+
+
+def test_blance_and_depth_of_left_bst(left_side_bst):
+    """Test the balance of the left bst."""
+    assert left_side_bst.balance() == -4
+    assert left_side_bst.depth() == 5

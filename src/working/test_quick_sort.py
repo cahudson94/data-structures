@@ -1,4 +1,4 @@
-"""Testing for inesrt sort."""
+"""Testing for quick sort."""
 from quick_sort import quicksort
 import pytest
 from random import randint
@@ -21,7 +21,7 @@ PARAMS_TABLE = [
 
 @pytest.mark.parametrize('data', TEST_PARAMS)
 def test_insert_sort(data):
-    """Test insert sort against data and sorted version of data."""
+    """Test quick sort against data and sorted version of data."""
     assert quicksort(data) == sorted(data)
 
 
@@ -39,5 +39,5 @@ only accepts values of one type in a list.'
 
 @pytest.mark.parametrize('data, result', PARAMS_TABLE)
 def test_bubble_sort(data, result):
-    """Parametrized test for the bubble sort."""
+    """Parametrized test for the quick sort."""
     assert quicksort(data) == result

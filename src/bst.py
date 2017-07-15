@@ -30,11 +30,6 @@ Try again with only numbers in your list or tuple.''')
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
-        iteration = 0
-        right = False
-        rdepth = 0
-        ldepth = 0
-        new_node = False
         if curr is None:
             curr = Node(val)
             self._root = curr
@@ -49,31 +44,77 @@ Try again with only numbers in your list or tuple.''')
                     curr = curr.left
                 else:
                     curr.left = Node(val)
-                    new_node = True
+                    curr.left.parent = curr
+                    self._length += 1
+                    self._depth_and_bal(self._root)
+                    return
             elif val > curr.val:
-                if iteration == 0:
-                        right = True
-                        iteration += 1
                 if curr.right:
                     curr = curr.right
                 else:
                     curr.right = Node(val)
-                    new_node = True
+                    curr.right.parent = curr
+                    self._length += 1
+                    self._depth_and_bal(self._root)
+                    return
+
+    def _tree_depth(self, node):
+        """Get the depth of the tree or sub tree."""
+        lside = {}
+        rside = {}
+        on_right = False
+        curr = None
+        if node.left:
+            curr = node.left
+        elif node.right:
+            curr = node.right
+        while True:
+            if curr == node.right:
+                on_right = True
+            elif not node.left:
+                on_right = True
+            if curr == node and curr.left and curr.left in lside.keys():
+                    curr = curr.right
+                    on_right = True
+            elif on_right:
+                if curr not in rside.keys() and curr.parent in rside.keys():
+                    rside[curr] = rside[curr.parent] + 1
+                elif curr == node.right:
+                    rside[curr] = 1
+                if curr.left and curr.left not in rside.keys():
+                    curr = curr.left
+                elif curr.right and curr.right not in rside.keys():
+                    curr = curr.right
+                else:
+                    curr = curr.parent
             else:
-                return
-            if right:
-                rdepth += 1
-            else:
-                ldepth += 1
-            if new_node:
-                self._length += 1
-                if ldepth > self._ldepth:
-                    self._ldepth = ldepth
-                if rdepth > self._rdepth:
-                    self._rdepth = rdepth
-                self._depth = max(self._rdepth, self._ldepth) + 1
-                self._balance = self._rdepth - self._ldepth
-                return
+                if curr not in lside.keys() and curr.parent in lside.keys():
+                    lside[curr] = lside[curr.parent] + 1
+                elif curr == node.left:
+                    lside[curr] = 1
+                if curr.left and curr.left not in lside.keys():
+                    curr = curr.left
+                elif curr.right and curr.right not in lside.keys():
+                    curr = curr.right
+                else:
+                    curr = curr.parent
+            if on_right or not node.right:
+                if curr == node:
+                    if rside and lside:
+                        return (max(rside.values()),
+                                max(lside.values()))
+                    elif rside:
+                        return (max(rside.values()), 0)
+                    else:
+                        return (0, max(lside.values()))
+
+    def _depth_and_bal(self, node):
+        """Get the new depth and balance of the tree."""
+        depth = self._tree_depth(node)
+        self._rdepth = depth[0]
+        self._ldepth = depth[1]
+        self._balance = self._rdepth - self._ldepth
+        self._depth = max([self._rdepth, self._ldepth]) + 1
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""
@@ -110,9 +151,76 @@ Try again with only numbers in your list or tuple.''')
         """Return the difference of left and right depth from root."""
         return self._balance
 
+    def in_order(self):
+        """Return generator that returns values from BST 'in order'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if not curr.right and not curr.left and not curr.parent:
+                nodes.append(curr)
+            elif curr.left and curr.left not in nodes:
+                curr = curr.left
+            elif curr not in nodes:
+                nodes.append(curr)
+                if curr.right and curr.right not in nodes:
+                    curr = curr.right
+                else:
+                    curr = curr.parent
+            else:
+                curr = curr.parent
+        for node in nodes:
+            yield node.val
+
+    def pre_order(self):
+        """Return generator that returns values from BST 'pre ordered'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if curr not in nodes:
+                nodes.append(curr)
+            if curr.left and curr.left not in nodes:
+                curr = curr.left
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            else:
+                curr = curr.parent
+        for node in nodes:
+            yield node.val
+
+    def post_order(self):
+        """Return generator that returns values from BST 'post ordered'."""
+        nodes = []
+        curr = self._root
+        while len(nodes) != self._length:
+            if not curr.right and not curr.left and not curr.parent:
+                nodes.append(curr)
+            elif curr.left and curr.left not in nodes:
+                curr = curr.left
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            else:
+                nodes.append(curr)
+                curr = curr.parent
+        for node in nodes:
+            yield node.val
+
+    def breadth_first(self):
+        """Return generator that returns values from BST 'breadth first'."""
+        nodes = []
+        curr_index = 0
+        nodes.append(self._root)
+        while len(nodes) != self._length:
+            if nodes[curr_index].left:
+                nodes.append(nodes[curr_index].left)
+            if nodes[curr_index].right:
+                nodes.append(nodes[curr_index].right)
+            curr_index += 1
+        for node in nodes:
+            yield node.val
+
 
 class Node(object):
-    """Create a node for the Binary Search Tree."""
+    """Create a node to add to the Binary Search Tree."""
 
     def __init__(self, val, left=None, right=None):
         """Initialize a new node."""

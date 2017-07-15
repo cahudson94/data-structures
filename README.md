@@ -210,3 +210,15 @@ All modules and tests located in src directory.
     ### balance:
         - returns the balance
         - difference between left and right depth
+    ### pre_order:
+        - returns the pre order traversal of the tree
+        - returns as generator
+    ### in_order:
+        - returns the in order traversal of the tree
+        - returns as generator
+    ### post_order:
+        - returns the post order traversal of the tree
+        - returns as generator
+    ### breadth_first:
+        - returns the breadth first traversal of the tree
+        - returns as generator

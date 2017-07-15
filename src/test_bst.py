@@ -171,7 +171,7 @@ def test_three_node_bst_correct_size(three_node_bst):
 
 def test_three_node_bst_correct_balance(three_node_bst_with_list):
     """Test three node BST returns correct balance."""
-    assert three_node_bst_with_list.balance() == -1
+    assert three_node_bst_with_list.balance() == 0
 
 
 def test_three_node_bst_correct_depth(three_node_bst):
@@ -203,7 +203,7 @@ def test_five_node_bst_correct_size(five_node_bst_with_tuple):
 
 def test_five_node_bst_correct_balance(five_node_bst_by_insert):
     """Test the balance of a 5 node BST."""
-    assert five_node_bst_by_insert.balance() == -2
+    assert five_node_bst_by_insert.balance() == -1
 
 
 def test_five_node_bst_correct_depth(five_node_bst_with_tuple):
@@ -235,7 +235,7 @@ def test_ten_node_bst_correct_size(ten_node_bst_with_list):
 
 def test_ten_node_bst_correct_balance(ten_node_bst_with_list):
     """Test the balance of ten node BST."""
-    assert ten_node_bst_with_list.balance() == -3
+    assert ten_node_bst_with_list.balance() == 0
 
 
 def test_ten_node_bst_correct_depth(ten_node_bst_with_list):
@@ -281,7 +281,7 @@ def test_insert_with_list_raises_type_error(one_node_bst):
 
 def test_blance_and_depth_of_wonky_bst(wonky_bst):
     """Test the balance of the wonky bst."""
-    assert wonky_bst.balance() == -8
+    assert wonky_bst.balance() == -4
     assert wonky_bst.depth() == 9
 
 

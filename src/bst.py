@@ -9,6 +9,8 @@ class BST(object):
         """Initialize Binary Search tree."""
         self._root = None
         self._length = 0
+        self._rdepth = 0
+        self._ldepth = 0
         self._depth = 0
         self._balance = 0
         if type(iterable) in [tuple, list]:
@@ -28,67 +30,50 @@ Try again with only numbers in your list or tuple.''')
         if type(val) not in [int, float]:
             raise TypeError('You can only add numbers to this tree.')
         curr = self._root
-        path = []
         iteration = 0
-        left = False
         right = False
-        bal_chg = False
+        rdepth = 0
+        ldepth = 0
+        new_node = False
         if curr is None:
             curr = Node(val)
             self._root = curr
-            self._length += 1
-            path.append(curr)
-            if len(path) > self._depth:
-                self._depth = len(path)
+            self._length = 1
+            self._depth = 1
             return
-        path.append(curr)
         while True:
-            if val == curr.val:
-                return
-            elif val < curr.val:
-                if curr.left:
-                    path.append(curr)
-                    curr = curr.left
-                    if iteration == 0:
-                        left = True
+            if val < curr.val:
+                if iteration == 0:
                         iteration += 1
+                if curr.left:
+                    curr = curr.left
                 else:
                     curr.left = Node(val)
-                    self._length += 1
-                    path.append(curr.left)
-                    if len(path) > self._depth:
-                        self._depth = len(path)
-                        bal_chg = True
-                    if iteration == 0:
-                        left = True
-                        iteration += 1
-                    if left and bal_chg:
-                        self._balance -= 1
-                    if right and bal_chg:
-                        self._balance += 1
-                    return
+                    new_node = True
             elif val > curr.val:
-                if curr.right:
-                    path.append(curr)
-                    curr = curr.right
-                    if iteration == 0:
+                if iteration == 0:
                         right = True
                         iteration += 1
+                if curr.right:
+                    curr = curr.right
                 else:
                     curr.right = Node(val)
-                    self._length += 1
-                    path.append(curr.right)
-                    if len(path) > self._depth:
-                        self._depth = len(path)
-                        bal_chg = True
-                    if iteration == 0:
-                        right = True
-                        iteration += 1
-                    if left and bal_chg:
-                        self._balance -= 1
-                    if right and bal_chg:
-                        self._balance += 1
-                    return
+                    new_node = True
+            else:
+                return
+            if right:
+                rdepth += 1
+            else:
+                ldepth += 1
+            if new_node:
+                self._length += 1
+                if ldepth > self._ldepth:
+                    self._ldepth = ldepth
+                if rdepth > self._rdepth:
+                    self._rdepth = rdepth
+                self._depth = max(self._rdepth, self._ldepth) + 1
+                self._balance = self._rdepth - self._ldepth
+                return
 
     def search(self, val):
         """Find the node at val in Binary Search Tree."""

@@ -79,17 +79,15 @@ Try again with only numbers in your list or tuple.''')
         elif to_del.left:
             if to_del.parent.left == to_del:
                 to_del.parent.left = to_del.left
-                to_del.left.parent = to_del.parent
             else:
                 to_del.parent.right = to_del.left
-                to_del.left.parent = to_del.parent
+            to_del.left.parent = to_del.parent
         elif to_del.right:
             if to_del.parent.left == to_del:
                 to_del.parent.left = to_del.right
-                to_del.right.parent = to_del.parent
             else:
                 to_del.parent.right = to_del.right
-                to_del.right.parent = to_del.parent
+            to_del.right.parent = to_del.parent
         else:
             self._del_leaf(to_del)
         self._bal_and_rotate(par_for_bal.left or
@@ -132,24 +130,16 @@ Try again with only numbers in your list or tuple.''')
         while len(nodes) != self._length:
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
+            elif curr.left and curr.left not in nodes:
                 curr = curr.left
-            elif not curr.left and curr not in nodes:
+            elif curr not in nodes:
                 nodes.append(curr)
-                if not curr.right:
+                if curr.right and curr.right not in nodes:
+                    curr = curr.right
+                else:
                     curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
-            elif curr.right and curr.right not in nodes:
-                if curr not in nodes:
-                    nodes.append(curr)
-                curr = curr.right
-            elif not curr.right:
-                curr = curr.parent
             else:
                 curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
         for node in nodes:
             yield node.val
 
@@ -176,28 +166,13 @@ Try again with only numbers in your list or tuple.''')
         while len(nodes) != self._length:
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
+            elif curr.left and curr.left not in nodes:
                 curr = curr.left
-            elif not curr.left and not curr.right and curr not in nodes:
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            else:
                 nodes.append(curr)
                 curr = curr.parent
-                while curr != self._root:
-                    if curr.left and curr.left not in nodes:
-                        curr = curr.left
-                        break
-                    elif curr.right and curr.right not in nodes:
-                        curr = curr.right
-                    elif curr.right:
-                        nodes.append(curr)
-                        curr = curr.parent
-                        if curr == self._root and (len(nodes) ==
-                                                   self._length - 1):
-                            nodes.append(curr)
-                    else:
-                        nodes.append(curr)
-                        curr = curr.parent
-            elif curr.right:
-                curr = curr.right
         for node in nodes:
             yield node.val
 
@@ -235,18 +210,15 @@ Try again with only numbers in your list or tuple.''')
                 self._depth = max([self._rdepth, self._ldepth]) + 1
             elif auto_bal[2] == -2 and auto_bal[3] in [-1, 0]:
                 self._rotate_right(auto_bal[0])
-                curr = auto_bal[0]
             elif auto_bal[2] == 2 and auto_bal[3] in [1, 0]:
                 self._rotate_left(auto_bal[0])
-                curr = auto_bal[0]
             elif auto_bal[2] == -2 and auto_bal[3] == 1:
                 self._rotate_left(auto_bal[1])
                 self._rotate_right(auto_bal[0])
-                curr = auto_bal[0]
             elif auto_bal[2] == 2 and auto_bal[3] == -1:
                 self._rotate_right(auto_bal[1])
                 self._rotate_left(auto_bal[0])
-                curr = auto_bal[0]
+            curr = auto_bal[0]
         return
 
     def _check_bal(self, par_node, child):
@@ -373,13 +345,11 @@ Try again with only numbers in your list or tuple.''')
             curr.right = node.right
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
+            curr.parent = node.parent
             if curr.right:
                 curr.right.parent = curr
 
@@ -396,13 +366,11 @@ Try again with only numbers in your list or tuple.''')
             curr.left = node.left
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
+            curr.parent = node.parent
             if curr.left:
                 curr.left.parent = curr
 
@@ -411,11 +379,8 @@ Try again with only numbers in your list or tuple.''')
         to_del = self.search(val)
         if self._length == 1:
             self._root = None
-            self._length = 0
             self._depth = 0
-            return
         elif self._length == 2:
-            self._length -= 1
             if to_del == self._root and to_del.right:
                 self._root = to_del.right
                 self._root.parent = None
@@ -428,9 +393,7 @@ Try again with only numbers in your list or tuple.''')
             self._ldepth = 0
             self._depth = 1
             self._balance = 0
-            return
         else:
-            self._length -= 1
             if to_del == self._root:
                 to_del.left.parent = None
                 self._root = to_del.left
@@ -450,6 +413,7 @@ Try again with only numbers in your list or tuple.''')
                     self._balance = -1
                 self._del_leaf(to_del)
             self._depth = 2
+        self._length -= 1
 
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""

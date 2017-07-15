@@ -2,6 +2,7 @@
 import pytest
 from bst import BST
 from bst import Node
+import random
 
 
 @pytest.fixture
@@ -80,6 +81,15 @@ def ten_node_bst_with_list():
     """A BST initialized with ten nodes from list."""
     ten_node = BST([10, 7, 12, 4, 9, 23, 2, 5, 17, 50])
     return ten_node
+
+
+@pytest.fixture
+def huge_random_bst():
+    """A large BST with a random list."""
+    a = [i for i in range(200)]
+    random.shuffle(a)
+    b = BST(a)
+    return b
 
 
 def test_empty_bst_features(empty_bst):
@@ -672,3 +682,13 @@ def test_delete_left_side_leaf_small():
     b.delete(1)
     assert b._root.left is None
     assert b.size() == 2
+
+
+def test_proper_deletion_from_a_large_tree(huge_random_bst):
+    """Test deletion of rnadom nodes in a large tree."""
+    b = huge_random_bst
+    a = [i for i in range(200)]
+    random.shuffle(a)
+    for i in range(20):
+        b.delete(a[i])
+    assert b.size() == 180

@@ -103,12 +103,12 @@ class TrieTree(object):
                 return
         return curr
 
-    # def _find_all_paths(self, path, children):
-    #     """Find all characters under the path."""
-    #     curr = path[children[0]]
-    #     sub_trees = {}
-    #     curr_path = []
-    #     return_chars = []
-    #     while None not in curr.keys():
-    #         return_chars.append(children[0])
-    #         children.remove(children[0])
+    def _find_all_paths(self, path, children):
+        """Find all characters under the path."""
+        curr = path[children[0]]
+        sub_trees = {}
+        curr_path = []
+        return_chars = []
+        while None not in curr.keys():
+            return_chars.append(children[0])
+            children.remove(children[0])

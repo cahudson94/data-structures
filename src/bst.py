@@ -60,18 +60,29 @@ Try again with only numbers in your list or tuple.''')
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
+        if self._length == 1:
+            self._root = None
+            self._length = 0
+            self._depth = 0
+            return
         to_del = self.search(val)
         if to_del is None:
             return None
         if to_del != self._root:
             par_for_bal = to_del.parent
-        self._length -= 1
         if to_del == self._root:
-            self._root_shift(to_del, self._balance)
+            if to_del.left and to_del.right:
+                self._root_shift(to_del, self._balance)
+            elif to_del.left:
+                self._root = to_del.left
+                to_del.left.parent = None
+            else:
+                self._root = to_del.right
+                to_del.right.parent = None
             par_for_bal = self._root
         elif to_del.left and to_del.right:
-            sub_tree = self._tree_depth(to_del)
-            sub_balance = sub_tree[0] - sub_tree[1]
+            sub_depth = self._tree_depth(to_del)
+            sub_balance = sub_depth[0] - sub_depth[1]
             self._root_shift(to_del, sub_balance)
         elif to_del.left:
             if to_del.parent.left == to_del:
@@ -87,6 +98,7 @@ Try again with only numbers in your list or tuple.''')
             to_del.right.parent = to_del.parent
         else:
             self._del_leaf(to_del)
+        self._length -= 1
         self._bal_and_rotate(par_for_bal.left or
                              par_for_bal.right or
                              par_for_bal)

@@ -248,3 +248,12 @@ All modules and tests located in src directory.
     ### depth_traversal:
         - O(n^2)
         - return as a generator every word that has the given prefix
+
+
+## Bubble Sort
+- module: bubble_sort.py
+- test: test_bubble_sort.py
+- public methods:
+    ### bubble_sort:
+        - sort the input list.
+        - if more then one type of input is given return error message.

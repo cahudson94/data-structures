@@ -37,9 +37,9 @@ Try again with only numbers in your list or tuple.''')
             self._depth = 1
             return
         while True:
-            if val == curr.val:
-                return
-            elif val < curr.val:
+            if val < curr.val:
+                if iteration == 0:
+                        iteration += 1
                 if curr.left:
                     curr = curr.left
                 else:
@@ -222,10 +222,9 @@ Try again with only numbers in your list or tuple.''')
 class Node(object):
     """Create a node to add to the Binary Search Tree."""
 
-    def __init__(self, val, parent=None, left=None, right=None):
+    def __init__(self, val, left=None, right=None):
         """Initialize a new node."""
         self.val = val
-        self.parent = parent
         self.left = left
         self.right = right
 

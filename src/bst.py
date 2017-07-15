@@ -92,17 +92,15 @@ Try again with only numbers in your list or tuple.''')
         elif to_del.left:
             if to_del.parent.left == to_del:
                 to_del.parent.left = to_del.left
-                to_del.left.parent = to_del.parent
             else:
                 to_del.parent.right = to_del.left
-                to_del.left.parent = to_del.parent
+            to_del.left.parent = to_del.parent
         elif to_del.right:
             if to_del.parent.left == to_del:
                 to_del.parent.left = to_del.right
-                to_del.right.parent = to_del.parent
             else:
                 to_del.parent.right = to_del.right
-                to_del.right.parent = to_del.parent
+            to_del.right.parent = to_del.parent
         else:
             self._del_leaf(to_del)
         self._length -= 1
@@ -174,13 +172,11 @@ Try again with only numbers in your list or tuple.''')
             curr.right = node.right
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
+            curr.parent = node.parent
             if curr.right:
                 curr.right.parent = curr
 
@@ -197,13 +193,11 @@ Try again with only numbers in your list or tuple.''')
             curr.left = node.left
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
+            curr.parent = node.parent
             if curr.left:
                 curr.left.parent = curr
 

@@ -19,6 +19,24 @@ def one_node_bst():
 
 
 @pytest.fixture
+def two_node_right_bst():
+    """Two node BST to the right."""
+    two = BST()
+    two.insert(0)
+    two.insert(1)
+    return two
+
+
+@pytest.fixture
+def two_node_left_bst():
+    """Two node BST to the left."""
+    two = BST()
+    two.insert(1)
+    two.insert(0)
+    return two
+
+
+@pytest.fixture
 def three_node_bst():
     """A BST initialized with three nodes."""
     three_node = BST()
@@ -294,11 +312,10 @@ def test_in_order_traversal_five_node(five_node_bst_with_tuple):
     Uses 'in order' order.
     """
     five = five_node_bst_with_tuple.in_order()
-    assert next(five) == 4
-    assert next(five) == 6
-    assert next(five) == 6.5
-    assert next(five) == 7
-    assert next(five) == 8
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [4, 6, 6.5, 7, 8]
 
 
 def test_in_order_traversal_ten_node(ten_node_bst_with_list):
@@ -307,16 +324,10 @@ def test_in_order_traversal_ten_node(ten_node_bst_with_list):
     Uses 'in order' order.
     """
     ten = ten_node_bst_with_list.in_order()
-    assert next(ten) == 2
-    assert next(ten) == 4
-    assert next(ten) == 5
-    assert next(ten) == 7
-    assert next(ten) == 9
-    assert next(ten) == 10
-    assert next(ten) == 12
-    assert next(ten) == 17
-    assert next(ten) == 23
-    assert next(ten) == 50
+    gen = []
+    for i in range(10):
+        gen.append(next(ten))
+    assert gen == [2, 4, 5, 7, 9, 10, 12, 17, 23, 50]
 
 
 def test_pre_order_traversal_one_node(one_node_bst):
@@ -334,11 +345,10 @@ def test_pre_order_traversal_five_node(five_node_bst_with_tuple):
     Uses 'pre order' order.
     """
     five = five_node_bst_with_tuple.pre_order()
-    assert next(five) == 6
-    assert next(five) == 4
-    assert next(five) == 8
-    assert next(five) == 7
-    assert next(five) == 6.5
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [6, 4, 8, 7, 6.5]
 
 
 def test_pre_order_traversal_ten_node(ten_node_bst_with_list):
@@ -347,16 +357,10 @@ def test_pre_order_traversal_ten_node(ten_node_bst_with_list):
     Uses 'pre order' order.
     """
     ten = ten_node_bst_with_list.pre_order()
-    assert next(ten) == 10
-    assert next(ten) == 7
-    assert next(ten) == 4
-    assert next(ten) == 2
-    assert next(ten) == 5
-    assert next(ten) == 9
-    assert next(ten) == 12
-    assert next(ten) == 23
-    assert next(ten) == 17
-    assert next(ten) == 50
+    gen = []
+    for i in range(10):
+        gen.append(next(ten))
+    assert gen == [10, 7, 4, 2, 5, 9, 12, 23, 17, 50]
 
 
 def test_post_order_traversal_one_node(one_node_bst):
@@ -374,11 +378,10 @@ def test_post_order_traversal_five_node(five_node_bst_with_tuple):
     Uses 'post order' order.
     """
     five = five_node_bst_with_tuple.post_order()
-    assert next(five) == 4
-    assert next(five) == 6.5
-    assert next(five) == 7
-    assert next(five) == 8
-    assert next(five) == 6
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [4, 6.5, 7, 8, 6]
 
 
 def test_post_order_traversal_ten_node(ten_node_bst_with_list):
@@ -387,16 +390,10 @@ def test_post_order_traversal_ten_node(ten_node_bst_with_list):
     Uses 'post order' order.
     """
     ten = ten_node_bst_with_list.post_order()
-    assert next(ten) == 2
-    assert next(ten) == 5
-    assert next(ten) == 4
-    assert next(ten) == 9
-    assert next(ten) == 7
-    assert next(ten) == 17
-    assert next(ten) == 50
-    assert next(ten) == 23
-    assert next(ten) == 12
-    assert next(ten) == 10
+    gen = []
+    for i in range(10):
+        gen.append(next(ten))
+    assert gen == [2, 5, 4, 9, 7, 17, 50, 23, 12, 10]
 
 
 def test_breadth_first_traversal_one_node(one_node_bst):
@@ -414,11 +411,10 @@ def test_breadth_first_traversal_five_node(five_node_bst_with_tuple):
     Uses breadth first order.
     """
     five = five_node_bst_with_tuple.breadth_first()
-    assert next(five) == 6
-    assert next(five) == 4
-    assert next(five) == 8
-    assert next(five) == 7
-    assert next(five) == 6.5
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [6, 4, 8, 7, 6.5]
 
 
 def test_breadth_first_traversal_ten_node(ten_node_bst_with_list):
@@ -427,26 +423,118 @@ def test_breadth_first_traversal_ten_node(ten_node_bst_with_list):
     Uses breadth first order.
     """
     ten = ten_node_bst_with_list.breadth_first()
-    assert next(ten) == 10
-    assert next(ten) == 7
-    assert next(ten) == 12
-    assert next(ten) == 4
-    assert next(ten) == 9
-    assert next(ten) == 23
-    assert next(ten) == 2
-    assert next(ten) == 5
-    assert next(ten) == 17
-    assert next(ten) == 50
+    gen = []
+    for i in range(10):
+        gen.append(next(ten))
+    assert gen == [10, 7, 12, 4, 9, 23, 2, 5, 17, 50]
 
 
 def test_post_order_edge_case(five_node_edge_case):
-    """Test to left child of right child bubble up edge case."""
+    """Test to left only tree traversal edge case post order."""
     five = five_node_edge_case.post_order()
-    assert next(five) == 2
-    assert next(five) == 4
-    assert next(five) == 5
-    assert next(five) == 3
-    assert next(five) == 6
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [2, 4, 5, 3, 6]
+
+
+def test_breadth_first_edge_case(five_node_edge_case):
+    """Test to left only tree traversal edge case breadth first."""
+    five = five_node_edge_case.breadth_first()
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [6, 3, 2, 5, 4]
+
+
+def test_in_order_edge_case(five_node_edge_case):
+    """Test to left only tree traversal edge case in order."""
+    five = five_node_edge_case.in_order()
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [2, 3, 4, 5, 6]
+
+
+def test_pre_order_edge_case(five_node_edge_case):
+    """Test to left only tree traversal edge case pre order."""
+    five = five_node_edge_case.pre_order()
+    gen = []
+    for i in range(5):
+        gen.append(next(five))
+    assert gen == [6, 3, 2, 5, 4]
+
+
+def test_two_node_post_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via post order."""
+    two = two_node_right_bst.post_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
+
+
+def test_two_node_post_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via post order."""
+    two = two_node_left_bst.post_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_pre_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via pre order."""
+    two = two_node_right_bst.pre_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_pre_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via pre order."""
+    two = two_node_left_bst.pre_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
+
+
+def test_two_node_in_order_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via in order."""
+    two = two_node_right_bst.in_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_in_order_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via in order."""
+    two = two_node_left_bst.in_order()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_breadth_first_right(two_node_right_bst):
+    """Test for traversal of a two node right BST via breadth first."""
+    two = two_node_right_bst.breadth_first()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [0, 1]
+
+
+def test_two_node_breadth_first_left(two_node_left_bst):
+    """Test for traversal of a two node left BST via breadth first."""
+    two = two_node_left_bst.breadth_first()
+    gen = []
+    for i in range(2):
+        gen.append(next(two))
+    assert gen == [1, 0]
 
 
 def test_on_empty_bst_delete_returns_none(empty_bst):

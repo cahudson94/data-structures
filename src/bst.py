@@ -112,7 +112,7 @@ Try again with only numbers in your list or tuple.''')
 
 
 class Node(object):
-    """Create a node to add to the Binary Search Tree."""
+    """Create a node for the Binary Search Tree."""
 
     def __init__(self, val, left=None, right=None):
         """Initialize a new node."""

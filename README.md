@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/CaHudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures) [![Coverage Status](https://coveralls.io/repos/github/CaHudson94/data-structures/badge.svg?branch=master)](https://coveralls.io/github/CaHudson94/data-structures?branch=master)
+[![Build Status](https://travis-ci.org/cahudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures) [![Coverage Status](https://coveralls.io/repos/github/cahudson94/data-structures/badge.svg?branch=master)](https://coveralls.io/github/CaHudson94/data-structures?branch=master)
 
 # Data Structures
 Authors: Morgan Nomura, Chris Hudson, Carlos Cadena
@@ -196,7 +196,10 @@ All modules and tests located in src directory.
 - public methods:
     ### insert:
         - add a new node to the BST
-        - iterates tracked variables
+        - incriments tracked variables
+    ### delete:
+        - delete a node from the BST
+        - decriments tracked variables
     ### search:
         - return the node for the value
         - if not in the BST returns None

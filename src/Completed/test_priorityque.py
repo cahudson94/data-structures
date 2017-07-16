@@ -198,4 +198,5 @@ def test_pop_one(build_one_item_pq):
 
 def test_pop_empty(build_empty_pq):
     """Pop empty list."""
-    assert build_empty_pq.pop() is None
+    with pytest.raises(IndexError):
+        build_empty_pq.pop()

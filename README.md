@@ -196,7 +196,10 @@ All modules and tests located in src directory.
 - public methods:
     ### insert:
         - add a new node to the BST
-        - iterates tracked variables
+        - incriments tracked variables
+    ### delete:
+        - delete a node from the BST
+        - decriments tracked variables
     ### search:
         - return the node for the value
         - if not in the BST returns None

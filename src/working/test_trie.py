@@ -126,13 +126,23 @@ def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
     twwo = twelve_word_trie_with_some_overlap
     twwo.remove('Seattle')
     assert twwo.size() == 11
-    assert twwo.contains('seattle') is False
+    assert twwo.contains('Seattle') is False
     twwo.remove('dagger')
     assert twwo.size() == 10
     assert twwo.contains('dagger') is False
-    twwo.remove('garden')
+    twwo.remove('gardener')
     assert twwo.size() == 9
+    assert twwo.contains('gardener') is False
+    assert twwo.contains('garden') is True
+
+
+def test_remove_of_parent_word(twelve_word_trie_with_some_overlap):
+    """Test that removing a parent word leaves the child."""
+    twwo = twelve_word_trie_with_some_overlap
+    twwo.remove('garden')
+    assert twwo.size() == 11
     assert twwo.contains('garden') is False
+    assert twwo.contains('gardener') is True
 
 
 def test_contains_case_sensative(twelve_word_trie_with_some_overlap):

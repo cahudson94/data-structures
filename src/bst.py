@@ -55,6 +55,8 @@ Try again with only numbers in your list or tuple.''')
                     self._length += 1
                     self._depth_and_bal(self._root)
                     return
+            else:
+                return
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""

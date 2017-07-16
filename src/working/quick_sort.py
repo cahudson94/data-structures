@@ -1,8 +1,8 @@
-"""Merge sort data structure."""
+"""Quick sort data structure."""
 
 
 def quicksort(data):
-    """Sorting algorithm for merg sort."""
+    """Sorting algorithm for quick sort."""
     try:
         if len(data) > 1:
             mid = data[0]
@@ -10,6 +10,9 @@ def quicksort(data):
             right = []
 
             for item in data[1:]:
+                # This slows it down by almost a second but covers 2.7
+                if not isinstance(item, type(mid)):
+                    raise TypeError
                 if item >= mid:
                     right.append(item)
                 else:
@@ -44,21 +47,22 @@ def quicksort(data):
 if __name__ == '__main__':  # pragma: no cover
     from timeit import Timer
     best = Timer(
-        'mergesort([x for x in range(100)])',
-        "from __main__ import mergesort"
+        'quicksort([x for x in range(100)])',
+        "from __main__ import quicksort"
     )
     worst = Timer(
-        'mergesort([x for x in range(100)][::-1])',
-        "from __main__ import mergesort; from random import randint"
+        'quicksort([x for x in range(100)][::-1])',
+        "from __main__ import quicksort"
     )
     random = Timer(
-        'mergesort([randint(0, 1000) for x in range(100)][::-1])',
-        "from __main__ import mergesort; from random import randint"
+        'quicksort([randint(0, 1000) for x in range(100)][::-1])',
+        "from __main__ import quicksort; from random import randint"
     )
     print("""
-Merge sort is a simple sorting algorithm that repeatedly steps through
-the list to be sorted, compares each pair of adjacent items and swaps
-them if they are in the wrong order.
+Quick sort is a sorting algorithm that repeatedly breaks the list of
+items to be sorted in half till you have a pair. Then compares each
+pair of items and swaps them if they are in the wrong order.
+Then works back up to the main list.
 """)
     print("#================= best case search 10000x ==============#")
     print(best.timeit(number=1000))

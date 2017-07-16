@@ -1,4 +1,9 @@
 """Radix sort method."""
+from random import randint
+
+random_0_to_9 = [randint(0, 9) for x in range(100)]
+revers_in_order = [x for x in range(100)][::-1]
+random_large = [randint(0, 100000) for x in range(100)][::-1]
 
 
 def radix(data):
@@ -8,6 +13,8 @@ def radix(data):
         longest = 0
 
         for x in data:
+            if not isinstance(x, int):
+                    raise TypeError
             if len(str(x)) > longest:
                 longest = len(str(x))
 
@@ -18,8 +25,6 @@ def radix(data):
                     buckets[int(str(x)[idx])].append(x)
                 except IndexError:
                     buckets[0].append(x)
-                except ValueError:
-                    raise TypeError()
             idx -= 1
             sorted_data = []
             for i in range(10):
@@ -31,19 +36,19 @@ def radix(data):
         return 'This sorting method sorts only one data type.'
 
 
-f __name__ == '__main__':  # pragma: no cover
+if __name__ == '__main__':  # pragma: no cover
     from timeit import Timer
     best = Timer(
-        'radix([x for x in range(100)])',
-        "from __main__ import radix"
+        'radix(random_0_to_9)',
+        "from __main__ import radix; from __main__ import random_0_to_9"
     )
     worst = Timer(
-        'radix([x for x in range(100)][::-1])',
-        "from __main__ import radix; from random import randint"
+        'radix(revers_in_order)',
+        "from __main__ import radix; from __main__ import revers_in_order"
     )
     random = Timer(
-        'radix([randint(0, 1000) for x in range(100)][::-1])',
-        "from __main__ import radix; from random import randint"
+        'radix(random_large)',
+        "from __main__ import radix; from __main__ import random_large"
     )
     print("""
 Radix sort is a simple sorting algorithm that repeatedly steps through

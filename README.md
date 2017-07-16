@@ -271,3 +271,12 @@ All modules and tests located in src directory.
     ### insert_sort:
         - sort the input list.
         - if more then one type of input is given return error message.
+
+
+## Merge Sort
+- module: merge_sort.py
+- test: test_merge_sort.py
+- public methods:
+    ### merge_sort:
+        - sort the input list.
+        - if more then one type of input is given return error message.

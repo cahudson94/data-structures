@@ -7,6 +7,8 @@ def insert_sort(data):
         idx = 0
         count = 1
         for x in data[1:]:
+            if not isinstance(x, type(data[idx])):
+                    raise TypeError()
             while x < data[idx]:
                 data[idx], data[idx + 1] = data[idx + 1], data[idx]
                 if idx:

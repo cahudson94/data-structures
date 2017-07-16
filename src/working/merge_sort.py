@@ -17,6 +17,10 @@ def mergesort(data):
             ri = 0
 
             while len(left) > li and len(right) > ri:
+                if not isinstance(left[li], int):
+                    raise TypeError()
+                if not isinstance(right[ri], int):
+                    raise TypeError()
                 if left[li] < right[ri]:
                     data[di] = left[li]
                     li += 1
@@ -38,7 +42,8 @@ def mergesort(data):
         return data
 
     except TypeError:
-        return 'This sort method only accepts values of one type in a list.'
+        return 'This sort method only accepts values of one \
+type in a list.'
 
 
 if __name__ == '__main__':  # pragma: no cover

@@ -12,7 +12,7 @@ setup(
     author='Chris Hudson, Carlos Cadena',
     author_email='c.ahudson84@yahoo.com, cs.cadena@gmail.com',
     license='MIT',
-    py_modules=['trie', 'bubble_sort', ],
+    py_modules=['trie', 'bubble_sort', 'insert_sort'],
     package_dir={'': 'src/working'},
     install_requires=[],
     extras_require=extra_packages,

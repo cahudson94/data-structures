@@ -252,9 +252,6 @@ All modules and tests located in src directory.
         - raise an error if the input is not a string
     ### depth_traversal:
         - O(n^2)
-<<<<<<< HEAD
-        - return as a generator every word that has the given prefix
-=======
         - return as a generator every word that has the given prefix
 
 
@@ -265,4 +262,12 @@ All modules and tests located in src directory.
     ### bubble_sort:
         - sort the input list.
         - if more then one type of input is given return error message.
->>>>>>> bubble_sort
+
+
+## Insert Sort
+- module: insert_sort.py
+- test: test_insert_sort.py
+- public methods:
+    ### insert_sort:
+        - sort the input list.
+        - if more then one type of input is given return error message.

@@ -130,9 +130,19 @@ def test_remove_multiple_words(twelve_word_trie_with_some_overlap):
     twwo.remove('dagger')
     assert twwo.size() == 10
     assert twwo.contains('dagger') is False
-    twwo.remove('garden')
+    twwo.remove('gardener')
     assert twwo.size() == 9
+    assert twwo.contains('gardener') is False
+    assert twwo.contains('garden') is True
+
+
+def test_remove_of_parent_word(twelve_word_trie_with_some_overlap):
+    """Test that removing a parent word leaves the child."""
+    twwo = twelve_word_trie_with_some_overlap
+    twwo.remove('garden')
+    assert twwo.size() == 11
     assert twwo.contains('garden') is False
+    assert twwo.contains('gardener') is True
 
 
 def test_contains_case_sensative(twelve_word_trie_with_some_overlap):
@@ -173,17 +183,12 @@ def test_non_string_contains(empty_trie):
 def test_depth_traversal_from_root(twelve_word_trie_with_some_overlap):
     """Test full word depth traversal of twelve word tree."""
     twwo = twelve_word_trie_with_some_overlap.depth_traversal('b')
-    assert next(twwo) == 'b'
-    assert next(twwo) == 'o'
-    assert next(twwo) == 't'
-    assert next(twwo) == 't'
-    assert next(twwo) == 'l'
-    assert next(twwo) == 'e'
-    assert next(twwo) == 'a'
-    assert next(twwo) == 't'
-    assert next(twwo) == 't'
-    assert next(twwo) == 'l'
-    assert next(twwo) == 'e'
+    output = []
+    for i in range(11):
+        output.append(next(twwo))
+    expected = ['b', 'o', 't', 't', 'l', 'e', 'a', 't', 't', 'l', 'e']
+    for i in output:
+        assert i in expected
 
 
 def test_depth_traversal_from_deeper_node(six_word_trie_with_some_overlap):
@@ -192,13 +197,10 @@ def test_depth_traversal_from_deeper_node(six_word_trie_with_some_overlap):
     six.insert('carpenter')
     six.insert('carp')
     six = six.depth_traversal('carp')
-    assert next(six) == 'carp'
-    assert next(six) == 'e'
-    assert next(six) == 't'
-    assert next(six) == 'n'
-    assert next(six) == 't'
-    assert next(six) == 'e'
-    assert next(six) == 'r'
+    output = [next(six) for i in range(7)]
+    expected = ['carp', 'e', 't', 'n', 't', 'e', 'r']
+    for i in output:
+        assert i in expected
 
 
 def test_depth_traversal_non_prefix(six_word_trie_with_some_overlap):

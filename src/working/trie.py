@@ -13,16 +13,11 @@ class TrieTree(object):
         """Insert a string into the Tree."""
         if type(string) != str:
             raise TypeError('This tree only contains strings.')
-        if len(string) < 1:
-            raise ValueError('You must give at least one character.')
         if self.contains(string):
             raise ValueError('This string is already in the tree.')
         curr = self._root
         for char in string[:-1]:
-            if curr is None:
-                curr[char] = {}
-                curr = curr[char]
-            elif char in curr.keys():
+            if char in curr.keys():
                 curr = curr[char]
             else:
                 curr[char] = {}
@@ -42,9 +37,7 @@ class TrieTree(object):
         curr = self._root
         idx = 0
         for char in string:
-            if curr is None:
-                return False
-            elif char in curr.keys():
+            if char in curr.keys():
                 curr = curr[char]
                 idx += 1
             else:
@@ -96,18 +89,15 @@ class TrieTree(object):
             yield string
 
     def _clean_up(self, curr, path):
-        """Find all nodes at a depth and return as dict with their values."""
-        start = curr
+        """Clean up the nodes from deletion."""
         path_head = path[0]
         while len(curr) == 1:
             curr = self._root
-            for char in path:
-                prev = curr
+            for i, char in enumerate(path):
+                prev = path[i - 1]
                 curr = curr[char]
             path = path[:-1]
-        if curr == start:
-            curr.pop(None)
-        elif curr == self._root:
+        if curr == self._root:
             curr.pop(path_head)
         else:
             curr.pop(prev)

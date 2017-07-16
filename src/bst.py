@@ -55,11 +55,52 @@ Try again with only numbers in your list or tuple.''')
                     self._length += 1
                     self._depth_and_bal(self._root)
                     return
+
+    def delete(self, val):
+        """Delete the node with value from the Binary Search Tree."""
+        if self._length == 1:
+            self._root = None
+            self._length = 0
+            self._depth = 0
+            return
+        to_del = self.search(val)
+        if to_del is None:
+            return None
+        if to_del == self._root:
+            if to_del.left and to_del.right:
+                self._root_shift(to_del, self._balance)
+            elif to_del.left:
+                self._root = to_del.left
+                to_del.left.parent = None
             else:
-                return
+                self._root = to_del.right
+                to_del.right.parent = None
+        elif to_del.left and to_del.right:
+            sub_depth = self._tree_depth(to_del)
+            sub_balance = sub_depth[0] - sub_depth[1]
+            self._root_shift(to_del, sub_balance)
+        elif to_del.left:
+            if to_del.parent.left == to_del:
+                to_del.parent.left = to_del.left
+            else:
+                to_del.parent.right = to_del.left
+            to_del.left.parent = to_del.parent
+        elif to_del.right:
+            if to_del.parent.left == to_del:
+                to_del.parent.left = to_del.right
+            else:
+                to_del.parent.right = to_del.right
+            to_del.right.parent = to_del.parent
+        else:
+            self._del_leaf(to_del)
+        self._length -= 1
+        self._depth_and_bal(self._root)
+        return
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
+        if self._length == 1:
+            return (0, 0)
         lside = {}
         rside = {}
         on_right = False
@@ -107,6 +148,61 @@ Try again with only numbers in your list or tuple.''')
                         return (max(rside.values()), 0)
                     else:
                         return (0, max(lside.values()))
+
+    def _root_shift(self, node, balance):
+        """Delete the root of the tree or sub trees."""
+        if balance > 0:
+            curr = node.left
+            while curr.right:
+                curr = curr.right
+            if curr != node.left:
+                if curr.left:
+                    curr.left.parent = curr.parent
+                curr.parent.right = curr.left
+                curr.left = node.left
+                curr.left.parent = curr
+            curr.right = node.right
+            if node == self._root:
+                self._root = curr
+            elif node == node.parent.left:
+                node.parent.left = curr
+            elif node == node.parent.right:
+                node.parent.right = curr
+            curr.parent = node.parent
+            if curr.right:
+                curr.right.parent = curr
+
+        else:
+            curr = node.right
+            while curr.left:
+                curr = curr.left
+            if curr != node.right:
+                if curr.right:
+                    curr.right.parent = curr.parent
+                curr.parent.left = curr.right
+                curr.right = node.right
+                curr.right.parent = curr
+            curr.left = node.left
+            if node == self._root:
+                self._root = curr
+            elif node == node.parent.left:
+                node.parent.left = curr
+            elif node == node.parent.right:
+                node.parent.right = curr
+            curr.parent = node.parent
+            if curr.left:
+                curr.left.parent = curr
+
+    def _del_leaf(self, node):
+        """If the node being deleted is a leaf."""
+        par = node.parent
+        if node == par.left:
+            par.left = None
+            node.parent = None
+            return
+        par.right = None
+        node.parent = None
+        return
 
     def _depth_and_bal(self, node):
         """Get the new depth and balance of the tree."""

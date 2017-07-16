@@ -892,7 +892,7 @@ def test_five_to_zero_range_root_del(six_node_range_5_to_0_bst):
 
 
 def test_left_edge_case_root_shift():
-    """Test when root shift runs the left side and has a left."""
+    """Test root shift runs the left side and has a left."""
     b = BST([70, 80, 50, 40, 60, 75, 55])
     b.delete(70)
     assert b._root.val == 60

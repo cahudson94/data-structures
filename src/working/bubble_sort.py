@@ -12,6 +12,8 @@ def bubble_sort(data):
             prev = curr[:]
             if idx == size and curr == prev:
                 return curr
+            if not isinstance((curr[idx + 1]), type(curr[idx])):
+                    raise TypeError()
             if curr[idx] > curr[idx + 1]:
                 curr[idx], curr[idx + 1] = curr[idx + 1], curr[idx]
                 if curr[idx + 1] == curr[size]:
@@ -20,9 +22,8 @@ def bubble_sort(data):
             elif idx != size:
                 prev = []
             idx += 1
-        return curr
     except TypeError:
-        return ('Please only pass in an iterable of numbers.')
+        raise TypeError('Please only pass in an iterable of numbers.')
 
 
 if __name__ == '__main__':  # pragma: no cover

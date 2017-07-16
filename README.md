@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/CaHudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures) [![Coverage Status](https://coveralls.io/repos/github/CaHudson94/data-structures/badge.svg?branch=master)](https://coveralls.io/github/CaHudson94/data-structures?branch=master)
+[![Build Status](https://travis-ci.org/cahudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures) [![Coverage Status](https://coveralls.io/repos/github/cahudson94/data-structures/badge.svg?branch=master)](https://coveralls.io/github/CaHudson94/data-structures?branch=master)
 
 # Data Structures
 Authors: Morgan Nomura, Chris Hudson, Carlos Cadena
@@ -196,10 +196,10 @@ All modules and tests located in src directory.
 - public methods:
     ### insert:
         - add a new node to the BST
-        - iterates tracked variables
+        - incriments tracked variables
     ### delete:
-        - remove a node from the BST
-        - decriment the tracked variables as appropriate
+        - delete a node from the BST
+        - decriments tracked variables
     ### search:
         - return the node for the value
         - if not in the BST returns None
@@ -213,83 +213,15 @@ All modules and tests located in src directory.
     ### balance:
         - returns the balance
         - difference between left and right depth
-
-## Hash Table
-- module: hash_table.py
-- test: test_hash.py
-- public methods:
-    ### get:
-        - find a value on a key in the hash table.
-    ### set:
-        - add a new key value pair to the hash table.
-
-## Trie Tree
-- module: trie.py
-- test: test_trie.py
-- public methods:
-    ### insert:
-        - O(n^2)
-        - add a string to the tree
-        - raise an error if it is in the tree
-        - raise an error if the input is not a string
-    ### contains:
-        - O(1)
-        - return true if the string is in the tree
-        - else return false
-        - raise an error if the input is not a string
-    ### size:
-        - O(1)
-        - return the amount of strings in the tree
-    ### remove:
-        - O(n)
-        - remove a string from the tree
-        - raise an error if it is in the tree
-        - raise an error if the input is not a string
-    ### depth_traversal:
-        - O(n^2)
-        - return as a generator every word that has the given prefix
-
-
-## Bubble Sort
-- module: bubble_sort.py
-- test: test_bubble_sort.py
-- public methods:
-    ### bubble_sort:
-        - sort the input list.
-        - if more then one type of input is given return error message.
-
-
-## Insert Sort
-- module: insert_sort.py
-- test: test_insert_sort.py
-- public methods:
-    ### insert_sort:
-        - sort the input list.
-        - if more then one type of input is given return error message.
-
-
-## Merge Sort
-- module: merge_sort.py
-- test: test_merge_sort.py
-- public methods:
-    ### mergesort:
-        - sort the input list.
-        - if more then one type of input is given return error message.
-
-
-## Quick Sort
-- module: quick_sort.py
-- test: test_quick_sort.py
-- public methods:
-    ### quicksort:
-        - sort the input list.
-        - if more then one type of input is given return error message.
-
-
-## Radix Sort
-- module: radix_sort.py
-- test: test_radix.py
-- public methods:
-    ### radixsort:
-        - sort the input list.
-        - if more then one type of input is given return error message.
+    ### pre_order:
+        - returns the pre order traversal of the tree
+        - returns as generator
+    ### in_order:
+        - returns the in order traversal of the tree
+        - returns as generator
+    ### post_order:
+        - returns the post order traversal of the tree
+        - returns as generator
+    ### breadth_first:
+        - returns the breadth first traversal of the tree
+        - returns as generator

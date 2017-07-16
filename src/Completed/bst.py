@@ -2,7 +2,7 @@
 from timeit import timeit
 
 
-class BST():
+class BST(object):
     """Binary Search Tree."""
 
     def __init__(self, input=None):
@@ -60,38 +60,45 @@ Try again with only numbers in your list or tuple.''')
 
     def delete(self, val):
         """Delete the node with value from the Binary Search Tree."""
+        if self._length == 1:
+            self._root = None
+            self._length = 0
+            self._depth = 0
+            return
         to_del = self.search(val)
         if to_del is None:
             return None
         if to_del != self._root:
             par_for_bal = to_del.parent
-        if self._length <= 3:
-            self._del_small_tree(val)
-            return
-        self._length -= 1
         if to_del == self._root:
-            self._root_shift(to_del, self._balance)
+            if to_del.left and to_del.right:
+                self._root_shift(to_del, self._balance)
+            elif to_del.left:
+                self._root = to_del.left
+                to_del.left.parent = None
+            else:
+                self._root = to_del.right
+                to_del.right.parent = None
             par_for_bal = self._root
         elif to_del.left and to_del.right:
-            sub_tree = self._tree_depth(to_del)
-            sub_balance = sub_tree[0] - sub_tree[1]
+            sub_depth = self._tree_depth(to_del)
+            sub_balance = sub_depth[0] - sub_depth[1]
             self._root_shift(to_del, sub_balance)
         elif to_del.left:
             if to_del.parent.left == to_del:
                 to_del.parent.left = to_del.left
-                to_del.left.parent = to_del.parent
             else:
                 to_del.parent.right = to_del.left
-                to_del.left.parent = to_del.parent
+            to_del.left.parent = to_del.parent
         elif to_del.right:
             if to_del.parent.left == to_del:
                 to_del.parent.left = to_del.right
-                to_del.right.parent = to_del.parent
             else:
                 to_del.parent.right = to_del.right
-                to_del.right.parent = to_del.parent
+            to_del.right.parent = to_del.parent
         else:
             self._del_leaf(to_del)
+        self._length -= 1
         self._bal_and_rotate(par_for_bal.left or
                              par_for_bal.right or
                              par_for_bal)
@@ -132,24 +139,16 @@ Try again with only numbers in your list or tuple.''')
         while len(nodes) != self._length:
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
+            elif curr.left and curr.left not in nodes:
                 curr = curr.left
-            elif not curr.left and curr not in nodes:
+            elif curr not in nodes:
                 nodes.append(curr)
-                if not curr.right:
+                if curr.right and curr.right not in nodes:
+                    curr = curr.right
+                else:
                     curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
-            elif curr.right and curr.right not in nodes:
-                if curr not in nodes:
-                    nodes.append(curr)
-                curr = curr.right
-            elif not curr.right:
-                curr = curr.parent
             else:
                 curr = curr.parent
-                if curr not in nodes:
-                    nodes.append(curr)
         for node in nodes:
             yield node.val
 
@@ -176,28 +175,13 @@ Try again with only numbers in your list or tuple.''')
         while len(nodes) != self._length:
             if not curr.right and not curr.left and not curr.parent:
                 nodes.append(curr)
-            elif curr.left and curr not in nodes and curr.left not in nodes:
+            elif curr.left and curr.left not in nodes:
                 curr = curr.left
-            elif not curr.left and not curr.right and curr not in nodes:
+            elif curr.right and curr.right not in nodes:
+                curr = curr.right
+            else:
                 nodes.append(curr)
                 curr = curr.parent
-                while curr != self._root:
-                    if curr.left and curr.left not in nodes:
-                        curr = curr.left
-                        break
-                    elif curr.right and curr.right not in nodes:
-                        curr = curr.right
-                    elif curr.right:
-                        nodes.append(curr)
-                        curr = curr.parent
-                        if curr == self._root and (len(nodes) ==
-                                                   self._length - 1):
-                            nodes.append(curr)
-                    else:
-                        nodes.append(curr)
-                        curr = curr.parent
-            elif curr.right:
-                curr = curr.right
         for node in nodes:
             yield node.val
 
@@ -231,22 +215,19 @@ Try again with only numbers in your list or tuple.''')
                 balanced = True
                 self._rdepth = auto_bal[0]
                 self._ldepth = auto_bal[1]
-                self._balance = self._rdepth - self._ldepth
+                self._balance = self._ldepth - self._rdepth
                 self._depth = max([self._rdepth, self._ldepth]) + 1
             elif auto_bal[2] == -2 and auto_bal[3] in [-1, 0]:
                 self._rotate_right(auto_bal[0])
-                curr = auto_bal[0]
             elif auto_bal[2] == 2 and auto_bal[3] in [1, 0]:
                 self._rotate_left(auto_bal[0])
-                curr = auto_bal[0]
             elif auto_bal[2] == -2 and auto_bal[3] == 1:
                 self._rotate_left(auto_bal[1])
                 self._rotate_right(auto_bal[0])
-                curr = auto_bal[0]
             elif auto_bal[2] == 2 and auto_bal[3] == -1:
                 self._rotate_right(auto_bal[1])
                 self._rotate_left(auto_bal[0])
-                curr = auto_bal[0]
+            curr = auto_bal[0]
         return
 
     def _check_bal(self, par_node, child):
@@ -310,6 +291,11 @@ Try again with only numbers in your list or tuple.''')
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
+        if self._length == 2:
+            if node.right:
+                return (1, 0)
+            else:
+                return (0, 1)
         lside = {}
         rside = {}
         on_right = False
@@ -360,7 +346,7 @@ Try again with only numbers in your list or tuple.''')
 
     def _root_shift(self, node, balance):
         """Delete the root of the tree or sub trees."""
-        if balance <= 0:
+        if balance > 0:
             curr = node.left
             while curr.right:
                 curr = curr.right
@@ -373,13 +359,11 @@ Try again with only numbers in your list or tuple.''')
             curr.right = node.right
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
+            curr.parent = node.parent
             if curr.right:
                 curr.right.parent = curr
 
@@ -396,60 +380,13 @@ Try again with only numbers in your list or tuple.''')
             curr.left = node.left
             if node == self._root:
                 self._root = curr
-                curr.parent = node.parent
             elif node == node.parent.left:
                 node.parent.left = curr
-                curr.parent = node.parent
             elif node == node.parent.right:
                 node.parent.right = curr
-                curr.parent = node.parent
+            curr.parent = node.parent
             if curr.left:
                 curr.left.parent = curr
-
-    def _del_small_tree(self, val):
-        """Delete node from tree of three or less."""
-        to_del = self.search(val)
-        if self._length == 1:
-            self._root = None
-            self._length = 0
-            self._depth = 0
-            return
-        elif self._length == 2:
-            self._length -= 1
-            if to_del == self._root and to_del.right:
-                self._root = to_del.right
-                self._root.parent = None
-            elif to_del == self._root and to_del.left:
-                self._root = to_del.left
-                self._root.parent = None
-            else:
-                self._del_leaf(to_del)
-            self._rdepth = 0
-            self._ldepth = 0
-            self._depth = 1
-            self._balance = 0
-            return
-        else:
-            self._length -= 1
-            if to_del == self._root:
-                to_del.left.parent = None
-                self._root = to_del.left
-                to_del.right.parent = self._root
-                self._root.right = to_del.right
-                self._rdepth = 1
-                self._ldepth = 0
-                self._balance = 1
-            else:
-                if to_del == self._root.left:
-                    self._rdepth = 1
-                    self._ldepth = 0
-                    self._balance = 1
-                else:
-                    self._rdepth = 0
-                    self._ldepth = 1
-                    self._balance = -1
-                self._del_leaf(to_del)
-            self._depth = 2
 
     def _del_leaf(self, node):
         """If the node being deleted is a leaf."""
@@ -463,7 +400,7 @@ Try again with only numbers in your list or tuple.''')
         return
 
 
-class Node():
+class Node(object):
     """Create a node to add to the Binary Search Tree."""
 
     def __init__(self, val, parent=None, left=None, right=None):

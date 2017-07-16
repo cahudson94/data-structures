@@ -302,3 +302,12 @@ All modules and tests located in src directory.
     ### quicksort:
         - sort the input list.
         - if more then one type of input is given return error message.
+
+
+## Radix Sort
+- module: radix_sort.py
+- test: test_radix.py
+- public methods:
+    ### radixsort:
+        - sort the input list.
+        - if more then one type of input is given return error message.

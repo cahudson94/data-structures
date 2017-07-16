@@ -38,8 +38,6 @@ Try again with only numbers in your list or tuple.''')
             return
         while True:
             if val < curr.val:
-                if iteration == 0:
-                        iteration += 1
                 if curr.left:
                     curr = curr.left
                 else:
@@ -57,6 +55,8 @@ Try again with only numbers in your list or tuple.''')
                     self._length += 1
                     self._depth_and_bal(self._root)
                     return
+            else:
+                return
 
     def _tree_depth(self, node):
         """Get the depth of the tree or sub tree."""
@@ -113,7 +113,7 @@ Try again with only numbers in your list or tuple.''')
         depth = self._tree_depth(node)
         self._rdepth = depth[0]
         self._ldepth = depth[1]
-        self._balance = self._rdepth - self._ldepth
+        self._balance = self._ldepth - self._rdepth
         self._depth = max([self._rdepth, self._ldepth]) + 1
 
     def search(self, val):
@@ -222,9 +222,10 @@ Try again with only numbers in your list or tuple.''')
 class Node(object):
     """Create a node to add to the Binary Search Tree."""
 
-    def __init__(self, val, left=None, right=None):
+    def __init__(self, val, parent=None, left=None, right=None):
         """Initialize a new node."""
         self.val = val
+        self.parent = parent
         self.left = left
         self.right = right
 

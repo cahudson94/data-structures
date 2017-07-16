@@ -25,7 +25,7 @@ def test_insert_sort(data):
     assert mergesort(data) == sorted(data)
 
 
-def test_strings_error_handling_in_bubble_sort():
+def test_strings_error_handling_in_merge_sort():
     """Test that an error is thrown if there is a string."""
     assert mergesort([1, 'blkja', 2324, 3]) == 'This sort method \
 only accepts values of one type in a list.'
@@ -33,8 +33,8 @@ only accepts values of one type in a list.'
 
 def test_iterable_type_error_handling():
     """Test if not list or tuple, ValueError raised."""
-    assert mergesort(('sfajlfka', 1, 5)) == 'This sort method \
-only accepts values of one type in a list.'
+    assert mergesort(('sfajlfka', 1, 5)) == 'This sort method only \
+accepts values of one type in a list.'
 
 
 @pytest.mark.parametrize('data, result', PARAMS_TABLE)

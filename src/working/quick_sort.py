@@ -10,6 +10,9 @@ def quicksort(data):
             right = []
 
             for item in data[1:]:
+                # This slows it down by almost a second but covers 2.7
+                if not isinstance(item, type(mid)):
+                    raise TypeError
                 if item >= mid:
                     right.append(item)
                 else:
@@ -17,10 +20,6 @@ def quicksort(data):
 
             quicksort(left)
             quicksort(right)
-
-            if not left:
-                right.insert(0, mid)
-                return right
 
             di = 0
             li = 0

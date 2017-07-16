@@ -39,7 +39,7 @@ def two_node_left_bst():
 
 @pytest.fixture
 def three_node_bst():
-    """A BST initialized with three nodes."""
+    """A BST initialied with three nodes."""
     three_node = BST()
     three_node.insert(5)
     three_node.insert(23)
@@ -49,21 +49,21 @@ def three_node_bst():
 
 @pytest.fixture
 def three_node_bst_with_list():
-    """A BST initialized with three nodes from list."""
+    """A BST initialied with three nodes from list."""
     three_node = BST([2, 1, 3])
     return three_node
 
 
 @pytest.fixture
 def five_node_bst_with_tuple():
-    """A BST initialized with five nodes from tuple."""
+    """A BST initialied with five nodes from tuple."""
     five_node = BST((6, 4, 8, 7, 6.5))
     return five_node
 
 
 @pytest.fixture
 def five_node_bst_by_insert():
-    """A BST initialized with five nodes from insert."""
+    """A BST initialied with five nodes from insert."""
     five_node = BST()
     five_node.insert(6)
     five_node.insert(2)
@@ -342,13 +342,16 @@ def test_insert_with_list_raises_type_error(one_node_bst):
         one_node_bst.insert([23, 44])
 
 
-def test_in_order_traversal_one_node(one_node_bst):
-    """Test one node BST returns one val at a time.
+def test_blance_and_depth_of_wonky_bst(wonky_bst):
+    """Test the balance of the wonky bst."""
+    assert wonky_bst.balance() == 4
+    assert wonky_bst.depth() == 9
 
-    Uses 'in order' order.
-    """
-    one = one_node_bst.in_order()
-    assert next(one) == 5
+
+def test_blance_and_depth_of_right_bst(right_side_bst):
+    """Test the balance of the right bst."""
+    assert right_side_bst.balance() == -6
+    assert right_side_bst.depth() == 7
 
 
 def test_in_order_traversal_five_node(five_node_bst_with_tuple):

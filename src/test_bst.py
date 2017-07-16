@@ -795,3 +795,27 @@ def test_left_edge_case_root_shift():
     b.delete(70)
     assert b._root.val == 60
     assert b._root.left.right.val == 55
+
+
+def test_one_node_traversal_pre_order(one_node_bst):
+    """Test traversal of one node BST pre order."""
+    one = one_node_bst.pre_order()
+    assert next(one) == 5
+
+
+def test_one_node_traversal_in_order(one_node_bst):
+    """Test traversal of one node BST in order."""
+    one = one_node_bst.in_order()
+    assert next(one) == 5
+
+
+def test_one_node_traversal_post_order(one_node_bst):
+    """Test traversal of one node BST post order."""
+    one = one_node_bst.post_order()
+    assert next(one) == 5
+
+
+def test_one_node_traversal_breadth_first(one_node_bst):
+    """Test traversal of one node BST breadth first."""
+    one = one_node_bst.breadth_first()
+    assert next(one) == 5

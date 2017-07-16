@@ -344,14 +344,14 @@ def test_insert_with_list_raises_type_error(one_node_bst):
 
 def test_blance_and_depth_of_wonky_bst(wonky_bst):
     """Test the balance of the wonky bst."""
-    assert wonky_bst.balance() == 4
-    assert wonky_bst.depth() == 9
+    assert wonky_bst.balance() == 1
+    assert wonky_bst.depth() == 5
 
 
 def test_blance_and_depth_of_right_bst(right_side_bst):
     """Test the balance of the right bst."""
-    assert right_side_bst.balance() == -6
-    assert right_side_bst.depth() == 7
+    assert right_side_bst.balance() == -1
+    assert right_side_bst.depth() == 4
 
 
 def test_in_order_traversal_five_node(five_node_bst_with_tuple):
@@ -408,7 +408,6 @@ def test_pre_order_traversal_five_node(five_node_bst_with_tuple):
     for i in range(5):
         gen.append(next(five))
     assert gen == [6, 4, 7, 6.5, 8]
-
 
 
 def test_pre_order_traversal_ten_node(ten_node_bst_with_list):
@@ -517,7 +516,7 @@ def test_breadth_first_edge_case(five_node_edge_case):
     gen = []
     for i in range(5):
         gen.append(next(five))
-    assert gen == [6, 3, 2, 5, 4]
+    assert gen == [3, 2, 5, 4, 6]
 
 
 def test_in_order_edge_case(five_node_edge_case):
@@ -535,7 +534,7 @@ def test_pre_order_edge_case(five_node_edge_case):
     gen = []
     for i in range(5):
         gen.append(next(five))
-    assert gen == [6, 3, 2, 5, 4]
+    assert gen == [3, 2, 5, 4, 6]
 
 
 def test_two_node_post_order_right(two_node_right_bst):
@@ -864,123 +863,12 @@ def test_init_bst_raises_type_error_with_bad_data_in_list():
         BST([4, '23', 'balls'])
 
 
-def test_breadth_first_edge_case(five_node_edge_case):
-    """Test to left only tree traversal edge case breadth first."""
-    five = five_node_edge_case.breadth_first()
-    gen = []
-    for i in range(5):
-        gen.append(next(five))
-    assert gen == [3, 2, 5, 4, 6]
-
-
-def test_in_order_edge_case(five_node_edge_case):
-    """Test to left only tree traversal edge case in order."""
-    five = five_node_edge_case.in_order()
-    gen = []
-    for i in range(5):
-        gen.append(next(five))
-    assert gen == [2, 3, 4, 5, 6]
-
-
-def test_pre_order_edge_case(five_node_edge_case):
-    """Test to left only tree traversal edge case pre order."""
-    five = five_node_edge_case.pre_order()
-    gen = []
-    for i in range(5):
-        gen.append(next(five))
-    assert gen == [3, 2, 5, 4, 6]
-
-
-def test_two_node_post_order_right(two_node_right_bst):
-    """Test for traversal of a two node right BST via post order."""
-    two = two_node_right_bst.post_order()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [1, 0]
-
-
-def test_two_node_post_order_left(two_node_left_bst):
-    """Test for traversal of a two node left BST via post order."""
-    two = two_node_left_bst.post_order()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [0, 1]
-
-
-def test_two_node_pre_order_right(two_node_right_bst):
-    """Test for traversal of a two node right BST via pre order."""
-    two = two_node_right_bst.pre_order()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [0, 1]
-
-
-def test_two_node_pre_order_left(two_node_left_bst):
-    """Test for traversal of a two node left BST via pre order."""
-    two = two_node_left_bst.pre_order()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [1, 0]
-
-
-def test_two_node_in_order_right(two_node_right_bst):
-    """Test for traversal of a two node right BST via in order."""
-    two = two_node_right_bst.in_order()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [0, 1]
-
-
-def test_two_node_in_order_left(two_node_left_bst):
-    """Test for traversal of a two node left BST via in order."""
-    two = two_node_left_bst.in_order()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [0, 1]
-
-
-def test_two_node_breadth_first_right(two_node_right_bst):
-    """Test for traversal of a two node right BST via breadth first."""
-    two = two_node_right_bst.breadth_first()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [0, 1]
-
-
-def test_two_node_breadth_first_left(two_node_left_bst):
-    """Test for traversal of a two node left BST via breadth first."""
-    two = two_node_left_bst.breadth_first()
-    gen = []
-    for i in range(2):
-        gen.append(next(two))
-    assert gen == [1, 0]
-
-
 def test_delete_root_on_right_heavy_tree(six_node_right_heavy_bst):
     """Test deletion of the root when right is heavier."""
     b = six_node_right_heavy_bst
     b.delete(10)
     assert b._root.val == 11
     assert b.size() == 5
-
-
-def test_blance_and_depth_of_wonky_bst(wonky_bst):
-    """Test the balance of the wonky bst."""
-    assert wonky_bst.balance() == 1
-    assert wonky_bst.depth() == 5
-
-
-def test_blance_and_depth_of_right_bst(right_side_bst):
-    """Test the balance of the right bst."""
-    assert right_side_bst.balance() == -1
-    assert right_side_bst.depth() == 4
 
 
 def test_blance_and_depth_of_left_bst(left_side_bst):

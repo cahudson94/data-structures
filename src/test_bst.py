@@ -787,3 +787,11 @@ def test_right_child_edge_case_root_del():
     b.delete(5)
     assert b._root.val == 7
     assert b._root.right.left.val == 9
+
+
+def test_left_edge_case_root_shift():
+    """Test when root shift runs the left side and has a left."""
+    b = BST([70, 80, 50, 40, 60, 75, 55])
+    b.delete(70)
+    assert b._root.val == 60
+    assert b._root.left.right.val == 55

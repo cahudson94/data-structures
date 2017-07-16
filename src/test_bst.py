@@ -751,18 +751,6 @@ def test_delete_left_side_leaf(six_node_right_heavy_bst):
     assert b.size() == 5
 
 
-def test_blance_and_depth_of_wonky_bst(wonky_bst):
-    """Test the balance of the wonky bst."""
-    assert wonky_bst.balance() == 4
-    assert wonky_bst.depth() == 9
-
-
-def test_blance_and_depth_of_right_bst(right_side_bst):
-    """Test the balance of the right bst."""
-    assert right_side_bst.balance() == -6
-    assert right_side_bst.depth() == 7
-
-
 def test_blance_and_depth_of_left_bst(left_side_bst):
     """Test the balance of the left bst."""
     assert left_side_bst.balance() == 4
@@ -799,3 +787,35 @@ def test_right_child_edge_case_root_del():
     b.delete(5)
     assert b._root.val == 7
     assert b._root.right.left.val == 9
+
+
+def test_left_edge_case_root_shift():
+    """Test when root shift runs the left side and has a left."""
+    b = BST([70, 80, 50, 40, 60, 75, 55])
+    b.delete(70)
+    assert b._root.val == 60
+    assert b._root.left.right.val == 55
+
+
+def test_one_node_traversal_pre_order(one_node_bst):
+    """Test traversal of one node BST pre order."""
+    one = one_node_bst.pre_order()
+    assert next(one) == 5
+
+
+def test_one_node_traversal_in_order(one_node_bst):
+    """Test traversal of one node BST in order."""
+    one = one_node_bst.in_order()
+    assert next(one) == 5
+
+
+def test_one_node_traversal_post_order(one_node_bst):
+    """Test traversal of one node BST post order."""
+    one = one_node_bst.post_order()
+    assert next(one) == 5
+
+
+def test_one_node_traversal_breadth_first(one_node_bst):
+    """Test traversal of one node BST breadth first."""
+    one = one_node_bst.breadth_first()
+    assert next(one) == 5

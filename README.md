@@ -222,6 +222,11 @@ All modules and tests located in src directory.
         - find a value on a key in the hash table.
     ### set:
         - add a new key value pair to the hash table.
+- hashes:
+    ### naive:
+        - We used a simple addative hash for our naive.
+    ### advanced:
+        - We made a hash using a few math operations using prime numbers on each of the string vlaues and added a diferentiator through the last value.
 
 ## Trie Tree
 - module: trie.py
@@ -245,3 +250,6 @@ All modules and tests located in src directory.
         - remove a string from the tree
         - raise an error if it is in the tree
         - raise an error if the input is not a string
+    ### depth_traversal:
+        - O(n^2)
+        - return as a generator every word that has the given prefix

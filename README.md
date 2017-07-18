@@ -225,3 +225,89 @@ All modules and tests located in src directory.
     ### breadth_first:
         - returns the breadth first traversal of the tree
         - returns as generator
+
+
+## Hash Table
+- module: hash_table.py
+- test: test_hash.py
+- public methods:
+    ### get:
+        - find a value on a key in the hash table.
+    ### set:
+        - add a new key value pair to the hash table.
+- hashes:
+    ### naive:
+        - We used a simple addative hash for our naive.
+    ### advanced:
+        - We made a hash using a few math operations using prime numbers on each of the string vlaues and added a diferentiator through the last value.
+
+## Trie Tree
+- module: trie.py
+- test: test_trie.py
+- public methods:
+    ### insert:
+        - O(n^2)
+        - add a string to the tree
+        - raise an error if it is in the tree
+        - raise an error if the input is not a string
+    ### contains:
+        - O(1)
+        - return true if the string is in the tree
+        - else return false
+        - raise an error if the input is not a string
+    ### size:
+        - O(1)
+        - return the amount of strings in the tree
+    ### remove:
+        - O(n)
+        - remove a string from the tree
+        - raise an error if it is in the tree
+        - raise an error if the input is not a string
+    ### depth_traversal:
+        - O(n^2)
+        - return as a generator every word that has the given prefix
+
+
+## Bubble Sort
+- module: bubble_sort.py
+- test: test_bubble_sort.py
+- public methods:
+    ### bubble_sort:
+        - sort the input list.
+        - if more then one type of input is given return error message.
+
+
+## Insert Sort
+- module: insert_sort.py
+- test: test_insert_sort.py
+- public methods:
+    ### insert_sort:
+        - sort the input list.
+        - if more then one type of input is given return error message.
+
+
+## Merge Sort
+- module: merge_sort.py
+- test: test_merge_sort.py
+- public methods:
+    ### mergesort:
+        - sort the input list.
+        - if more then one type of input is given return error message.
+
+
+## Quick Sort
+- module: quick_sort.py
+- test: test_quick_sort.py
+- public methods:
+    ### quicksort:
+        - sort the input list.
+        - if more then one type of input is given return error message.
+
+
+## Radix Sort
+- module: radix_sort.py
+- test: test_radix.py
+- public methods:
+    ### radixsort:
+        - sort the input list.
+        - if more then one type of input is given return error message.

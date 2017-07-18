@@ -271,6 +271,8 @@ All modules and tests located in src directory.
 ## Bubble Sort
 - module: bubble_sort.py
 - test: test_bubble_sort.py
+- contribs:
+    W Ely Paysinger (if name main block)
 - public methods:
     ### bubble_sort:
         - sort the input list.
@@ -280,6 +282,8 @@ All modules and tests located in src directory.
 ## Insert Sort
 - module: insert_sort.py
 - test: test_insert_sort.py
+- contribs:
+    W Ely Paysinger (if name main block)
 - public methods:
     ### insert_sort:
         - sort the input list.
@@ -289,6 +293,8 @@ All modules and tests located in src directory.
 ## Merge Sort
 - module: merge_sort.py
 - test: test_merge_sort.py
+- contribs:
+    W Ely Paysinger (if name main block)
 - public methods:
     ### mergesort:
         - sort the input list.
@@ -298,6 +304,8 @@ All modules and tests located in src directory.
 ## Quick Sort
 - module: quick_sort.py
 - test: test_quick_sort.py
+- contribs:
+    W Ely Paysinger (if name main block)
 - public methods:
     ### quicksort:
         - sort the input list.
@@ -307,6 +315,8 @@ All modules and tests located in src directory.
 ## Radix Sort
 - module: radix_sort.py
 - test: test_radix.py
+- contribs:
+    W Ely Paysinger (if name main block)
 - public methods:
     ### radixsort:
         - sort the input list.

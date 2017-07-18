@@ -72,7 +72,7 @@ Try again with only numbers in your list or tuple.''')
                 if rdepth > self._rdepth:
                     self._rdepth = rdepth
                 self._depth = max(self._rdepth, self._ldepth) + 1
-                self._balance = self._rdepth - self._ldepth
+                self._balance = self._ldepth - self._rdepth
                 return
 
     def search(self, val):

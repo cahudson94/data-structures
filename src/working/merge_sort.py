@@ -21,7 +21,7 @@ def mergesort(data):
                     raise TypeError()
                 if not isinstance(right[ri], int):
                     raise TypeError()
-                if left[li] < right[ri]:
+                if left[li] <= right[ri]:
                     data[di] = left[li]
                     li += 1
                 else:

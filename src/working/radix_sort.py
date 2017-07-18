@@ -26,11 +26,11 @@ def radix(data):
                 except IndexError:
                     buckets[0].append(x)
             idx -= 1
-            sorted_data = []
+            data_idx = 0
             for i in range(10):
                 for item in buckets[i]:
-                    sorted_data.append(item)
-            data = sorted_data
+                    data[data_idx] = item
+                    data_idx += 1
         return data
     except TypeError:
         return 'This sorting method sorts only one data type.'

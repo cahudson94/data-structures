@@ -400,7 +400,7 @@ def test_adjacent_two_nodes_in_graph(two_node_two_edge_graph):
 def test_adjacent_five_nodes_in_graph(five_node_with_five_edges_graph):
     """Test two nodes are adjacent returns True twice."""
     g = five_node_with_five_edges_graph
-    assert g.adjacent(11.1, 2) is True
+    assert g.adjacent(2, 11.1) is True
     assert g.adjacent(2, 'corn') is True
 
 
@@ -507,4 +507,4 @@ def test_adj_no_edge_first_to_second_val(five_node_with_five_edges_graph):
     """Test if there is no edge from val 1 to val 2."""
     g = five_node_with_five_edges_graph
     with pytest.raises(AssertionError):
-        g.adjacent(2, 11.1)
+        g.adjacent(11.1, 2)

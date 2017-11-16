@@ -11,11 +11,11 @@ All modules and tests located in src directory.
 - test: test_linked_list.py
 - public methods:
 
-|  |  |  |  |  |
+|   |   |   |   |   |
 |---|---|---|---|---|
-|  |  |  |  |  |
-|  |  |  |  |  |
-|  |  |  |  |  |
+|   |   |   |   |   |
+|   |   |   |   |   |
+|   |   |   |   |   |
 
     ### push:
         - add a new node to the Linked List

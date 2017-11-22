@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/cahudson94/data-structures.svg?branch=master)](https://travis-ci.org/CaHudson94/data-structures) [![Coverage Status](https://coveralls.io/repos/github/cahudson94/data-structures/badge.svg?branch=master)](https://coveralls.io/github/CaHudson94/data-structures?branch=master)
 
 # Data Structures
-Authors: Morgan Nomura, Chris Hudson, Carlos Cadena
+Authors: Chris Hudson, Carlos Cadena, Morgan Nomura
 
 
 All modules and tests located in src directory.
@@ -10,12 +10,6 @@ All modules and tests located in src directory.
 - module: linked_list.py
 - test: test_linked_list.py
 - public methods:
-
-|   |   |   |   |   |
-|---|---|---|---|---|
-|   |   |   |   |   |
-|   |   |   |   |   |
-|   |   |   |   |   |
 
     ### push:
         - add a new node to the Linked List
